@@ -1,65 +1,95 @@
-import Image from "next/image";
+"use client"
+
+import { useState, useEffect } from "react"
+import { Layout } from "@/components/layout"
+import { Editor } from "@/components/editor"
+import { Preview } from "@/components/preview"
+import { ThemeProvider } from "@/components/theme-provider"
+
+const DEFAULT_MARKDOWN = `# Markdown Formatter - Format & Beautify Markdown Online Free 🎯
+
+Transform messy **markdown formatting** into clean, professional content! Our free **markdown formatter** fixes syntax errors, standardizes formatting, and lints your files with advanced **markdown formatting** rules.
+
+## Why Use Our Markdown Formatter?
+
+✅ **Free Forever** - **Format markdown online** with no limits or signup required  
+✅ **Real-time Formatting** - Watch instant **markdown formatting** as you type  
+✅ **Professional Linting** - Fix syntax issues with industry-standard rules  
+✅ **Prettier Integration** - Uses professional **markdown formatter** engine  
+✅ **Copy & Download** - Get clean **markdown formatting** instantly  
+✅ **GitHub Compatible** - Perfect **markdown formatter** for README files  
+
+> **Perfect for:** Developers, technical writers, and teams who need consistent **markdown formatting** standards!
+
+## Common Formatting Issues This Tool Fixes
+
+### Missing spaces in headings (this will be fixed!)
+####  Extra spaces and trailing whitespace  
+## Missing spaces after hash marks
+
+**Inconsistent text formatting**,*missing spaces*, ~~poor spacing~~, and [poorly formatted links](https://example.com).
+
+### Lists with formatting problems
+- Unordered list item
+ - Inconsistent indentation (will be fixed)
+- Missing space after dash
+
+1. Missing space after number
+2. Proper formatting
+   3. Wrong numbering sequence
+
+### Code blocks need proper formatting
+\`\`\`javascript
+// Inconsistent indentation and spacing
+function markdownFormatter() {
+console.log("This will be properly formatted!");
+  return "beautiful markdown";
+}
+\`\`\`
+
+### Tables with formatting issues
+|Column 1|Column 2|Spacing Issues|
+|-------|---------|-------------|
+|Data| Inconsistent spacing |Poor alignment|
+| More data|  Extra spaces  | Trailing spaces  |
+
+### Advanced Features Showcase
+
+Our **markdown formatter** handles:
+- 🔢 **Math equations**: $E = mc^2$ (LaTeX formatting preserved)  
+- 😊 **Emojis**: Proper spacing and formatting maintained
+- 📊 **Complex tables**: Automatic alignment and spacing
+- 💻 **Code blocks**: Syntax highlighting preserved
+- 🔗 **Links**: Proper URL formatting and validation
+`
 
 export default function Home() {
+  const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
+  const [mounted, setMounted] = useState(false)
+
+  // Prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) return null
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <Layout>
+        <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
+          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+            <Editor 
+              value={markdown} 
+              onChange={(e) => setMarkdown(e.target.value)} 
+              className="flex-1"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
+          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+            <Preview content={markdown} />
+          </div>
         </div>
-      </main>
-    </div>
-  );
+      </Layout>
+    </ThemeProvider>
+  )
 }
