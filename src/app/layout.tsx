@@ -5,15 +5,35 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Markdown Viewer - Free Online Markdown Previewer & Editor",
-  description: "Free online Markdown viewer and editor. Preview your Markdown content in real-time with GitHub Flavored Markdown support. Clean, minimal, and fast.",
-  keywords: ["markdown viewer", "markdown editor", "markdown preview", "online markdown editor", "gfm viewer"],
+  title: "MDViewer: Free Online Markdown Viewer and Editor",
+  description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface. Perfect for developers and content creators.",
+  keywords: ["markdown viewer", "markdown editor", "markdown preview", "online markdown editor", "gfm viewer", "markdown cheat sheet", "md file viewer"],
   authors: [{ name: "Antigravity" }],
   viewport: "width=device-width, initial-scale=1",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "#020617" },
   ],
+  openGraph: {
+    title: "MDViewer: Free Online Markdown Viewer and Editor",
+    description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
+    url: "https://mdviewer.in",
+    type: "website",
+    images: [
+      {
+        url: "https://mdviewer.in/logo.png",
+        width: 512,
+        height: 512,
+        alt: "MDViewer Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "MDViewer: Free Online Markdown Viewer and Editor",
+    description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
+    images: ["https://mdviewer.in/logo.png"],
+  },
 };
 
 export default function RootLayout({
