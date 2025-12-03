@@ -39,11 +39,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border py-2">
         <div className="container mx-auto flex items-center justify-between px-4 h-12">
            {/* Ad Placeholder Footer Left */}
-           <div className="w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">
+           <div className="hidden md:flex w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border items-center justify-center text-xs text-muted-foreground">
               Ad Space
             </div>
            {/* Ad Placeholder Footer Right */}
-           <div className="w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">
+           <div className="hidden md:flex w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border items-center justify-center text-xs text-muted-foreground">
               Ad Space
             </div>
         </div>

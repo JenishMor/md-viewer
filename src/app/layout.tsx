@@ -43,7 +43,25 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              "url": "https://mdviewer.in",
+              "name": "MDViewer",
+              "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://mdviewer.in?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

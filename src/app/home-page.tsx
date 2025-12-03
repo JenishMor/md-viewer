@@ -70,6 +70,7 @@ export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
   const [mounted, setMounted] = useState(false)
 
+  // Prevent hydration mismatch
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -78,6 +79,18 @@ export default function HomePage() {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": "MDViewer: Free Online Markdown Viewer and Editor",
+            "description": "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface. Perfect for developers and content creators.",
+            "url": "https://mdviewer.in",
+          }),
+        }}
+      />
       <Layout>
         <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
           <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
