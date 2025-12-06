@@ -97,6 +97,7 @@ export default function HomePage() {
             <Editor 
               value={markdown} 
               onChange={(e) => setMarkdown(e.target.value)} 
+              initialValue={DEFAULT_MARKDOWN} // Pass DEFAULT_MARKDOWN as initialValue
               className="flex-1"
             />
           </div>
