@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
@@ -10,11 +10,6 @@ export const metadata: Metadata = {
   description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface. Perfect for developers and content creators.",
   keywords: ["markdown viewer", "markdown editor", "markdown preview", "online markdown editor", "gfm viewer", "markdown cheat sheet", "md file viewer"],
   authors: [{ name: "Antigravity" }],
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "#020617" },
-  ],
   openGraph: {
     title: "MDViewer: Free Online Markdown Viewer and Editor",
     description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
@@ -36,6 +31,15 @@ export const metadata: Metadata = {
     images: ["https://mdviewer.in/logo.png"],
   },
 };
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "white" },
+    { media: "(prefers-color-scheme: dark)", color: "#020617" },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export default function RootLayout({
   children,
