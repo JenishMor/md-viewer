@@ -14,7 +14,7 @@ export function Editor({ value, onChange, initialValue, className, ...props }: E
   const handleCopy = async () => {
     await navigator.clipboard.writeText(value)
     setCopied(true)
-    setTimeout(() => setCopied(2000), 2000)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   const handleClear = () => {
