@@ -54,14 +54,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
-              "url": "https://mdviewer.in",
-              "name": "MDViewer",
-              "potentialAction": {
-                "@type": "SearchAction",
-                "target": "https://mdviewer.in?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-              },
+              "@type": "Organization",
+              "url": "https://mdviewer.in/",
+              "logo": "https://mdviewer.in/logo.png"
             }),
           }}
         />

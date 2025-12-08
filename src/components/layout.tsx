@@ -11,8 +11,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <Link href="/" className="flex items-center space-x-2">
               <div className="relative h-12 w-48 dark:bg-[#020617] rounded">
                 <Image 
-                  src="/logo.png" 
-                  alt="MD Viewer Logo" 
+                  src="/md-logo.png" 
+                  alt="MDViewer Logo" 
                   fill
                   className="object-contain dark:invert dark:mix-blend-screen"
                   priority
