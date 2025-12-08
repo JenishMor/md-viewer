@@ -6,26 +6,20 @@ import { Editor } from "@/components/editor"
 import { Preview } from "@/components/preview"
 import { ThemeProvider } from "@/components/theme-provider"
 
-const DEFAULT_MARKDOWN = `# Welcome to the MDViewer! 🚀
+const DEFAULT_MARKDOWN = `# MD Viewer & Live Markdown Preview
 
-This editor offers **three powerful ways** to work with Markdown:
+Welcome to the ultimate **MD Viewer**! This tool offers a powerful **live markdown editor** and **real-time preview** to streamline your writing process. Whether you're a developer or a content creator, our **markdown preview** functionality makes it easy to work with .md files.
 
-## 1. Paste from Word or Google Docs
-Simply **copy and paste** your formatted content from Microsoft Word, Google Docs, or any text editor into the visual editor on the left. Your formatting will be preserved and instantly converted to Markdown!
+## Key Features
 
-## 2. Visual Editing (MDViewer)
-Use the visual editor just like Word or Google Docs:
-- Click the **toolbar buttons** to format text
-- Type and see your formatting in real-time
-- The Markdown code updates automatically
+- **Live Markdown Preview:** See your formatted text instantly as you type.
+- **Visual & Code Editing:** Use the visual editor for a WYSIWYG experience or write directly in Markdown.
+- **GFM Support:** Full support for GitHub Flavored Markdown, including tables, code blocks, and more.
+- **Paste from Anywhere:** Copy content from Word or Google Docs and see it converted to clean Markdown.
 
-## 3. Write Markdown Directly
-If you know Markdown, type directly in the code editor on the right:
-- The visual editor will show your formatted content
-- Perfect for developers and Markdown experts
-- Full GFM (GitHub Flavored Markdown) support
+## Why Use a Live MD Viewer?
 
-## Example Features
+A good **MD viewer** with a **live preview** saves you time and effort. You don't have to switch between windows or guess what your formatting looks like.
 
 ### Text Formatting
 This text is **bold**, this is *italic*, and this is ***both***. You can also use ~~strikethrough~~.
@@ -35,7 +29,6 @@ This text is **bold**, this is *italic*, and this is ***both***. You can also us
 - First item
 - Second item
   - Nested item
-  - Another nested item
 - Third item
 
 **Ordered List:**
@@ -43,10 +36,8 @@ This text is **bold**, this is *italic*, and this is ***both***. You can also us
 2. Second step
 3. Third step
 
-### Code
-Inline code: \`const greeting = "Hello World";\`
-
-Code block:
+### Code Blocks
+Our **live markdown preview** handles code beautifully.
 \`\`\`javascript
 function sayHello(name) {
     console.log(\`Hello, \${name}!\`);
@@ -54,16 +45,13 @@ function sayHello(name) {
 \`\`\`
 
 ### Blockquote
-> "The best Markdown editor is one that works both ways - visual and code!"
+> "This is the best markdown preview tool I've ever used. The live editor is a game-changer!"
 > 
-> — Happy User
-
-### Links and Images
-[Visit GitHub](https://github.com) for more awesome tools!
+> — A Happy Developer
 
 ---
 
-**Try it now:** Edit this text in either editor and watch the magic happen! ✨
+**Get started now:** Edit this text in the **live markdown editor** and see the magic of our **MD viewer**! ✨
 `
 
 export default function HomePage() {
@@ -79,18 +67,6 @@ export default function HomePage() {
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            "name": "MDViewer: Free Online Markdown Viewer and Editor",
-            "description": "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface. Perfect for developers and content creators.",
-            "url": "https://mdviewer.in",
-          }),
-        }}
-      />
       <Layout>
         <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
           <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">

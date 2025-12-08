@@ -6,12 +6,12 @@ import { Analytics } from "@vercel/analytics/next";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MDViewer: Free Online Markdown Viewer and Editor",
-  description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface. Perfect for developers and content creators.",
-  keywords: ["markdown viewer", "markdown editor", "markdown preview", "online markdown editor", "gfm viewer", "markdown cheat sheet", "md file viewer"],
+  title: "MD Viewer - Live Markdown Editor & Preview | MDViewer",
+  description: "Experience the best online MD viewer with a live markdown editor. Our tool provides a real-time, side-by-side markdown preview. Supports GFM and is perfect for all your markdown preview needs.",
+  keywords: ["md viewer", "MD viewer", "markdown live preview", "markdown preview", "live markdown preview", "markdown editor", "online markdown editor", "gfm viewer", "md file viewer"],
   authors: [{ name: "Antigravity" }],
   openGraph: {
-    title: "MDViewer: Free Online Markdown Viewer and Editor",
+    title: "MD Viewer - Live Markdown Editor & Preview | MDViewer",
     description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
     url: "https://mdviewer.in",
     type: "website",
