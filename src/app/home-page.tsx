@@ -1,9 +1,8 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import dynamic from "next/dynamic"
 import { Layout } from "@/components/layout"
-import { Editor } from "@/components/editor"
-import { Preview } from "@/components/preview"
 import { ThemeProvider } from "@/components/theme-provider"
 
 const DEFAULT_MARKDOWN = `# MD Viewer & Live Markdown Preview
@@ -54,16 +53,18 @@ function sayHello(name) {
 **Get started now:** Edit this text in the **live markdown editor** and see the magic of our **MD viewer**! ✨
 `
 
+const Editor = dynamic(() => import("@/components/editor").then(mod => mod.Editor), {
+  ssr: false,
+  loading: () => <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm animate-pulse" />,
+});
+
+const Preview = dynamic(() => import("@/components/preview").then(mod => mod.Preview), {
+  ssr: false,
+  loading: () => <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm animate-pulse" />,
+});
+
 export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
-  const [mounted, setMounted] = useState(false)
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-
-  if (!mounted) return null
 
   return (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
@@ -73,7 +74,7 @@ export default function HomePage() {
             <Editor 
               value={markdown} 
               onChange={(e) => setMarkdown(e.target.value)} 
-              initialValue={DEFAULT_MARKDOWN} // Pass DEFAULT_MARKDOWN as initialValue
+              initialValue={DEFAULT_MARKDOWN}
               className="flex-1"
             />
           </div>
