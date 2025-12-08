@@ -3,7 +3,6 @@
 import { useState } from "react"
 import dynamic from "next/dynamic"
 import { Layout } from "@/components/layout"
-import { ThemeProvider } from "@/components/theme-provider"
 
 const DEFAULT_MARKDOWN = `# MD Viewer & Live Markdown Preview
 
@@ -67,22 +66,20 @@ export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <Layout>
-        <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
-          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-            <Editor 
-              value={markdown} 
-              onChange={(e) => setMarkdown(e.target.value)} 
-              initialValue={DEFAULT_MARKDOWN}
-              className="flex-1"
-            />
-          </div>
-          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-            <Preview content={markdown} />
-          </div>
+    <Layout>
+      <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
+        <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+          <Editor 
+            value={markdown} 
+            onChange={(e) => setMarkdown(e.target.value)} 
+            initialValue={DEFAULT_MARKDOWN}
+            className="flex-1"
+          />
         </div>
-      </Layout>
-    </ThemeProvider>
+        <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+          <Preview content={markdown} />
+        </div>
+      </div>
+    </Layout>
   )
 }
