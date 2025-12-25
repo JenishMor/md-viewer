@@ -3,6 +3,9 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
+import Script from "next/script";
+
+const ADSENSE_PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID ?? "";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -65,6 +68,12 @@ export default function RootLayout({
                 "logo": "https://mdviewer.in/logo.png"
               }),
             }}
+          />
+          <Script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${ADSENSE_PUBLISHER_ID}`}
+            crossOrigin="anonymous"
+            strategy="afterInteractive"
           />
           {children}
           <Analytics />

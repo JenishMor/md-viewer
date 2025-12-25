@@ -3,6 +3,7 @@
 import Link from "next/link"
 import Image from "next/image"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { AdBanner } from "@/components/ad-banner"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,8 +25,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
           <div className="flex items-center gap-4">
              {/* Ad Placeholder Header */}
-            <div className="hidden md:block w-[300px] h-[40px] bg-muted/50 rounded border border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">
-              Ad Space
+            <div className="hidden md:block w-[300px] h-[40px] bg-muted/50 rounded border border-dashed border-border flex items-center justify-center text-xs text-muted-foreground overflow-hidden">
+              <AdBanner 
+                dataAdSlot={process.env.NEXT_PUBLIC_HEADER_AD_SLOT_ID ?? ""}
+                dataFullWidthResponsive={false}
+              />
             </div>
             <ThemeToggle />
           </div>
@@ -41,8 +45,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <footer className="border-t border-border py-2">
         <div className="container mx-auto flex items-center justify-center px-4 h-12">
            {/* Ad Placeholder Footer */}
-           <div className="flex w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border items-center justify-center text-xs text-muted-foreground">
-              Ad Space
+           <div className="flex w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border items-center justify-center text-xs text-muted-foreground overflow-hidden">
+              <AdBanner 
+                dataAdSlot={process.env.NEXT_PUBLIC_FOOTER_AD_SLOT_ID ?? ""}
+                dataFullWidthResponsive={false}
+              />
             </div>
         </div>
       </footer>
