@@ -1,7 +1,14 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
 import { useEffect, useRef, useState } from "react"
 import { useTheme } from "next-themes"
+
+declare global {
+  interface Window {
+    adsbygoogle?: unknown[]
+  }
+}
 
 type AdBannerProps = {
   dataAdSlot: string
@@ -33,8 +40,8 @@ export function AdBanner({
         // Only initialize if the container is visible (has width)
         // This prevents "No slot size for availableWidth=0" error when hidden via CSS (e.g. on mobile)
         if (adRef.current.offsetWidth > 0) {
-          ;(window as any).adsbygoogle = (window as any).adsbygoogle || []
-          ;(window as any).adsbygoogle.push({})
+          window.adsbygoogle = window.adsbygoogle || []
+          window.adsbygoogle.push({})
         }
       }
     } catch (err) {
