@@ -1,8 +1,10 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Layout } from "@/components/layout"
+
+const STORAGE_KEY = "md-viewer-content"
 
 const DEFAULT_MARKDOWN = `# MD Viewer & Live Markdown Preview
 
@@ -64,6 +66,21 @@ const Preview = dynamic(() => import("@/components/preview").then(mod => mod.Pre
 
 export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
+  const [isInitialized, setIsInitialized] = useState(false)
+
+  useEffect(() => {
+    const savedContent = localStorage.getItem(STORAGE_KEY)
+    if (savedContent !== null) {
+      setMarkdown(savedContent)
+    }
+    setIsInitialized(true)
+  }, [])
+
+  useEffect(() => {
+    if (isInitialized) {
+      localStorage.setItem(STORAGE_KEY, markdown)
+    }
+  }, [markdown, isInitialized])
 
   return (
     <Layout>
