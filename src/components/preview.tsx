@@ -56,7 +56,7 @@ export function Preview({ content }: PreviewProps) {
       <div className="flex-1 overflow-auto p-4">
         <article 
             ref={previewRef} 
-            className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border text-foreground"
+            className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border [&_pre_code]:text-slate-50 text-foreground"
         >
           <ReactMarkdown
             remarkPlugins={[remarkGfm, remarkMath]}
