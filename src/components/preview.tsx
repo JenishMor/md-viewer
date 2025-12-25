@@ -62,7 +62,7 @@ export function Preview({ content }: PreviewProps) {
             remarkPlugins={[remarkGfm, remarkMath]}
             rehypePlugins={[rehypeHighlight, rehypeKatex]}
             components={{
-                a: ({node, ...props}) => <a target="_blank" rel="noopener noreferrer" {...props} />
+                a: ({ ...props}) => <a target="_blank" rel="noopener noreferrer" {...props} />
             }}
           >
             {content}
