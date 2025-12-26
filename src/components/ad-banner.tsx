@@ -63,7 +63,7 @@ export function AdBanner({
           height: "100%",
           filter: isDark ? "invert(1) hue-rotate(180deg)" : "none"
         }}
-        data-ad-client={`ca-pub-${process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID ?? ""}`}
+        data-ad-client="ca-pub-8617635656002994"
         data-ad-slot={dataAdSlot}
         {...(dataAdFormat ? { "data-ad-format": dataAdFormat } : {})}
         data-full-width-responsive={dataFullWidthResponsive}
