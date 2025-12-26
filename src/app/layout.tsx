@@ -6,8 +6,6 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import Script from "next/script";
 
-const ADSENSE_PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID ?? "";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -87,6 +85,9 @@ export const metadata: Metadata = {
   },
   category: "Technology",
   applicationName: "MDViewer",
+  other: {
+    "google-adsense-account": "ca-pub-8617635656002994",
+  },
 };
 
 export const viewport: Viewport = {
@@ -259,7 +260,7 @@ export default function RootLayout({
           />
           <Script
             async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-${ADSENSE_PUBLISHER_ID}`}
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8617635656002994"
             crossOrigin="anonymous"
             strategy="afterInteractive"
           />
