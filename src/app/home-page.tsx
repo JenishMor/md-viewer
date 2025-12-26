@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
 import { Layout } from "@/components/layout"
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
 
 const STORAGE_KEY = "md-viewer-content"
 
@@ -68,6 +69,7 @@ const Preview = dynamic(() => import("@/components/preview").then(mod => mod.Pre
 export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
   const [isInitialized, setIsInitialized] = useState(false)
+  const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
     const savedContent = localStorage.getItem(STORAGE_KEY)
@@ -83,21 +85,65 @@ export default function HomePage() {
     }
   }, [markdown, isInitialized])
 
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1024px)')
+    setIsDesktop(media.matches)
+    const listener = (e: MediaQueryListEvent) => setIsDesktop(e.matches)
+    media.addEventListener('change', listener)
+    return () => media.removeEventListener('change', listener)
+  }, [])
+
   return (
     <Layout>
-      <div className="flex flex-col lg:flex-row gap-6 flex-1 h-full min-h-0">
-        <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <Editor 
-            value={markdown} 
-            onChange={(e) => setMarkdown(e.target.value)} 
-            initialValue={DEFAULT_MARKDOWN}
-            className="flex-1"
-          />
+      {isDesktop ? (
+        // Desktop: Horizontal resizable panels
+        <PanelGroup direction="horizontal" className="flex-1 h-full min-h-0 gap-2">
+          <Panel 
+            defaultSize={50}
+          minSize={20}
+            className="flex flex-col"
+          >
+            <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+              <Editor 
+                value={markdown} 
+                onChange={(e) => setMarkdown(e.target.value)} 
+                initialValue={DEFAULT_MARKDOWN}
+                className="flex-1"
+              />
+            </div>
+          </Panel>
+
+          <PanelResizeHandle className="w-2 flex items-center justify-center transition-colors hover:bg-accent/50">
+            <div className="w-1 h-12 bg-border rounded-full" />
+          </PanelResizeHandle>
+
+          <Panel 
+            defaultSize={50} 
+            minSize={50}
+            maxSize={90}
+            className="flex flex-col"
+          >
+            <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+              <Preview content={markdown} />
+            </div>
+          </Panel>
+        </PanelGroup>
+      ) : (
+        // Mobile: Vertical stacked layout (no resize)
+        <div className="flex flex-col gap-6 flex-1 h-full min-h-0">
+          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+            <Editor 
+              value={markdown} 
+              onChange={(e) => setMarkdown(e.target.value)} 
+              initialValue={DEFAULT_MARKDOWN}
+              className="flex-1"
+            />
+          </div>
+          <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+            <Preview content={markdown} />
+          </div>
         </div>
-        <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-          <Preview content={markdown} />
-        </div>
-      </div>
+      )}
     </Layout>
   )
 }
