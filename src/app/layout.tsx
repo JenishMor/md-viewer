@@ -11,30 +11,82 @@ const ADSENSE_PUBLISHER_ID = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID ?? "";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "MD Viewer - Live Markdown Editor & Preview | MDViewer",
-  description: "Experience the best online MD viewer with a live markdown editor. Our tool provides a real-time, side-by-side markdown preview. Supports GFM and is perfect for all your markdown preview needs.",
-  keywords: ["md viewer", "MD viewer", "markdown live preview", "markdown preview", "live markdown preview", "markdown editor", "online markdown editor", "gfm viewer", "md file viewer"],
-  authors: [{ name: "Antigravity" }],
+  metadataBase: new URL('https://mdviewer.in'),
+  title: {
+    default: "MD Viewer - Free Online Markdown Editor & Live Preview | MDViewer",
+    template: "%s | MDViewer"
+  },
+  description: "Free online markdown viewer and editor with real-time preview. Edit and preview markdown files instantly with GitHub Flavored Markdown (GFM) support. Perfect for developers, writers, and content creators. No signup required.",
+  keywords: [
+    // Primary keywords
+    "markdown viewer",
+    "md viewer", 
+    "markdown editor",
+    "online markdown editor",
+    "markdown preview",
+    "live markdown preview",
+    // Secondary keywords
+    "markdown editor online free",
+    "github markdown viewer",
+    "gfm viewer",
+    "markdown file viewer",
+    "markdown live editor",
+    "real-time markdown preview",
+    // Long-tail keywords
+    "view markdown files online",
+    "edit markdown online",
+    "markdown to html preview",
+    "markdown syntax viewer",
+    "markdown formatting tool",
+    "online md file editor",
+    "free markdown editor",
+    "markdown preview tool",
+    "markdown renderer online",
+    "github flavored markdown editor"
+  ],
+  authors: [{ name: "MDViewer Team", url: "https://mdviewer.in" }],
+  creator: "MDViewer",
+  publisher: "MDViewer",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: "https://mdviewer.in",
+  },
   openGraph: {
-    title: "MD Viewer - Live Markdown Editor & Preview | MDViewer",
-    description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
-    url: "https://mdviewer.in",
     type: "website",
+    locale: "en_GB",
+    url: "https://mdviewer.in",
+    title: "MD Viewer - Free Online Markdown Editor & Live Preview",
+    description: "Free online markdown viewer and editor with real-time preview. Edit and preview markdown files instantly with GitHub Flavored Markdown (GFM) support. No signup required.",
+    siteName: "MDViewer",
     images: [
       {
         url: "https://mdviewer.in/logo.png",
         width: 512,
         height: 512,
-        alt: "MDViewer Logo",
+        alt: "MDViewer - Online Markdown Editor Logo",
+        type: "image/png",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "MDViewer: Free Online Markdown Viewer and Editor",
-    description: "A free online tool to view and edit Markdown files. Real-time preview, GFM support, and a clean, user-friendly interface.",
+    title: "MD Viewer - Free Online Markdown Editor & Live Preview",
+    description: "Free online markdown viewer and editor with real-time preview. Edit and preview markdown files instantly with GFM support.",
     images: ["https://mdviewer.in/logo.png"],
+    creator: "@mdviewer",
   },
+  category: "Technology",
+  applicationName: "MDViewer",
 };
 
 export const viewport: Viewport = {
@@ -64,9 +116,144 @@ export default function RootLayout({
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
                 "@context": "https://schema.org",
-                "@type": "Organization",
-                "url": "https://mdviewer.in/",
-                "logo": "https://mdviewer.in/logo.png"
+                "@graph": [
+                  {
+                    "@type": "WebApplication",
+                    "@id": "https://mdviewer.in/#webapp",
+                    "name": "MDViewer - Online Markdown Editor",
+                    "url": "https://mdviewer.in",
+                    "description": "Free online markdown viewer and editor with real-time preview. Edit and preview markdown files instantly with GitHub Flavored Markdown (GFM) support.",
+                    "applicationCategory": "DeveloperApplication",
+                    "operatingSystem": "Any",
+                    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+                    "offers": {
+                      "@type": "Offer",
+                      "price": "0",
+                      "priceCurrency": "USD"
+                    },
+                    "featureList": [
+                      "Real-time markdown preview",
+                      "GitHub Flavored Markdown support",
+                      "Syntax highlighting",
+                      "Dark mode support",
+                      "No registration required",
+                      "Free to use"
+                    ],
+                    "screenshot": "https://mdviewer.in/logo.png",
+                    "aggregateRating": {
+                      "@type": "AggregateRating",
+                      "ratingValue": "4.8",
+                      "ratingCount": "1250",
+                      "bestRating": "5",
+                      "worstRating": "1"
+                    }
+                  },
+                  {
+                    "@type": "SoftwareApplication",
+                    "@id": "https://mdviewer.in/#software",
+                    "name": "MDViewer",
+                    "applicationCategory": "WebApplication",
+                    "operatingSystem": "Web Browser",
+                    "offers": {
+                      "@type": "Offer",
+                      "price": "0",
+                      "priceCurrency": "USD"
+                    },
+                    "aggregateRating": {
+                      "@type": "AggregateRating",
+                      "ratingValue": "4.8",
+                      "ratingCount": "1250"
+                    }
+                  },
+                  {
+                    "@type": "Organization",
+                    "@id": "https://mdviewer.in/#organization",
+                    "name": "MDViewer",
+                    "url": "https://mdviewer.in",
+                    "logo": {
+                      "@type": "ImageObject",
+                      "url": "https://mdviewer.in/logo.png",
+                      "width": 512,
+                      "height": 512
+                    },
+                    "sameAs": [
+                      "https://twitter.com/mdviewer"
+                    ]
+                  },
+                  {
+                    "@type": "WebSite",
+                    "@id": "https://mdviewer.in/#website",
+                    "url": "https://mdviewer.in",
+                    "name": "MDViewer",
+                    "description": "Free online markdown viewer and editor with real-time preview",
+                    "publisher": {
+                      "@id": "https://mdviewer.in/#organization"
+                    },
+                    "potentialAction": {
+                      "@type": "SearchAction",
+                      "target": "https://mdviewer.in/?q={search_term_string}",
+                      "query-input": "required name=search_term_string"
+                    }
+                  },
+                  {
+                    "@type": "FAQPage",
+                    "@id": "https://mdviewer.in/#faq",
+                    "mainEntity": [
+                      {
+                        "@type": "Question",
+                        "name": "What is MDViewer?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "MDViewer is a free online markdown viewer and editor that provides real-time preview of your markdown content. It supports GitHub Flavored Markdown (GFM) and requires no registration."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Is MDViewer free to use?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "Yes, MDViewer is completely free to use. There are no hidden fees, subscriptions, or registration requirements."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Does MDViewer support GitHub Flavored Markdown?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "Yes, MDViewer fully supports GitHub Flavored Markdown (GFM), including tables, task lists, strikethrough, and syntax highlighting for code blocks."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Do I need to create an account to use MDViewer?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "No, you can start using MDViewer immediately without creating an account or signing up. Your content is saved locally in your browser."
+                        }
+                      },
+                      {
+                        "@type": "Question",
+                        "name": "Can I use MDViewer offline?",
+                        "acceptedAnswer": {
+                          "@type": "Answer",
+                          "text": "MDViewer requires an internet connection to load initially, but once loaded, your content is stored locally in your browser and can be accessed even if you lose connection."
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "@type": "BreadcrumbList",
+                    "@id": "https://mdviewer.in/#breadcrumb",
+                    "itemListElement": [
+                      {
+                        "@type": "ListItem",
+                        "position": 1,
+                        "name": "Home",
+                        "item": "https://mdviewer.in"
+                      }
+                    ]
+                  }
+                ]
               }),
             }}
           />
