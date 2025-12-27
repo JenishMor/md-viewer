@@ -28,6 +28,52 @@ A free, open-source, and online tool to view and edit Markdown files with a real
 - [React Markdown](https://github.com/remarkjs/react-markdown) - For rendering Markdown
 - [Lucide React](https://lucide.dev/) - For icons
 
+## Testing & CI/CD
+
+This project includes a comprehensive testing setup with:
+
+- ✅ **End-to-End Testing** with [Playwright](https://playwright.dev/)
+- ✅ **Cross-Browser Testing** (Chromium, Firefox, WebKit)
+- ✅ **Accessibility Testing** (WCAG 2.1 AA compliance)
+- ✅ **Responsive Design Testing** (Mobile & Desktop)
+- ✅ **Performance Testing** (Core Web Vitals)
+- ✅ **GitHub Actions CI/CD** (Automated testing on PRs)
+
+### Quick Start
+
+```bash
+# Install test dependencies
+npm install
+
+# Install Playwright browsers
+npx playwright install --with-deps
+
+# Run all tests
+npm test
+
+# Run tests in UI mode (recommended)
+npm run test:ui
+
+# View test report
+npm run test:report
+```
+
+### Documentation
+
+- 📖 [Testing Quick Start Guide](TESTING_QUICKSTART.md) - Get started in 5 minutes
+- 📚 [Complete Testing Documentation](TESTING.md) - Comprehensive testing guide
+- 🔒 [Branch Protection Setup](BRANCH_PROTECTION.md) - Configure GitHub PR protection
+
+### CI/CD Workflow
+
+All pull requests to `main` automatically run:
+- Cross-browser tests (Chrome, Firefox, Safari)
+- Mobile responsiveness tests
+- Accessibility compliance checks
+- Performance benchmarks
+
+PRs can only be merged when all tests pass ✅
+
 ## Getting Started
 
 To run the project locally, follow these steps:
