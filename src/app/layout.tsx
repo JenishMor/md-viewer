@@ -81,7 +81,6 @@ export const metadata: Metadata = {
     title: "MD Viewer - Free Online Markdown Editor & Live Preview",
     description: "Free online markdown viewer and editor with real-time preview. Edit and preview markdown files instantly with GFM support.",
     images: ["https://mdviewer.in/logo.png"],
-    creator: "@mdviewer",
   },
   category: "Technology",
   applicationName: "MDViewer",
@@ -177,9 +176,7 @@ export default function RootLayout({
                       "width": 512,
                       "height": 512
                     },
-                    "sameAs": [
-                      "https://twitter.com/mdviewer"
-                    ]
+                    "sameAs": []
                   },
                   {
                     "@type": "WebSite",
