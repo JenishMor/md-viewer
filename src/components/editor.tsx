@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Copy, Check, X, RotateCcw } from "lucide-react"
 
@@ -6,10 +6,25 @@ interface EditorProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> 
   value: string
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   initialValue: string // New prop for initial markdown content
+  scrollRatio: number
+  onScrollSync: (ratio: number) => void
+  scrollSourceRef: React.MutableRefObject<"editor" | "preview" | null>
+  isScrollSyncEnabled: boolean
 }
 
-export function Editor({ value, onChange, initialValue, className, ...props }: EditorProps) {
-  const [copied, setCopied] = React.useState(false)
+export function Editor({
+  value,
+  onChange,
+  initialValue,
+  scrollRatio,
+  onScrollSync,
+  scrollSourceRef,
+  isScrollSyncEnabled,
+  className,
+  ...props
+}: EditorProps) {
+  const [copied, setCopied] = useState(false)
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(value)
@@ -24,6 +39,33 @@ export function Editor({ value, onChange, initialValue, className, ...props }: E
   const handleReset = () => {
     onChange({ target: { value: initialValue } } as React.ChangeEvent<HTMLTextAreaElement>)
   }
+
+  // Editor → Preview scroll sync
+  const handleScroll = () => {
+    if (!textareaRef.current || !isScrollSyncEnabled) return
+
+    scrollSourceRef.current = "editor"
+
+    const el = textareaRef.current
+    const ratio =
+      el.scrollTop / (el.scrollHeight - el.clientHeight)
+
+    onScrollSync(ratio)
+  }
+
+  // Preview → Editor scroll sync
+  useEffect(() => {
+    if (
+      !textareaRef.current ||
+      !isScrollSyncEnabled ||
+      scrollSourceRef.current !== "preview"
+    )
+      return
+
+    const el = textareaRef.current
+    el.scrollTop =
+      scrollRatio * (el.scrollHeight - el.clientHeight)
+  }, [scrollRatio])
 
   return (
     <div className="relative h-full w-full flex flex-col">
@@ -54,6 +96,7 @@ export function Editor({ value, onChange, initialValue, className, ...props }: E
             </div>
         </div>
       <textarea
+        ref={textareaRef}
         className={cn(
           "flex-1 w-full resize-none bg-transparent p-4 font-mono text-sm leading-relaxed outline-none placeholder:text-muted-foreground",
           className
@@ -61,6 +104,7 @@ export function Editor({ value, onChange, initialValue, className, ...props }: E
         value={value}
         onChange={onChange}
         placeholder="# Type your markdown here..."
+        onScroll={handleScroll}
         spellCheck={false}
         {...props}
       />
