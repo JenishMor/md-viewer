@@ -1,4 +1,4 @@
-import * as React from "react"
+import { useEffect, useRef, useState } from "react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
@@ -10,10 +10,51 @@ import { Download } from "lucide-react"
 
 interface PreviewProps {
   content: string
+  scrollRatio: number
+  onScrollSync: (ratio: number) => void
+  scrollSourceRef: React.MutableRefObject<"editor" | "preview" | null>
+  isScrollSyncEnabled: boolean
 }
 
-export function Preview({ content }: PreviewProps) {
-  const previewRef = React.useRef<HTMLElement>(null)
+export function Preview({
+  content,
+  scrollRatio,
+  onScrollSync,
+  scrollSourceRef,
+  isScrollSyncEnabled,
+}: PreviewProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const previewRef = useRef<HTMLElement>(null)
+  const [showDownloadTooltip, setShowDownloadTooltip] = useState(false)
+
+
+  // Editor → Preview scroll sync
+  useEffect(() => {
+    if (
+      !scrollContainerRef.current ||
+      !isScrollSyncEnabled ||
+      scrollSourceRef.current !== "editor"
+    )
+      return
+
+    const el = scrollContainerRef.current
+    el.scrollTop =
+      scrollRatio * (el.scrollHeight - el.clientHeight)
+  }, [scrollRatio])
+
+
+  // Preview → Editor scroll sync
+  const handleScroll = () => {
+    if (!scrollContainerRef.current || !isScrollSyncEnabled) return
+
+    scrollSourceRef.current = "preview"
+
+    const el = scrollContainerRef.current
+    const ratio =
+      el.scrollTop / (el.scrollHeight - el.clientHeight)
+
+    onScrollSync(ratio)
+  }
 
   const handleDownload = () => {
     if (previewRef.current) {
@@ -27,7 +68,6 @@ export function Preview({ content }: PreviewProps) {
     }
   }
 
-  const [showDownloadTooltip, setShowDownloadTooltip] = React.useState(false)
 
   return (
     <div className="h-full w-full flex flex-col">
@@ -53,7 +93,11 @@ export function Preview({ content }: PreviewProps) {
                 </div>
             </div>
         </div>
-      <div className="flex-1 overflow-auto p-4">
+      <div 
+        className="flex-1 overflow-auto p-4"
+        ref={scrollContainerRef}
+        onScroll={handleScroll}
+      >
         <article 
             ref={previewRef} 
             className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border [&_pre_code]:text-slate-50 text-foreground"

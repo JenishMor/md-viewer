@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import dynamic from "next/dynamic"
 import { Layout } from "@/components/layout"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import { Link2, Link2Off } from "lucide-react"
 
 const STORAGE_KEY = "md-viewer-content"
 
@@ -82,6 +83,9 @@ export default function HomePage() {
   const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN)
   const [isInitialized, setIsInitialized] = useState(false)
   const [isDesktop, setIsDesktop] = useState(false)
+  const [scrollRatio, setScrollRatio] = useState(0)
+  const scrollSourceRef = useRef<"editor" | "preview" | null>(null)
+  const [isScrollSyncEnabled, setIsScrollSyncEnabled] = useState(true)
 
   useEffect(() => {
     const savedContent = localStorage.getItem(STORAGE_KEY)
@@ -119,18 +123,32 @@ export default function HomePage() {
                 className="flex flex-col"
               >
                 <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-                  <Editor 
-                    value={markdown} 
-                    onChange={(e) => setMarkdown(e.target.value)} 
+                  <Editor
+                    value={markdown}
+                    onChange={(e) => setMarkdown(e.target.value)}
                     initialValue={DEFAULT_MARKDOWN}
+                    scrollRatio={scrollRatio}
+                    onScrollSync={setScrollRatio}
+                    scrollSourceRef={scrollSourceRef}
+                    isScrollSyncEnabled={isScrollSyncEnabled}
                     className="flex-1"
                   />
                 </div>
               </Panel>
 
-              <PanelResizeHandle className="w-2 flex items-center justify-center transition-colors hover:bg-accent/50">
-                <div className="w-1 h-12 bg-border rounded-full" />
-              </PanelResizeHandle>
+              <div className="w-2 flex flex-col items-center justify-center space-y-2">
+                <button
+                  title="Toggle scroll sync"
+                  onClick={() => setIsScrollSyncEnabled(prev => !prev)}
+                  className="inline-flex items-center justify-center rounded-md py-2 mt-12 border transition cursor-pointer"
+                >
+                  {isScrollSyncEnabled ? <Link2 className="rotate-90" /> : <Link2Off className="rotate-90"/>}
+                </button>
+
+                <PanelResizeHandle className="h-full flex items-center justify-center transition-colors hover:bg-accent/50">
+                  <div className="w-1 h-12 bg-border rounded-full" />
+                </PanelResizeHandle>
+              </div>
 
               <Panel 
                 defaultSize={50} 
@@ -139,7 +157,13 @@ export default function HomePage() {
                 className="flex flex-col"
               >
                 <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-                  <Preview content={markdown} />
+                  <Preview
+                    content={markdown}
+                    scrollRatio={scrollRatio}
+                    onScrollSync={setScrollRatio}
+                    scrollSourceRef={scrollSourceRef}
+                    isScrollSyncEnabled={isScrollSyncEnabled}
+                  />
                 </div>
               </Panel>
             </PanelGroup>
@@ -147,15 +171,25 @@ export default function HomePage() {
             // Mobile: Vertical stacked layout (no resize)
             <div className="flex flex-col gap-6 flex-1 h-full min-h-0">
               <div className="h-[400px] shrink-0 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-                <Editor 
-                  value={markdown} 
-                  onChange={(e) => setMarkdown(e.target.value)} 
+                <Editor
+                  value={markdown}
+                  onChange={(e) => setMarkdown(e.target.value)}
                   initialValue={DEFAULT_MARKDOWN}
+                  scrollRatio={scrollRatio}
+                  onScrollSync={setScrollRatio}
+                  scrollSourceRef={scrollSourceRef}
+                  isScrollSyncEnabled={isScrollSyncEnabled}
                   className="flex-1"
                 />
               </div>
               <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
-                <Preview content={markdown} />
+                <Preview 
+                  content={markdown}
+                  scrollRatio={scrollRatio}
+                  onScrollSync={setScrollRatio}
+                  scrollSourceRef={scrollSourceRef}
+                  isScrollSyncEnabled={isScrollSyncEnabled}
+                />
               </div>
             </div>
           )}
