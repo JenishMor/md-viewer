@@ -242,7 +242,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-6 p-8 bg-muted/30 rounded-3xl border">
               <h3 className="text-2xl font-bold flex items-center gap-3">
-                <span className="text-blue-500 underline">Developers & Engineers</span>
+                <span className="text-blue-600 dark:text-blue-400 underline decoration-blue-500/30 underline-offset-8">Developers & Engineers</span>
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Markdown has become the standard for software documentation. Use MDViewer to draft high-quality README files that impress on GitHub and GitLab. With <strong>syntax highlighting</strong> for over 100 languages, you can verify your code blocks are properly formatted before you commit. Our tool supports task lists, nested structures, and complex tables essential for technical specs.
@@ -255,7 +255,7 @@ export default function HomePage() {
             </div>
             <div className="space-y-6 p-8 bg-muted/30 rounded-3xl border">
               <h3 className="text-2xl font-bold flex items-center gap-3">
-                <span className="text-purple-500 underline">Content Creators & Bloggers</span>
+                <span className="text-purple-600 dark:text-purple-400 underline decoration-purple-500/30 underline-offset-8">Content Creators & Bloggers</span>
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Focus on the narrative, not the tags. Markdown allows writers to stay in the "flow state" without reaching for formatting buttons. MDViewer acts as your <strong>distraction-free writing environment</strong>. Convert your thoughts into clean, semantically correct HTML that can be pasted directly into Medium, Dev.to, or your personal WordPress or Hugo blog.
@@ -285,15 +285,15 @@ export default function HomePage() {
                 </div>
                 <div className="flex flex-wrap gap-4">
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
-                    <div className="text-sm font-bold text-blue-600 dark:text-blue-400 mb-1">Text Emphasis</div>
+                    <div className="text-sm font-bold text-blue-700 dark:text-blue-400 mb-1">Text Emphasis</div>
                     <code className="text-sm text-slate-800 dark:text-slate-200">**bold**, *italic*</code>
                   </div>
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
-                    <div className="text-sm font-bold text-green-600 dark:text-green-400 mb-1">Code Links</div>
+                    <div className="text-sm font-bold text-green-700 dark:text-green-400 mb-1">Code Links</div>
                     <code className="text-sm text-slate-800 dark:text-slate-200">[label](url)</code>
                   </div>
                   <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
-                    <div className="text-sm font-bold text-purple-600 dark:text-purple-400 mb-1">Lists</div>
+                    <div className="text-sm font-bold text-purple-700 dark:text-purple-400 mb-1">Lists</div>
                     <code className="text-sm text-slate-800 dark:text-slate-200">- item, 1. item</code>
                   </div>
                 </div>
@@ -304,21 +304,21 @@ export default function HomePage() {
                   <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
                     <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
                       <span>How to create tables?</span>
-                      <span className="text-xs text-slate-500">Advanced</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Advanced</span>
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Use pipes (|) to separate columns and hyphens (-) to create the header row. Alignment can be controlled with colons (:).</p>
                   </div>
                   <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
                     <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
                         <span>How to add images?</span>
-                        <span className="text-xs text-slate-500">Essential</span>
+                        <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Essential</span>
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Use the syntax <code>![Alt Text](Image Link)</code>. In MDViewer, images will render instantly in the preview panel.</p>
                   </div>
                   <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
                     <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
                         <span>Can I use HTML tags?</span>
-                        <span className="text-xs text-slate-500">Pro</span>
+                        <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Pro</span>
                     </div>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Yes! Markdown allows you to drop into raw HTML for unsupported styles like <code>&lt;kbd&gt;</code> or <code>&lt;details&gt;</code>.</p>
                   </div>
