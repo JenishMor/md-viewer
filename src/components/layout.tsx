@@ -63,6 +63,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <h3 className="font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
                 <li><Link href="/" className="hover:text-foreground transition-colors">Markdown Editor</Link></li>
+                <li><Link href="/markdown-tutorial" className="hover:text-foreground transition-colors">Markdown Tutorial</Link></li>
                 <li><Link href="/about" className="hover:text-foreground transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact Us</Link></li>
               </ul>

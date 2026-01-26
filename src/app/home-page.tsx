@@ -197,83 +197,186 @@ export default function HomePage() {
       </section>
 
       {/* Content Sections */}
-      <div className="space-y-24 py-12 border-t border-border">
+      <div className="space-y-32 py-12 border-t border-border">
         {/* Intro Section */}
-        <section className="max-w-4xl mx-auto text-center space-y-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">The Most Intuitive Online Markdown Viewer</h1>
-          <p className="text-xl text-muted-foreground leading-relaxed">
-            Stop guessing what your Markdown looks like. MDViewer provides a polished, high-performance <strong>live markdown editor</strong> that helps you write better, faster. Whether you're a developer documenting your code or a writer crafting your next blog post, our tool is built for you.
+        <section className="max-w-4xl mx-auto text-center space-y-8">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-400 dark:via-blue-300 dark:to-indigo-400 bg-clip-text text-transparent py-2">
+            The Professional Choice for Online Markdown Viewing
+          </h1>
+          <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
+            Stop guessing what your documentation looks like. <strong>MDViewer</strong> provides a polished, high-performance <strong>live markdown editor</strong> and real-time renderer that helps you craft perfect content every time. Built for developers, technical writers, and students who demand precision and speed.
           </p>
         </section>
 
-        {/* Benefits Grid */}
-        <section className="grid md:grid-cols-3 gap-8">
-          <div className="p-8 rounded-2xl border bg-card hover:shadow-lg transition-shadow space-y-4">
-            <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-2xl">⚡</div>
-            <h2 className="text-2xl font-bold">Real-Time Preview</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Every keystroke is rendered instantly. See your formatting, links, and code blocks take shape as you type. No more switching modes.
+        {/* Value Proposition Grid */}
+        <section className="grid md:grid-cols-3 gap-10">
+          <div className="p-10 rounded-3xl border bg-card hover:shadow-xl transition-all duration-300 space-y-6 group">
+            <div className="h-14 w-14 bg-primary/10 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform font-bold">⚡</div>
+            <h2 className="text-2xl font-bold">Instant Render Engine</h2>
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Our bespoke rendering pipeline processes every keystroke in milliseconds. Experience true <strong>live markdown preview</strong> without lag, even with complex GFM tables and large documents.
             </p>
           </div>
-          <div className="p-8 rounded-2xl border bg-card hover:shadow-lg transition-shadow space-y-4">
-            <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-2xl">🐙</div>
-            <h2 className="text-2xl font-bold">Github Flavored</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Full support for GFM including tables, task lists, and syntax highlighting. Your READMEs will look exactly as they do on GitHub.
+          <div className="p-10 rounded-3xl border bg-card hover:shadow-xl transition-all duration-300 space-y-6 group">
+            <div className="h-14 w-14 bg-primary/10 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform font-bold">🐙</div>
+            <h2 className="text-2xl font-bold">GitHub Native Support</h2>
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              We fully support the <strong>GitHub Flavored Markdown (GFM)</strong> specification. If it works on GitHub, it works here. Perfect for drafting READMEs, wikis, and issue comments.
             </p>
           </div>
-          <div className="p-8 rounded-2xl border bg-card hover:shadow-lg transition-shadow space-y-4">
-            <div className="h-12 w-12 bg-primary/10 rounded-xl flex items-center justify-center text-2xl">🔒</div>
-            <h2 className="text-2xl font-bold">Privacy Focused</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Your content stays in your browser. We don't save your text on our servers. Your data is protected by your local browser storage.
+          <div className="p-10 rounded-3xl border bg-card hover:shadow-xl transition-all duration-300 space-y-6 group">
+            <div className="h-14 w-14 bg-primary/10 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform font-bold">🔒</div>
+            <h2 className="text-2xl font-bold">Absolute Privacy Control</h2>
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Your sensitive data never leaves your browser. Unlike other online editors, MDViewer uses <strong>local browser storage</strong> for persistence, ensuring your intellectual property remains private.
             </p>
           </div>
         </section>
 
-        {/* Detailed Guide Section */}
-        <section className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h2 className="text-3xl font-bold">What is Markdown?</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              Markdown is a lightweight markup language with plain-text-formatting syntax. It is often used for formatting readme files, for writing messages in online discussion forums, and to create rich text using a plain text editor.
-            </p>
-            <p className="text-lg text-muted-foreground leading-relaxed">
-              With <strong>MDViewer</strong>, you can harness the power of Markdown without having to memorize complex syntax. Our visual tools and real-time feedback make it accessible to everyone.
-            </p>
+        {/* Markdown for Professionals Section */}
+        <section className="space-y-12">
+          <div className="text-center space-y-4 max-w-3xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold">Built for Modern Workflows</h2>
+            <p className="text-lg text-muted-foreground">Whether you're a software engineer or a creative writer, MDViewer adapts to your needs.</p>
           </div>
-          <div className="bg-muted rounded-2xl p-8 space-y-4 border">
-            <h3 className="text-xl font-bold">Quick Markdown Reference</h3>
-            <ul className="space-y-3 font-mono text-sm">
-              <li className="flex justify-between border-b pb-2"><span># Heading 1</span><span className="text-muted-foreground">h1 tag</span></li>
-              <li className="flex justify-between border-b pb-2"><span>**Bold Text**</span><span className="text-muted-foreground">strong tag</span></li>
-              <li className="flex justify-between border-b pb-2"><span>*Italic Text*</span><span className="text-muted-foreground">em tag</span></li>
-              <li className="flex justify-between border-b pb-2"><span>[Link](url)</span><span className="text-muted-foreground">anchor tag</span></li>
-              <li className="flex justify-between border-b pb-2"><span>- List Item</span><span className="text-muted-foreground">li tag</span></li>
-              <li className="flex justify-between"><span>{"`"}Code{"`"}</span><span className="text-muted-foreground">inline code</span></li>
-            </ul>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="space-y-6 p-8 bg-muted/30 rounded-3xl border">
+              <h3 className="text-2xl font-bold flex items-center gap-3">
+                <span className="text-blue-600 dark:text-blue-400 underline decoration-blue-500/30 underline-offset-8">Developers & Engineers</span>
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Markdown has become the standard for software documentation. Use MDViewer to draft high-quality README files that impress on GitHub and GitLab. With <strong>syntax highlighting</strong> for over 100 languages, you can verify your code blocks are properly formatted before you commit. Our tool supports task lists, nested structures, and complex tables essential for technical specs.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> YAML Frontmatter Support</li>
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> Inline HTML Compatibility</li>
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> Multi-line Code Block Preview</li>
+              </ul>
+            </div>
+            <div className="space-y-6 p-8 bg-muted/30 rounded-3xl border">
+              <h3 className="text-2xl font-bold flex items-center gap-3">
+                <span className="text-purple-600 dark:text-purple-400 underline decoration-purple-500/30 underline-offset-8">Content Creators & Bloggers</span>
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                Focus on the narrative, not the tags. Markdown allows writers to stay in the "flow state" without reaching for formatting buttons. MDViewer acts as your <strong>distraction-free writing environment</strong>. Convert your thoughts into clean, semantically correct HTML that can be pasted directly into Medium, Dev.to, or your personal WordPress or Hugo blog.
+              </p>
+              <ul className="space-y-3">
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> Typographically Correct Rendering</li>
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> Automatic Link Identification</li>
+                <li className="flex items-center gap-2 text-sm"><span className="text-green-500 font-bold">✅</span> Image Preview Support</li>
+              </ul>
+            </div>
           </div>
+        </section>
+
+        {/* Detailed Education Section */}
+        <section className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-[40px] p-12 md:p-20 overflow-hidden relative border border-slate-200 dark:border-slate-800">
+            <div className="absolute top-0 right-0 p-10 opacity-10 blur-2xl bg-blue-500 h-64 w-64 rounded-full"></div>
+            <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
+              <div className="space-y-8">
+                <h2 className="text-4xl font-bold">Master the Markdown Syntax</h2>
+                <div className="space-y-6 text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
+                  <p>
+                    Markdown is more than just a writing format; it is a philosophy of simplicity. By using plain-text characters to represent formatting, you ensure that your documents remain readable now and 50 years into the future.
+                  </p>
+                  <p>
+                    From simple <strong>headers</strong> and <strong>bold text</strong> to advanced <strong>LaTeX mathematical formulas</strong>, Markdown can handle almost any structural requirement. MDViewer bridges the gap between the speed of plain text and the beauty of rich media.
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-4">
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
+                    <div className="text-sm font-bold text-blue-700 dark:text-blue-400 mb-1">Text Emphasis</div>
+                    <code className="text-sm text-slate-800 dark:text-slate-200">**bold**, *italic*</code>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
+                    <div className="text-sm font-bold text-green-700 dark:text-green-400 mb-1">Code Links</div>
+                    <code className="text-sm text-slate-800 dark:text-slate-200">[label](url)</code>
+                  </div>
+                  <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl shadow-sm">
+                    <div className="text-sm font-bold text-purple-700 dark:text-purple-400 mb-1">Lists</div>
+                    <code className="text-sm text-slate-800 dark:text-slate-200">- item, 1. item</code>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white dark:bg-slate-800/50 backdrop-blur rounded-3xl p-8 border border-slate-200 dark:border-slate-700 shadow-xl dark:shadow-2xl">
+                <h3 className="text-xl font-bold mb-6 text-center text-slate-900 dark:text-white">Frequently Asked Syntax</h3>
+                <div className="space-y-4">
+                  <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
+                    <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
+                      <span>How to create tables?</span>
+                      <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Advanced</span>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Use pipes (|) to separate columns and hyphens (-) to create the header row. Alignment can be controlled with colons (:).</p>
+                  </div>
+                  <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
+                    <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
+                        <span>How to add images?</span>
+                        <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Essential</span>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Use the syntax <code>![Alt Text](Image Link)</code>. In MDViewer, images will render instantly in the preview panel.</p>
+                  </div>
+                  <div className="p-4 bg-slate-100 dark:bg-slate-900/50 rounded-xl space-y-2">
+                    <div className="font-bold flex justify-between items-center text-slate-900 dark:text-slate-100">
+                        <span>Can I use HTML tags?</span>
+                        <span className="text-xs text-slate-600 dark:text-slate-400 font-medium">Pro</span>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Yes! Markdown allows you to drop into raw HTML for unsupported styles like <code>&lt;kbd&gt;</code> or <code>&lt;details&gt;</code>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </section>
+
+        {/* Best Practices Section */}
+        <section className="max-w-4xl mx-auto space-y-12 py-12">
+            <h2 className="text-3xl font-bold text-center">Best Practices for Productive Writing</h2>
+            <div className="grid gap-6">
+                <div className="flex gap-6 items-start">
+                    <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold mt-1">1</div>
+                    <div className="space-y-2">
+                        <h4 className="text-xl font-bold">Hierarchy Matters</h4>
+                        <p className="text-muted-foreground leading-relaxed">Always start with a single H1 for your title. Use H2 for main sections and H3 for sub-points. This isn't just for looks—it's critical for <strong>SEO and screen-reader accessibility</strong>.</p>
+                    </div>
+                </div>
+                <div className="flex gap-6 items-start border-l-2 border-primary/20 pl-6 lg:pl-0 lg:border-l-0">
+                    <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold mt-1">2</div>
+                    <div className="space-y-2">
+                        <h4 className="text-xl font-bold">Meaningful Alt Text</h4>
+                        <p className="text-muted-foreground leading-relaxed">When adding images using Markdown, provide descriptive text inside the brackets. It helps search engines understand your content and improves the experience for users with vision impairments.</p>
+                    </div>
+                </div>
+                <div className="flex gap-6 items-start">
+                    <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold mt-1">3</div>
+                    <div className="space-y-2">
+                        <h4 className="text-xl font-bold">Consistent Code Blocks</h4>
+                        <p className="text-muted-foreground leading-relaxed">Always specify the language after the triple backticks (e.g., ```javascript). This enables the <strong>syntax highlighting engine</strong> in MDViewer to color your code correctly, making it easier to read.</p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="max-w-3xl mx-auto space-y-8">
-          <h2 className="text-3xl font-bold text-center">Frequently Asked Questions</h2>
-          <div className="space-y-6">
-            <div className="space-y-2 border-b pb-4">
-              <h3 className="text-xl font-semibold">Is MDViewer free to use?</h3>
-              <p className="text-muted-foreground">Yes, our Markdown viewer and editor is completely free for everyone. There are no hidden fees or limitations.</p>
+        <section className="max-w-3xl mx-auto space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
+            <p className="text-muted-foreground text-lg">Everything you need to know about our Markdown tool.</p>
+          </div>
+          <div className="divide-y divide-border">
+            <div className="py-8 space-y-3">
+              <h3 className="text-xl font-bold">Is MDViewer free to use forever?</h3>
+              <p className="text-muted-foreground leading-relaxed">Absolutely. Our core mission is to empower the global developer and writing community with free, high-quality tools. There are no plans to add paywalls or premium subscriptions for the markdown viewer.</p>
             </div>
-            <div className="space-y-2 border-b pb-4">
-              <h3 className="text-xl font-semibold">Do I need to sign up to save my work?</h3>
-              <p className="text-muted-foreground">No. We use your browser's local storage to save your work automatically. You can close the tab and come back later, and your text will still be there.</p>
+            <div className="py-8 space-y-3">
+              <h3 className="text-xl font-bold">Where is my data stored?</h3>
+              <p className="text-muted-foreground leading-relaxed">We utilize <strong>IndexedDB and LocalStorage</strong> technologies within your own browser. This means that if you refresh the page or even close your laptop, your progress is saved locally. We never transmit your markdown content to our servers, ensuring 100% privacy.</p>
             </div>
-            <div className="space-y-2 border-b pb-4">
-              <h3 className="text-xl font-semibold">Can I export my Markdown to HTML?</h3>
-              <p className="text-muted-foreground">Currently, we focus on providing a perfect preview. You can easily copy the rendered text or use the preview to see how it will look on platforms like GitHub or Gitlab.</p>
+            <div className="py-8 space-y-3">
+              <h3 className="text-xl font-bold">How does the real-time sync work?</h3>
+              <p className="text-muted-foreground leading-relaxed">Our editor is built on the same core as VS Code (Monaco). When you type, our diffing algorithm identifies changes and updates the <strong>rehype-based preview engine</strong>, ensuring that only the changed parts of the document are re-rendered for maximum performance.</p>
             </div>
-            <div className="space-y-2">
-              <h3 className="text-xl font-semibold">Does it support tables and code blocks?</h3>
-              <p className="text-muted-foreground">Absolutely! We fully support GitHub Flavored Markdown (GFM), including complex tables and syntax-highlighted code blocks for various programming languages.</p>
+            <div className="py-8 space-y-3">
+              <h3 className="text-xl font-bold">Does it support export to PDF or HTML?</h3>
+              <p className="text-muted-foreground leading-relaxed">Currently, you can easily copy the rendered markdown or the raw code. For PDF, we recommend using your browser's "Print" functionality (Ctrl+P / Cmd+P), as our CSS is optimized for clean, professional-grade printing with proper margins and typography.</p>
             </div>
           </div>
         </section>
