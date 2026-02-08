@@ -338,7 +338,7 @@ export default function HomePage() {
                         <p className="text-muted-foreground leading-relaxed">Always start with a single H1 for your title. Use H2 for main sections and H3 for sub-points. This isn't just for looks—it's critical for <strong>SEO and screen-reader accessibility</strong>.</p>
                     </div>
                 </div>
-                <div className="flex gap-6 items-start border-l-2 border-primary/20 pl-6 lg:pl-0 lg:border-l-0">
+                <div className="flex gap-6 items-start">
                     <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center shrink-0 font-bold mt-1">2</div>
                     <div className="space-y-2">
                         <h4 className="text-xl font-bold">Meaningful Alt Text</h4>

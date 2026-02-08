@@ -10,7 +10,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60" role="banner">
         <div className="container mx-auto flex h-14 items-center justify-between px-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-6">
             <Link href="/" className="flex items-center space-x-2" aria-label="MDViewer Home">
               <div className="relative h-12 w-48 dark:bg-[#020617] rounded">
                 <Image 
@@ -22,6 +22,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 />
               </div>
             </Link>
+            <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+              <Link href="/guides" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Guides
+              </Link>
+              <Link href="/markdown-tutorial" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                Tutorial
+              </Link>
+              <Link href="/about" className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+                About
+              </Link>
+            </nav>
           </div>
           <div className="flex items-center gap-4">
             {/* Ad Placeholder Header 
@@ -45,8 +56,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="border-t border-border bg-card/50 py-12" role="contentinfo">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-            <div className="col-span-1 md:col-span-2 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+            <div className="sm:col-span-2 space-y-4">
               <div className="relative h-10 w-40">
                 <Image 
                   src="/md-logo.png" 
@@ -66,6 +77,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <li><Link href="/markdown-tutorial" className="hover:text-foreground transition-colors">Markdown Tutorial</Link></li>
                 <li><Link href="/about" className="hover:text-foreground transition-colors">About Us</Link></li>
                 <li><Link href="/contact" className="hover:text-foreground transition-colors">Contact Us</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-bold mb-4">Guides</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><Link href="/guides" className="hover:text-foreground transition-colors">All Guides</Link></li>
+                <li><Link href="/guides/readme-best-practices" className="hover:text-foreground transition-colors">README Best Practices</Link></li>
+                <li><Link href="/guides/github-flavored-markdown" className="hover:text-foreground transition-colors">GitHub Flavored Markdown</Link></li>
+                <li><Link href="/guides/markdown-vs-rich-text" className="hover:text-foreground transition-colors">Markdown vs Rich Text</Link></li>
               </ul>
             </div>
             <div>
