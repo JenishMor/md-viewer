@@ -47,7 +47,7 @@ export default function About() {
         {/* Meet the Creator */}
         <section className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-3xl p-8 md:p-12 border border-slate-200 dark:border-slate-700">
           <div className="flex flex-col md:flex-row gap-8 items-center">
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
+            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-700 to-indigo-800 flex items-center justify-center text-white text-4xl font-bold shadow-xl">
               JM
             </div>
             <div className="flex-1 text-center md:text-left space-y-4">
@@ -169,25 +169,25 @@ export default function About() {
           <h2 className="text-3xl font-bold border-b pb-4">Who Uses MDViewer</h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-blue-600 dark:text-blue-400">👨‍💻 Software Developers</h3>
+              <h3 className="text-xl font-bold text-blue-700 dark:text-blue-400">👨‍💻 Software Developers</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Writing README files, API documentation, or contributing to open-source projects. MDViewer makes it easy to preview exactly how your Markdown will render on GitHub before you commit.
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-purple-600 dark:text-purple-400">📝 Technical Writers</h3>
+              <h3 className="text-xl font-bold text-purple-700 dark:text-purple-400">📝 Technical Writers</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Creating user guides, knowledge bases, or product documentation. MDViewer's distraction-free interface helps you focus on content, not formatting.
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-green-600 dark:text-green-400">🎓 Students & Researchers</h3>
+              <h3 className="text-xl font-bold text-green-700 dark:text-green-400">🎓 Students & Researchers</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Taking notes, writing research papers, or organizing study materials. Markdown's simplicity makes it perfect for academic work, and MDViewer makes it accessible.
               </p>
             </div>
             <div className="space-y-4">
-              <h3 className="text-xl font-bold text-orange-600 dark:text-orange-400">✍️ Content Creators & Bloggers</h3>
+              <h3 className="text-xl font-bold text-orange-700 dark:text-orange-400">✍️ Content Creators & Bloggers</h3>
               <p className="text-muted-foreground leading-relaxed">
                 Drafting blog posts for platforms like Dev.to, Medium, or personal sites. Write in Markdown, preview in real-time, and publish with confidence.
               </p>

@@ -32,8 +32,8 @@
     --ring: #0f172a;
     --muted: #f1f5f9;
     /* slate-100 */
-    --muted-foreground: #475569;
-    /* slate-600 */
+    --muted-foreground: #334155;
+    /* slate-700 - improved contrast from slate-600 */
     --card: #ffffff;
     --card-foreground: #0f172a;
     --accent: #f1f5f9;
@@ -54,8 +54,8 @@
     --ring: #cbd5e1;
     --muted: #1e293b;
     /* slate-800 */
-    --muted-foreground: #cbd5e1;
-    /* slate-300 */
+    --muted-foreground: #e2e8f0;
+    /* slate-200 - improved contrast from slate-300 */
     --card: #020617;
     --card-foreground: #f8fafc;
     --accent: #1e293b;
