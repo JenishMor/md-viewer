@@ -1,21 +1,20 @@
-/* eslint-disable react-hooks/set-state-in-effect */
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
-import { useTheme } from "next-themes"
+import { useEffect, useRef, useState } from "react";
+import { useTheme } from "next-themes";
 
 declare global {
   interface Window {
-    adsbygoogle?: unknown[]
+    adsbygoogle?: unknown[];
   }
 }
 
 type AdBannerProps = {
-  dataAdSlot: string
-  dataAdFormat?: string
-  dataFullWidthResponsive?: boolean
-  className?: string
-}
+  dataAdSlot: string;
+  dataAdFormat?: string;
+  dataFullWidthResponsive?: boolean;
+  className?: string;
+};
 
 export function AdBanner({
   dataAdSlot,
@@ -23,16 +22,16 @@ export function AdBanner({
   dataFullWidthResponsive = true,
   className = "",
 }: AdBannerProps) {
-  const adRef = useRef<HTMLModElement>(null)
-  const { resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const adRef = useRef<HTMLModElement>(null);
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
-    if (!mounted) return
+    if (!mounted) return;
 
     try {
       // Check if the ad has already been loaded in this container
@@ -40,16 +39,16 @@ export function AdBanner({
         // Only initialize if the container is visible (has width)
         // This prevents "No slot size for availableWidth=0" error when hidden via CSS (e.g. on mobile)
         if (adRef.current.offsetWidth > 0) {
-          window.adsbygoogle = window.adsbygoogle || []
-          window.adsbygoogle.push({})
+          window.adsbygoogle = window.adsbygoogle || [];
+          window.adsbygoogle.push({});
         }
       }
     } catch (err) {
-      console.error("AdSense error:", err)
+      console.error("AdSense error:", err);
     }
-  }, [resolvedTheme, mounted])
+  }, [resolvedTheme, mounted]);
 
-  const isDark = mounted && resolvedTheme === "dark"
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
     <div className={`w-full h-full overflow-hidden ${className}`}>
@@ -57,11 +56,11 @@ export function AdBanner({
         key={resolvedTheme}
         ref={adRef}
         className="adsbygoogle"
-        style={{ 
-          display: "block", 
-          width: "100%", 
+        style={{
+          display: "block",
+          width: "100%",
           height: "100%",
-          filter: isDark ? "invert(1) hue-rotate(180deg)" : "none"
+          filter: isDark ? "invert(1) hue-rotate(180deg)" : "none",
         }}
         data-ad-client="ca-pub-8617635656002994"
         data-ad-slot={dataAdSlot}
@@ -69,5 +68,5 @@ export function AdBanner({
         data-full-width-responsive={dataFullWidthResponsive}
       />
     </div>
-  )
+  );
 }

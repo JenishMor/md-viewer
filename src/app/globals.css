@@ -55,7 +55,7 @@
     --muted: #1e293b;
     /* slate-800 */
     --muted-foreground: #94a3b8;
-    /* slate-400 - high contrast for dark mode, 5.65:1 against #020617 */
+    /* slate-400 - high contrast for dark mode, ~7.7:1 against #020617 */
     --card: #020617;
     --card-foreground: #f8fafc;
     --accent: #1e293b;

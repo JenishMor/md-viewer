@@ -50,10 +50,7 @@ export async function toggleTheme(page: Page) {
   const currentClass = (await page.locator("html").getAttribute("class")) ?? "";
   const wasDark = currentClass.includes("dark");
 
-  const themeToggle = page
-    .locator("button")
-    .filter({ has: page.locator("svg") })
-    .first();
+  const themeToggle = page.locator('[data-testid="theme-toggle"]');
   await themeToggle.click();
 
   // Wait for the theme class to actually change on the html element
