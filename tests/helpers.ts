@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect } from "@playwright/test";
 
 /**
  * Common test utilities and helpers
@@ -15,7 +15,7 @@ export async function waitForPreviewUpdate(page: Page, timeout = 1000) {
  * Clear editor and type new markdown content
  */
 export async function setMarkdownContent(page: Page, content: string) {
-  const editor = page.locator('textarea');
+  const editor = page.locator("textarea");
   await editor.clear();
   await editor.fill(content);
   await waitForPreviewUpdate(page, 500);
@@ -25,7 +25,7 @@ export async function setMarkdownContent(page: Page, content: string) {
  * Get the current markdown content from editor
  */
 export async function getMarkdownContent(page: Page): Promise<string> {
-  const editor = page.locator('textarea');
+  const editor = page.locator("textarea");
   return await editor.inputValue();
 }
 
@@ -40,39 +40,59 @@ export function getPreview(page: Page) {
  * Get the editor element
  */
 export function getEditor(page: Page) {
-  return page.locator('textarea');
+  return page.locator("textarea");
 }
 
 /**
  * Toggle theme (dark/light mode)
  */
 export async function toggleTheme(page: Page) {
-  const themeToggle = page.locator('button').filter({ has: page.locator('svg') }).first();
+  const currentClass = (await page.locator("html").getAttribute("class")) ?? "";
+  const wasDark = currentClass.includes("dark");
+
+  const themeToggle = page
+    .locator("button")
+    .filter({ has: page.locator("svg") })
+    .first();
   await themeToggle.click();
-  await page.waitForTimeout(300);
+
+  // Wait for the theme class to actually change on the html element
+  if (wasDark) {
+    await page.waitForFunction(
+      () => !document.documentElement.classList.contains("dark"),
+      null,
+      { timeout: 5000 },
+    );
+  } else {
+    await page.waitForSelector("html.dark", { timeout: 5000 });
+  }
 }
 
 /**
  * Get current theme from HTML element
  */
 export async function getCurrentTheme(page: Page): Promise<string | null> {
-  const html = page.locator('html');
-  return await html.getAttribute('class');
+  const html = page.locator("html");
+  return await html.getAttribute("class");
 }
 
 /**
  * Check if element is in viewport
  */
-export async function isInViewport(page: Page, selector: string): Promise<boolean> {
+export async function isInViewport(
+  page: Page,
+  selector: string,
+): Promise<boolean> {
   return await page.evaluate((sel) => {
     const element = document.querySelector(sel);
     if (!element) return false;
-    
+
     const rect = element.getBoundingClientRect();
     return (
       rect.top >= 0 &&
       rect.left >= 0 &&
-      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.bottom <=
+        (window.innerHeight || document.documentElement.clientHeight) &&
       rect.right <= (window.innerWidth || document.documentElement.clientWidth)
     );
   }, selector);
@@ -82,8 +102,8 @@ export async function isInViewport(page: Page, selector: string): Promise<boolea
  * Wait for page to be fully loaded and interactive
  */
 export async function waitForPageReady(page: Page) {
-  await page.waitForLoadState('networkidle');
-  await page.waitForLoadState('domcontentloaded');
+  await page.waitForLoadState("networkidle");
+  await page.waitForLoadState("domcontentloaded");
 }
 
 /**
@@ -98,7 +118,10 @@ export async function clearLocalStorage(page: Page) {
 /**
  * Get localStorage item
  */
-export async function getLocalStorageItem(page: Page, key: string): Promise<string | null> {
+export async function getLocalStorageItem(
+  page: Page,
+  key: string,
+): Promise<string | null> {
   return await page.evaluate((k) => {
     return localStorage.getItem(k);
   }, key);
@@ -107,10 +130,17 @@ export async function getLocalStorageItem(page: Page, key: string): Promise<stri
 /**
  * Set localStorage item
  */
-export async function setLocalStorageItem(page: Page, key: string, value: string) {
-  await page.evaluate(({ k, v }) => {
-    localStorage.setItem(k, v);
-  }, { k: key, v: value });
+export async function setLocalStorageItem(
+  page: Page,
+  key: string,
+  value: string,
+) {
+  await page.evaluate(
+    ({ k, v }) => {
+      localStorage.setItem(k, v);
+    },
+    { k: key, v: value },
+  );
 }
 
 /**
@@ -118,7 +148,10 @@ export async function setLocalStorageItem(page: Page, key: string, value: string
  */
 export async function hasHorizontalScroll(page: Page): Promise<boolean> {
   return await page.evaluate(() => {
-    return document.documentElement.scrollWidth > document.documentElement.clientWidth;
+    return (
+      document.documentElement.scrollWidth >
+      document.documentElement.clientWidth
+    );
   });
 }
 
@@ -127,14 +160,22 @@ export async function hasHorizontalScroll(page: Page): Promise<boolean> {
  */
 export async function hasVerticalScroll(page: Page): Promise<boolean> {
   return await page.evaluate(() => {
-    return document.documentElement.scrollHeight > document.documentElement.clientHeight;
+    return (
+      document.documentElement.scrollHeight >
+      document.documentElement.clientHeight
+    );
   });
 }
 
 /**
  * Simulate typing with realistic delays
  */
-export async function typeWithDelay(page: Page, selector: string, text: string, delay = 50) {
+export async function typeWithDelay(
+  page: Page,
+  selector: string,
+  text: string,
+  delay = 50,
+) {
   const element = page.locator(selector);
   await element.type(text, { delay });
 }
@@ -150,7 +191,7 @@ export async function takeScreenshot(page: Page, name: string) {
  * Wait for network to be idle
  */
 export async function waitForNetworkIdle(page: Page) {
-  await page.waitForLoadState('networkidle');
+  await page.waitForLoadState("networkidle");
 }
 
 /**
@@ -166,12 +207,19 @@ export async function hasFocus(page: Page, selector: string): Promise<boolean> {
 /**
  * Get computed style of an element
  */
-export async function getComputedStyle(page: Page, selector: string, property: string): Promise<string> {
-  return await page.evaluate(({ sel, prop }) => {
-    const element = document.querySelector(sel);
-    if (!element) return '';
-    return window.getComputedStyle(element).getPropertyValue(prop);
-  }, { sel: selector, prop: property });
+export async function getComputedStyle(
+  page: Page,
+  selector: string,
+  property: string,
+): Promise<string> {
+  return await page.evaluate(
+    ({ sel, prop }) => {
+      const element = document.querySelector(sel);
+      if (!element) return "";
+      return window.getComputedStyle(element).getPropertyValue(prop);
+    },
+    { sel: selector, prop: property },
+  );
 }
 
 /**
@@ -181,7 +229,7 @@ export async function scrollToElement(page: Page, selector: string) {
   await page.evaluate((sel) => {
     const element = document.querySelector(sel);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      element.scrollIntoView({ behavior: "smooth", block: "center" });
     }
   }, selector);
 }
@@ -200,8 +248,8 @@ export async function getViewportSize(page: Page) {
  * Common markdown samples for testing
  */
 export const MARKDOWN_SAMPLES = {
-  simple: '# Hello World\n\nThis is a simple test.',
-  
+  simple: "# Hello World\n\nThis is a simple test.",
+
   complex: `# Complex Markdown Test
 
 ## Headings
@@ -244,8 +292,11 @@ function test() {
 | Cell 3   | Cell 4   |
 `,
 
-  large: Array(50).fill(0).map((_, i) => `## Section ${i}\n\nContent for section ${i}\n\n`).join(''),
-  
+  large: Array(50)
+    .fill(0)
+    .map((_, i) => `## Section ${i}\n\nContent for section ${i}\n\n`)
+    .join(""),
+
   withMath: `# Math Test
 
 Inline math: $E = mc^2$
@@ -256,7 +307,7 @@ $$
 $$
 `,
 
-  withEmoji: '# Emoji Test 🚀\n\n✅ This is a test with emojis 🎉',
+  withEmoji: "# Emoji Test 🚀\n\n✅ This is a test with emojis 🎉",
 };
 
 /**

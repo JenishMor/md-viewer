@@ -139,14 +139,7 @@ export default function RootLayout({
                       "No registration required",
                       "Free to use"
                     ],
-                    "screenshot": "https://mdviewer.in/logo.png",
-                    "aggregateRating": {
-                      "@type": "AggregateRating",
-                      "ratingValue": "4.8",
-                      "ratingCount": "1250",
-                      "bestRating": "5",
-                      "worstRating": "1"
-                    }
+                    "screenshot": "https://mdviewer.in/logo.png"
                   },
                   {
                     "@type": "SoftwareApplication",
@@ -158,11 +151,6 @@ export default function RootLayout({
                       "@type": "Offer",
                       "price": "0",
                       "priceCurrency": "USD"
-                    },
-                    "aggregateRating": {
-                      "@type": "AggregateRating",
-                      "ratingValue": "4.8",
-                      "ratingCount": "1250"
                     }
                   },
                   {

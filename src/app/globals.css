@@ -3,7 +3,7 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
+@theme inline {
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-border: var(--border);
@@ -32,8 +32,8 @@
     --ring: #0f172a;
     --muted: #f1f5f9;
     /* slate-100 */
-    --muted-foreground: #475569;
-    /* slate-600 */
+    --muted-foreground: #334155;
+    /* slate-700 - high contrast for light mode */
     --card: #ffffff;
     --card-foreground: #0f172a;
     --accent: #f1f5f9;
@@ -54,8 +54,8 @@
     --ring: #cbd5e1;
     --muted: #1e293b;
     /* slate-800 */
-    --muted-foreground: #cbd5e1;
-    /* slate-300 */
+    --muted-foreground: #94a3b8;
+    /* slate-400 - high contrast for dark mode, 5.65:1 against #020617 */
     --card: #020617;
     --card-foreground: #f8fafc;
     --accent: #1e293b;
