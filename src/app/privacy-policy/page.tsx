@@ -412,6 +412,26 @@ export default function PrivacyPolicy() {
 
           <div className="space-y-4">
             <h3 className="text-xl font-medium">5.1 Google AdSense</h3>
+            <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
+                How Google Uses Your Data
+              </h4>
+              <p className="text-blue-800 dark:text-blue-200 mb-3">
+                We use Google AdSense to display advertisements. Google may use
+                cookies and web beacons to serve ads based on your prior visits.
+                To learn how Google collects and uses data when you use our
+                site, please visit:
+              </p>
+              <a
+                href="https://www.google.com/policies/privacy/partners/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg font-medium hover:underline"
+              >
+                How Google Uses Information from Sites That Use Our Services
+                &rarr;
+              </a>
+            </div>
             <p>
               We use Google AdSense to display advertisements on our website.
               This service allows us to keep MDViewer free for all users. Google
@@ -454,7 +474,7 @@ export default function PrivacyPolicy() {
               </a>{" "}
               and{" "}
               <a
-                href="https://policies.google.com/technologies/partner-sites"
+                href="https://www.google.com/policies/privacy/partners/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
