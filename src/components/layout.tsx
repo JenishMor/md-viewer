@@ -1,11 +1,21 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 // import { AdBanner } from "@/components/ad-banner"
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
+
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
       <header
@@ -35,21 +45,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
             >
               <Link
                 href="/guides"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className={`text-sm font-medium transition-colors ${pathname === "/guides" || pathname.startsWith("/guides/") ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Guides
               </Link>
               <Link
                 href="/markdown-tutorial"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className={`text-sm font-medium transition-colors ${pathname === "/markdown-tutorial" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 Tutorial
               </Link>
               <Link
                 href="/about"
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className={`text-sm font-medium transition-colors ${pathname === "/about" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
               >
                 About
+              </Link>
+              <Link
+                href="/contact"
+                className={`text-sm font-medium transition-colors ${pathname === "/contact" ? "text-foreground" : "text-muted-foreground hover:text-foreground"}`}
+              >
+                Contact
               </Link>
             </nav>
           </div>
@@ -63,12 +79,70 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </div>
             */}
             <ThemeToggle />
+            <button
+              className="md:hidden p-2 rounded-lg hover:bg-accent transition-colors"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              <Menu
+                className={`h-5 w-5 transition-transform duration-200 ${mobileMenuOpen ? "hidden" : "block"}`}
+              />
+              <X
+                className={`h-5 w-5 transition-transform duration-200 ${mobileMenuOpen ? "block" : "hidden"}`}
+              />
+            </button>
           </div>
         </div>
+
+        {/* Mobile Navigation - always rendered, visibility toggled via CSS */}
+        <nav
+          className={`md:hidden border-t border-border bg-background overflow-hidden transition-all duration-200 ease-in-out ${mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 border-t-0"}`}
+          aria-label="Mobile navigation"
+          aria-hidden={!mobileMenuOpen}
+        >
+          <div className="container mx-auto px-4 py-4 space-y-1">
+            <Link
+              href="/"
+              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === "/" ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+              onClick={closeMobileMenu}
+            >
+              Home
+            </Link>
+            <Link
+              href="/guides"
+              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === "/guides" || pathname.startsWith("/guides/") ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+              onClick={closeMobileMenu}
+            >
+              Guides
+            </Link>
+            <Link
+              href="/markdown-tutorial"
+              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === "/markdown-tutorial" ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+              onClick={closeMobileMenu}
+            >
+              Tutorial
+            </Link>
+            <Link
+              href="/about"
+              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === "/about" ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+              onClick={closeMobileMenu}
+            >
+              About
+            </Link>
+            <Link
+              href="/contact"
+              className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${pathname === "/contact" ? "text-foreground bg-accent" : "text-muted-foreground hover:text-foreground hover:bg-accent"}`}
+              onClick={closeMobileMenu}
+            >
+              Contact
+            </Link>
+          </div>
+        </nav>
       </header>
 
-      <main className="flex-1 w-full" role="main">
-        <div className="w-full container mx-auto px-4 py-6 flex flex-col">
+      <main className="flex-1 w-full overflow-x-hidden" role="main">
+        <div className="w-full container mx-auto px-4 py-6 flex flex-col min-w-0">
           {children}
         </div>
       </main>
@@ -163,6 +237,38 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     className="hover:text-foreground transition-colors"
                   >
                     Markdown vs Rich Text
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/guides/technical-documentation"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Technical Documentation
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/guides/markdown-for-bloggers"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Markdown for Bloggers
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/guides/markdown-tables-guide"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Markdown Tables
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/guides/common-markdown-mistakes"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Common Mistakes
                   </Link>
                 </li>
               </ul>
