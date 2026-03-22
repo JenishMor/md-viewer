@@ -35,7 +35,7 @@ export default function MarkdownForBloggersGuide() {
           "Learn how content creators use Markdown to write faster, format consistently, and publish to platforms like Dev.to, Medium, and WordPress.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -113,7 +113,7 @@ export default function MarkdownForBloggersGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-02-15">Published Feb 15, 2025</time>

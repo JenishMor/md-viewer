@@ -190,19 +190,19 @@ export default function HomePage() {
             <p className="text-muted-foreground leading-relaxed text-lg">
               We fully support the{" "}
               <strong>GitHub Flavored Markdown (GFM)</strong> specification. If
-              it works on GitHub, it works here. Perfect for drafting READMEs,
-              wikis, and issue comments.
+              it works on GitHub, it should render consistently here for common
+              use cases. Useful for drafting READMEs, wikis, and issue comments.
             </p>
           </div>
           <div className="p-10 rounded-3xl border bg-card hover:shadow-xl transition-all duration-300 space-y-6 group">
             <div className="h-14 w-14 bg-primary/10 rounded-2xl flex items-center justify-center text-3xl group-hover:scale-110 transition-transform font-bold">
               🔒
             </div>
-            <h2 className="text-2xl font-bold">Absolute Privacy Control</h2>
+            <h2 className="text-2xl font-bold">Privacy-Focused Editing</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
-              Your sensitive data never leaves your browser. Unlike other online
-              editors, MDViewer uses <strong>local browser storage</strong> for
-              persistence, ensuring your intellectual property remains private.
+              MDViewer stores your draft content in your browser using
+              <strong> local browser storage</strong> so your writing can
+              persist between visits on the same device.
             </p>
           </div>
         </section>

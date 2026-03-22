@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/github-flavored-markdown",
     type: "article",
   },
-  authors: [{ name: "MDViewer Team" }],
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function GFMGuide() {
@@ -38,7 +38,7 @@ export default function GFMGuide() {
           "Master GitHub Flavored Markdown with our comprehensive guide. Learn tables, task lists, autolinks, strikethrough, syntax highlighting, and all GFM extensions used on GitHub.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -119,7 +119,7 @@ export default function GFMGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-01-20">Published Jan 20, 2025</time>

@@ -35,7 +35,7 @@ export default function TechnicalDocumentationGuide() {
           "Learn professional techniques for writing user guides, API docs, and knowledge bases using Markdown. Structure, style, and tools that documentation experts use.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -113,7 +113,7 @@ export default function TechnicalDocumentationGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-02-10">Published Feb 10, 2025</time>
@@ -135,12 +135,10 @@ export default function TechnicalDocumentationGuide() {
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-4">
             <p>
               Documentation is often an afterthought, but it's crucial to the
-              success of any software project. Studies show that{" "}
-              <strong>
-                developers spend 50-60% of their time reading code and
-                documentation
-              </strong>
-              , not writing code. Good documentation:
+              success of any software project. In day-to-day engineering work,
+              teams spend significant time understanding existing systems, and
+              good documentation helps that work move faster. Good
+              documentation:
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-4">

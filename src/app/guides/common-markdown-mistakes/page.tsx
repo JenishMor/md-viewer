@@ -34,7 +34,7 @@ export default function CommonMarkdownMistakesGuide() {
           "Avoid frustrating formatting issues with this guide to the most common Markdown mistakes developers make. Learn proper syntax, spacing, and escape techniques.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -112,7 +112,7 @@ export default function CommonMarkdownMistakesGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-03-10">Published Mar 10, 2025</time>

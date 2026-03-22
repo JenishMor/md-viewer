@@ -40,7 +40,7 @@ export default function MarkdownTutorial() {
           "Master Markdown with our comprehensive 2026 tutorial. Learn basic syntax, GitHub Flavored Markdown (GFM), tables, code blocks, and advanced techniques.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -115,7 +115,7 @@ export default function MarkdownTutorial() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-01-01">Published Jan 1, 2025</time>

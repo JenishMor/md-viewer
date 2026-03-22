@@ -34,7 +34,7 @@ export default function MarkdownTablesGuide() {
           "Master table creation in Markdown. Learn alignment, formatting within cells, and workarounds for complex table layouts.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -112,7 +112,7 @@ export default function MarkdownTablesGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-03-01">Published Mar 1, 2025</time>

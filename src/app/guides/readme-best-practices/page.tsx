@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/readme-best-practices",
     type: "article",
   },
-  authors: [{ name: "MDViewer Team" }],
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function ReadmeBestPracticesGuide() {
@@ -39,7 +39,7 @@ export default function ReadmeBestPracticesGuide() {
           "Master the art of README writing for GitHub. Learn structure, essential sections, badges, screenshots, and real examples that make your projects stand out and attract contributors.",
         author: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -120,7 +120,7 @@ export default function ReadmeBestPracticesGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
             </span>
             <span>·</span>
             <time dateTime="2025-01-15">Published Jan 15, 2025</time>
@@ -242,10 +242,10 @@ export default function ReadmeBestPracticesGuide() {
               💡 Real Impact
             </h4>
             <p className="text-blue-800 dark:text-blue-200">
-              According to GitHub data, repositories with detailed READMEs are{" "}
-              <strong>40% more likely</strong> to receive contributions from new
-              developers. Your README is directly tied to your project's
-              success.
+              Repositories with clear README files are generally easier to
+              understand, easier to onboard to, and more likely to receive
+              meaningful community engagement. Your README is directly tied to
+              your project's first impression.
             </p>
           </div>
         </section>
