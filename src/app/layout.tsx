@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "markdown renderer online",
     "github flavored markdown editor",
   ],
-  authors: [{ name: "MDViewer Team", url: "https://mdviewer.in" }],
+  authors: [{ name: "Jenish Mor", url: "https://mdviewer.in/about" }],
   creator: "MDViewer",
   publisher: "MDViewer",
   robots: {
@@ -182,57 +182,6 @@ export default function RootLayout({
                     publisher: {
                       "@id": "https://mdviewer.in/#organization",
                     },
-                    potentialAction: {
-                      "@type": "SearchAction",
-                      target: "https://mdviewer.in/?q={search_term_string}",
-                      "query-input": "required name=search_term_string",
-                    },
-                  },
-                  {
-                    "@type": "FAQPage",
-                    "@id": "https://mdviewer.in/#faq",
-                    mainEntity: [
-                      {
-                        "@type": "Question",
-                        name: "What is MDViewer?",
-                        acceptedAnswer: {
-                          "@type": "Answer",
-                          text: "MDViewer is a free online markdown viewer and editor that provides real-time preview of your markdown content. It supports GitHub Flavored Markdown (GFM) and requires no registration.",
-                        },
-                      },
-                      {
-                        "@type": "Question",
-                        name: "Is MDViewer free to use?",
-                        acceptedAnswer: {
-                          "@type": "Answer",
-                          text: "Yes, MDViewer is completely free to use. There are no hidden fees, subscriptions, or registration requirements.",
-                        },
-                      },
-                      {
-                        "@type": "Question",
-                        name: "Does MDViewer support GitHub Flavored Markdown?",
-                        acceptedAnswer: {
-                          "@type": "Answer",
-                          text: "Yes, MDViewer fully supports GitHub Flavored Markdown (GFM), including tables, task lists, strikethrough, and syntax highlighting for code blocks.",
-                        },
-                      },
-                      {
-                        "@type": "Question",
-                        name: "Do I need to create an account to use MDViewer?",
-                        acceptedAnswer: {
-                          "@type": "Answer",
-                          text: "No, you can start using MDViewer immediately without creating an account or signing up. Your content is saved locally in your browser.",
-                        },
-                      },
-                      {
-                        "@type": "Question",
-                        name: "Can I use MDViewer offline?",
-                        acceptedAnswer: {
-                          "@type": "Answer",
-                          text: "MDViewer requires an internet connection to load initially, but once loaded, your content is stored locally in your browser and can be accessed even if you lose connection.",
-                        },
-                      },
-                    ],
                   },
                   {
                     "@type": "BreadcrumbList",

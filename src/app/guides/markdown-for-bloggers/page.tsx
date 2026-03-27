@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Layout } from "@/components/layout";
+import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -22,6 +23,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/markdown-for-bloggers",
     type: "article",
   },
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function MarkdownForBloggersGuide() {
@@ -34,8 +36,14 @@ export default function MarkdownForBloggersGuide() {
         description:
           "Learn how content creators use Markdown to write faster, format consistently, and publish to platforms like Dev.to, Medium, and WordPress.",
         author: {
+          "@type": "Person",
+          name: "Jenish Mor",
+          url: "https://mdviewer.in/about",
+          sameAs: ["https://github.com/JenishMor"],
+        },
+        editor: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -48,7 +56,7 @@ export default function MarkdownForBloggersGuide() {
           },
         },
         datePublished: "2025-02-15",
-        dateModified: "2026-02-01",
+        dateModified: "2026-03-22",
         mainEntityOfPage: "https://mdviewer.in/guides/markdown-for-bloggers",
         image: "https://mdviewer.in/md-logo.png",
       },
@@ -113,7 +121,14 @@ export default function MarkdownForBloggersGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Reviewed by{" "}
+              <strong className="text-foreground">
+                MDViewer Editorial Team
+              </strong>
             </span>
             <span>·</span>
             <time dateTime="2025-02-15">Published Feb 15, 2025</time>
@@ -128,6 +143,8 @@ export default function MarkdownForBloggersGuide() {
             faster and publish smarter.
           </p>
         </header>
+
+        <EditorialNote reviewedDate="March 2026" />
 
         {/* Why Bloggers Love Markdown */}
         <section className="space-y-6">

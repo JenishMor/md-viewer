@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Layout } from "@/components/layout";
+import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/markdown-tutorial",
     type: "article",
   },
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function MarkdownTutorial() {
@@ -39,8 +41,14 @@ export default function MarkdownTutorial() {
         description:
           "Master Markdown with our comprehensive 2026 tutorial. Learn basic syntax, GitHub Flavored Markdown (GFM), tables, code blocks, and advanced techniques.",
         author: {
+          "@type": "Person",
+          name: "Jenish Mor",
+          url: "https://mdviewer.in/about",
+          sameAs: ["https://github.com/JenishMor"],
+        },
+        editor: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -53,7 +61,7 @@ export default function MarkdownTutorial() {
           },
         },
         datePublished: "2025-01-01",
-        dateModified: "2026-02-01",
+        dateModified: "2026-03-22",
         mainEntityOfPage: "https://mdviewer.in/markdown-tutorial",
         image: "https://mdviewer.in/md-logo.png",
       },
@@ -115,12 +123,21 @@ export default function MarkdownTutorial() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Reviewed by{" "}
+              <strong className="text-foreground">
+                MDViewer Editorial Team
+              </strong>
             </span>
             <span>·</span>
             <time dateTime="2025-01-01">Published Jan 1, 2025</time>
           </div>
         </header>
+
+        <EditorialNote reviewedDate="March 2026" />
 
         {/* Table of Contents */}
         <nav className="bg-muted/50 rounded-2xl p-4 sm:p-6 border">

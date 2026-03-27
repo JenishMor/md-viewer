@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Layout } from "@/components/layout";
+import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/common-markdown-mistakes",
     type: "article",
   },
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function CommonMarkdownMistakesGuide() {
@@ -33,8 +35,14 @@ export default function CommonMarkdownMistakesGuide() {
         description:
           "Avoid frustrating formatting issues with this guide to the most common Markdown mistakes developers make. Learn proper syntax, spacing, and escape techniques.",
         author: {
+          "@type": "Person",
+          name: "Jenish Mor",
+          url: "https://mdviewer.in/about",
+          sameAs: ["https://github.com/JenishMor"],
+        },
+        editor: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -47,7 +55,7 @@ export default function CommonMarkdownMistakesGuide() {
           },
         },
         datePublished: "2025-03-10",
-        dateModified: "2026-02-01",
+        dateModified: "2026-03-22",
         mainEntityOfPage: "https://mdviewer.in/guides/common-markdown-mistakes",
         image: "https://mdviewer.in/md-logo.png",
       },
@@ -112,7 +120,14 @@ export default function CommonMarkdownMistakesGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Reviewed by{" "}
+              <strong className="text-foreground">
+                MDViewer Editorial Team
+              </strong>
             </span>
             <span>·</span>
             <time dateTime="2025-03-10">Published Mar 10, 2025</time>
@@ -126,6 +141,8 @@ export default function CommonMarkdownMistakesGuide() {
             the most common formatting issues.
           </p>
         </header>
+
+        <EditorialNote reviewedDate="March 2026" />
 
         {/* Mistakes List */}
         <section className="space-y-10">

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Layout } from "@/components/layout";
+import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -21,6 +22,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/markdown-tables-guide",
     type: "article",
   },
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function MarkdownTablesGuide() {
@@ -33,8 +35,14 @@ export default function MarkdownTablesGuide() {
         description:
           "Master table creation in Markdown. Learn alignment, formatting within cells, and workarounds for complex table layouts.",
         author: {
+          "@type": "Person",
+          name: "Jenish Mor",
+          url: "https://mdviewer.in/about",
+          sameAs: ["https://github.com/JenishMor"],
+        },
+        editor: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -47,7 +55,7 @@ export default function MarkdownTablesGuide() {
           },
         },
         datePublished: "2025-03-01",
-        dateModified: "2026-02-01",
+        dateModified: "2026-03-22",
         mainEntityOfPage: "https://mdviewer.in/guides/markdown-tables-guide",
         image: "https://mdviewer.in/md-logo.png",
       },
@@ -112,7 +120,14 @@ export default function MarkdownTablesGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Reviewed by{" "}
+              <strong className="text-foreground">
+                MDViewer Editorial Team
+              </strong>
             </span>
             <span>·</span>
             <time dateTime="2025-03-01">Published Mar 1, 2025</time>
@@ -127,6 +142,8 @@ export default function MarkdownTablesGuide() {
             table layouts.
           </p>
         </header>
+
+        <EditorialNote reviewedDate="March 2026" />
 
         {/* Basic Syntax */}
         <section className="space-y-6">

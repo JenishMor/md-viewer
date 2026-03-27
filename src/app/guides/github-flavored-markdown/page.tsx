@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Layout } from "@/components/layout";
+import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
     url: "https://mdviewer.in/guides/github-flavored-markdown",
     type: "article",
   },
-  authors: [{ name: "MDViewer Team" }],
+  authors: [{ name: "Jenish Mor" }],
 };
 
 export default function GFMGuide() {
@@ -37,8 +38,14 @@ export default function GFMGuide() {
         description:
           "Master GitHub Flavored Markdown with our comprehensive guide. Learn tables, task lists, autolinks, strikethrough, syntax highlighting, and all GFM extensions used on GitHub.",
         author: {
+          "@type": "Person",
+          name: "Jenish Mor",
+          url: "https://mdviewer.in/about",
+          sameAs: ["https://github.com/JenishMor"],
+        },
+        editor: {
           "@type": "Organization",
-          name: "MDViewer Team",
+          name: "MDViewer Editorial Team",
           url: "https://mdviewer.in/about",
         },
         publisher: {
@@ -51,7 +58,7 @@ export default function GFMGuide() {
           },
         },
         datePublished: "2025-01-20",
-        dateModified: "2026-02-01",
+        dateModified: "2026-03-22",
         mainEntityOfPage: "https://mdviewer.in/guides/github-flavored-markdown",
         image: "https://mdviewer.in/md-logo.png",
       },
@@ -119,7 +126,14 @@ export default function GFMGuide() {
           </div>
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
             <span>
-              By <strong className="text-foreground">MDViewer Team</strong>
+              By <strong className="text-foreground">Jenish Mor</strong>
+            </span>
+            <span>·</span>
+            <span>
+              Reviewed by{" "}
+              <strong className="text-foreground">
+                MDViewer Editorial Team
+              </strong>
             </span>
             <span>·</span>
             <time dateTime="2025-01-20">Published Jan 20, 2025</time>
@@ -134,6 +148,8 @@ export default function GFMGuide() {
             for your GitHub projects.
           </p>
         </header>
+
+        <EditorialNote reviewedDate="March 2026" />
 
         {/* Table of Contents */}
         <nav className="bg-muted/50 rounded-2xl p-6 border">
