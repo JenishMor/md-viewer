@@ -6,7 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-// import { AdBanner } from "@/components/ad-banner"
+import { AdBanner } from "@/components/ad-banner"
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -70,14 +70,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            {/* Ad Placeholder Header 
-            <div className="hidden md:block w-[300px] h-[40px] bg-muted/50 rounded border border-dashed border-border flex items-center justify-center text-xs text-muted-foreground overflow-hidden">
-              <AdBanner 
+            <div className="hidden md:flex w-[300px] h-[40px] items-center justify-center overflow-hidden">
+              <AdBanner
                 dataAdSlot={process.env.NEXT_PUBLIC_HEADER_AD_SLOT_ID ?? ""}
                 dataFullWidthResponsive={false}
               />
             </div>
-            */}
             <ThemeToggle />
             <button
               className="md:hidden p-2 rounded-lg hover:bg-accent transition-colors"
@@ -298,14 +296,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-6 border-t border-border pt-8">
             <div className="flex items-center gap-4">
-              {/* Ad Placeholder Footer 
-              <div className="flex w-[200px] h-[30px] bg-muted/50 rounded border border-dashed border-border items-center justify-center text-xs text-muted-foreground overflow-hidden">
-                <AdBanner 
+              <div className="flex w-[200px] h-[30px] items-center justify-center overflow-hidden">
+                <AdBanner
                   dataAdSlot={process.env.NEXT_PUBLIC_FOOTER_AD_SLOT_ID ?? ""}
                   dataFullWidthResponsive={false}
                 />
               </div>
-              */}
             </div>
             <p
               className="text-xs text-muted-foreground"
