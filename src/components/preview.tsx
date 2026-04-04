@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
@@ -6,7 +6,8 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import "highlight.js/styles/github-dark.css";
 import "katex/dist/katex.min.css";
-import { Download, FileText, Printer } from "lucide-react";
+import { Download, FileText, Printer, List, Share2, Check } from "lucide-react";
+import { TableOfContents } from "@/components/table-of-contents";
 
 interface PreviewProps {
   content: string;
@@ -14,6 +15,7 @@ interface PreviewProps {
   onScrollSync: (ratio: number) => void;
   scrollSourceRef: React.MutableRefObject<"editor" | "preview" | null>;
   isScrollSyncEnabled: boolean;
+  onShare?: () => Promise<void>;
 }
 
 export function Preview({
@@ -22,9 +24,30 @@ export function Preview({
   onScrollSync,
   scrollSourceRef,
   isScrollSyncEnabled,
+  onShare,
 }: PreviewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const previewRef = useRef<HTMLElement>(null);
+  const [tocOpen, setTocOpen] = useState(false);
+  const [shared, setShared] = useState(false);
+
+  const handleShare = async () => {
+    if (onShare) {
+      await onShare();
+      setShared(true);
+      setTimeout(() => setShared(false), 2000);
+    }
+  };
+
+  const handleHeadingClick = (index: number) => {
+    const headings = previewRef.current?.querySelectorAll(
+      "h1, h2, h3, h4, h5, h6",
+    );
+    if (headings?.[index]) {
+      headings[index].scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setTocOpen(false);
+  };
 
   // Editor → Preview scroll sync
   useEffect(() => {
@@ -126,6 +149,36 @@ export function Preview({
           Preview
         </span>
         <div className="flex items-center space-x-1">
+          <div className="relative">
+            <button
+              onClick={() => setTocOpen((p) => !p)}
+              className={`${previewBtn} ${tocOpen ? "bg-accent text-foreground" : ""}`}
+              title="Table of Contents"
+            >
+              <List className="h-4 w-4" />
+            </button>
+            {tocOpen && (
+              <div className="absolute right-0 top-full mt-1 w-64 bg-card border border-border rounded-lg shadow-xl z-50">
+                <TableOfContents
+                  markdown={content}
+                  onHeadingClick={handleHeadingClick}
+                />
+              </div>
+            )}
+          </div>
+          {onShare && (
+            <button
+              onClick={handleShare}
+              className={previewBtn}
+              title="Share Link"
+            >
+              {shared ? (
+                <Check className="h-4 w-4 text-green-500" />
+              ) : (
+                <Share2 className="h-4 w-4" />
+              )}
+            </button>
+          )}
           <button
             onClick={handleDownloadMd}
             aria-label="Download Markdown"

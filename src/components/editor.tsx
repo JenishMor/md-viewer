@@ -2,7 +2,15 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { handleKeyboardShortcut } from "@/lib/formatting";
 import { FormattingToolbar } from "@/components/formatting-toolbar";
-import { Copy, Check, X, RotateCcw, FolderOpen } from "lucide-react";
+import {
+  Copy,
+  Check,
+  X,
+  RotateCcw,
+  FolderOpen,
+  Maximize2,
+  LayoutTemplate,
+} from "lucide-react";
 
 interface EditorProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -17,6 +25,9 @@ interface EditorProps
   onRedo?: () => void;
   canUndo?: boolean;
   canRedo?: boolean;
+  onZenMode?: () => void;
+  onOpenTemplates?: () => void;
+  onTextareaRef?: (el: HTMLTextAreaElement | null) => void;
 }
 
 function computeStats(text: string) {
@@ -42,12 +53,23 @@ export function Editor({
   onRedo,
   canUndo,
   canRedo,
+  onZenMode,
+  onOpenTemplates,
+  onTextareaRef,
   className,
   ...props
 }: EditorProps) {
   const [copied, setCopied] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const textareaCallbackRef = useCallback(
+    (el: HTMLTextAreaElement | null) => {
+      (textareaRef as React.MutableRefObject<HTMLTextAreaElement | null>).current = el;
+      onTextareaRef?.(el);
+    },
+    [onTextareaRef],
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const stats = computeStats(value);
@@ -179,6 +201,16 @@ export function Editor({
           <button onClick={handleFileImport} className={headerBtn} title="Open File">
             <FolderOpen className="h-4 w-4" />
           </button>
+          {onOpenTemplates && (
+            <button onClick={onOpenTemplates} className={headerBtn} title="Templates">
+              <LayoutTemplate className="h-4 w-4" />
+            </button>
+          )}
+          {onZenMode && (
+            <button onClick={onZenMode} className={headerBtn} title="Zen Mode">
+              <Maximize2 className="h-4 w-4" />
+            </button>
+          )}
           <button onClick={handleClear} className={headerBtn} title="Clear Markdown">
             <X className="h-4 w-4" />
           </button>
@@ -208,7 +240,7 @@ export function Editor({
 
       {/* Textarea */}
       <textarea
-        ref={textareaRef}
+        ref={textareaCallbackRef}
         className={cn(
           "flex-1 w-full resize-none bg-transparent p-4 font-mono text-sm leading-relaxed outline-none placeholder:text-muted-foreground",
           className,
