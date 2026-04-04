@@ -1,13 +1,27 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
 import { Link2, Link2Off } from "lucide-react";
 import { DEFAULT_MARKDOWN } from "@/data/default-markdown";
+import { DocumentTabs } from "@/components/document-tabs";
+import { useUndoRedo } from "@/lib/use-undo-redo";
 
-const STORAGE_KEY = "md-viewer-content";
+interface Document {
+  id: string;
+  name: string;
+  content: string;
+}
+
+const DOCS_KEY = "md-viewer-docs";
+const ACTIVE_KEY = "md-viewer-active-doc";
+const OLD_STORAGE_KEY = "md-viewer-content";
+
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
 
 const Editor = dynamic(
   () => import("@/components/editor").then((mod) => mod.Editor),
@@ -30,27 +44,95 @@ const Preview = dynamic(
 );
 
 export default function HomePage() {
-  const [markdown, setMarkdown] = useState(DEFAULT_MARKDOWN);
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [activeDocId, setActiveDocId] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
   const [isDesktop, setIsDesktop] = useState(false);
   const [scrollRatio, setScrollRatio] = useState(0);
   const scrollSourceRef = useRef<"editor" | "preview" | null>(null);
   const [isScrollSyncEnabled, setIsScrollSyncEnabled] = useState(true);
+  const history = useUndoRedo();
 
-  useEffect(() => {
-    const savedContent = localStorage.getItem(STORAGE_KEY);
-    if (savedContent !== null) {
-      setMarkdown(savedContent);
+  // Derive current markdown from active document
+  const activeDoc = documents.find((d) => d.id === activeDocId);
+  const markdown = activeDoc?.content ?? "";
+
+  const setMarkdown = useCallback(
+    (content: string) => {
+      setDocuments((prev) => {
+        const current = prev.find((d) => d.id === activeDocId)?.content ?? "";
+        if (current !== content) {
+          history.push(current);
+        }
+        return prev.map((d) =>
+          d.id === activeDocId ? { ...d, content } : d,
+        );
+      });
+    },
+    [activeDocId, history],
+  );
+
+  const handleUndo = useCallback(() => {
+    const prev = history.undo(markdown);
+    if (prev !== null) {
+      setDocuments((docs) =>
+        docs.map((d) => (d.id === activeDocId ? { ...d, content: prev } : d)),
+      );
     }
+  }, [activeDocId, markdown, history]);
+
+  const handleRedo = useCallback(() => {
+    const next = history.redo(markdown);
+    if (next !== null) {
+      setDocuments((docs) =>
+        docs.map((d) => (d.id === activeDocId ? { ...d, content: next } : d)),
+      );
+    }
+  }, [activeDocId, markdown, history]);
+
+  // Initialize: load docs from localStorage or migrate old single-doc
+  useEffect(() => {
+    const savedDocs = localStorage.getItem(DOCS_KEY);
+    const savedActive = localStorage.getItem(ACTIVE_KEY);
+
+    if (savedDocs) {
+      try {
+        const docs: Document[] = JSON.parse(savedDocs);
+        if (docs.length > 0) {
+          setDocuments(docs);
+          setActiveDocId(
+            savedActive && docs.some((d) => d.id === savedActive)
+              ? savedActive
+              : docs[0].id,
+          );
+          setIsInitialized(true);
+          return;
+        }
+      } catch {
+        // Fall through to default
+      }
+    }
+
+    // Migrate from old single-doc storage
+    const oldContent = localStorage.getItem(OLD_STORAGE_KEY);
+    const defaultDoc: Document = {
+      id: generateId(),
+      name: "Untitled",
+      content: oldContent ?? DEFAULT_MARKDOWN,
+    };
+    setDocuments([defaultDoc]);
+    setActiveDocId(defaultDoc.id);
     setIsInitialized(true);
   }, []);
 
+  // Persist to localStorage
   useEffect(() => {
-    if (isInitialized) {
-      localStorage.setItem(STORAGE_KEY, markdown);
-    }
-  }, [markdown, isInitialized]);
+    if (!isInitialized) return;
+    localStorage.setItem(DOCS_KEY, JSON.stringify(documents));
+    localStorage.setItem(ACTIVE_KEY, activeDocId);
+  }, [documents, activeDocId, isInitialized]);
 
+  // Responsive layout detection
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
     setIsDesktop(media.matches);
@@ -58,6 +140,40 @@ export default function HomePage() {
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
   }, []);
+
+  // Tab operations
+  const handleNewTab = () => {
+    const newDoc: Document = {
+      id: generateId(),
+      name: `Untitled ${documents.length + 1}`,
+      content: "",
+    };
+    setDocuments((prev) => [...prev, newDoc]);
+    setActiveDocId(newDoc.id);
+  };
+
+  const handleCloseTab = (id: string) => {
+    if (documents.length <= 1) return;
+    const newDocs = documents.filter((d) => d.id !== id);
+    setDocuments(newDocs);
+    if (activeDocId === id) {
+      setActiveDocId(newDocs[0].id);
+    }
+  };
+
+  const handleRenameTab = (id: string, name: string) => {
+    setDocuments((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, name } : d)),
+    );
+  };
+
+  const handleSwitchTab = (id: string) => {
+    setActiveDocId(id);
+    setScrollRatio(0);
+    history.reset();
+  };
+
+  const tabs = documents.map((d) => ({ id: d.id, name: d.name }));
 
   return (
     <Layout>
@@ -67,7 +183,10 @@ export default function HomePage() {
           Free Online Markdown Editor &amp; Viewer
         </h1>
         <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
-          Write, preview, and perfect your Markdown in real time. MDViewer supports GitHub Flavored Markdown (GFM), syntax highlighting for 100+ languages, LaTeX math, tables, and task lists — all processed locally in your browser with zero server uploads.
+          Write, preview, and perfect your Markdown in real time. MDViewer
+          supports GitHub Flavored Markdown (GFM), syntax highlighting for 100+
+          languages, LaTeX math, tables, and task lists — all processed locally
+          in your browser with zero server uploads.
         </p>
       </section>
 
@@ -76,6 +195,16 @@ export default function HomePage() {
         className="w-full mb-6"
         aria-label="Markdown Editor and Preview"
       >
+        {/* Document Tabs */}
+        <DocumentTabs
+          tabs={tabs}
+          activeId={activeDocId}
+          onSwitch={handleSwitchTab}
+          onNew={handleNewTab}
+          onClose={handleCloseTab}
+          onRename={handleRenameTab}
+        />
+
         <div className="h-[750px] flex flex-col">
           {isDesktop ? (
             // Desktop: Horizontal resizable panels
@@ -84,7 +213,7 @@ export default function HomePage() {
               className="flex-1 h-full min-h-0 gap-2"
             >
               <Panel defaultSize={50} minSize={20} className="flex flex-col">
-                <div className="flex-1 rounded-xl border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
+                <div className="flex-1 rounded-xl rounded-tl-none border border-border bg-card text-card-foreground shadow-sm overflow-hidden flex flex-col">
                   <Editor
                     value={markdown}
                     onChange={(e) => setMarkdown(e.target.value)}
@@ -93,6 +222,10 @@ export default function HomePage() {
                     onScrollSync={setScrollRatio}
                     scrollSourceRef={scrollSourceRef}
                     isScrollSyncEnabled={isScrollSyncEnabled}
+                    onUndo={handleUndo}
+                    onRedo={handleRedo}
+                    canUndo={history.canUndo}
+                    canRedo={history.canRedo}
                     className="flex-1"
                   />
                 </div>
@@ -145,6 +278,10 @@ export default function HomePage() {
                   onScrollSync={setScrollRatio}
                   scrollSourceRef={scrollSourceRef}
                   isScrollSyncEnabled={isScrollSyncEnabled}
+                  onUndo={handleUndo}
+                  onRedo={handleRedo}
+                  canUndo={history.canUndo}
+                  canRedo={history.canRedo}
                   className="flex-1"
                 />
               </div>
@@ -166,9 +303,9 @@ export default function HomePage() {
       <div className="space-y-16 py-8 border-t border-border">
         {/* Intro Section */}
         <section className="max-w-4xl mx-auto text-center space-y-8">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-400 dark:via-blue-300 dark:to-indigo-400 bg-clip-text text-transparent py-2">
+          <h2 className="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-400 dark:via-blue-300 dark:to-indigo-400 bg-clip-text text-transparent py-2">
             The Professional Choice for Online Markdown Viewing
-          </h1>
+          </h2>
           <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed">
             Stop guessing what your documentation looks like.{" "}
             <strong>MDViewer</strong> provides a polished, high-performance{" "}
@@ -211,8 +348,8 @@ export default function HomePage() {
             <h2 className="text-2xl font-bold">Privacy-Focused Editing</h2>
             <p className="text-muted-foreground leading-relaxed text-lg">
               MDViewer stores your draft content in your browser using
-              <strong> local browser storage</strong> so your writing can
-              persist between visits on the same device.
+              <strong> local browser storage</strong> so your writing can persist
+              between visits on the same device.
             </p>
           </div>
         </section>
@@ -224,8 +361,8 @@ export default function HomePage() {
               Built for Modern Workflows
             </h2>
             <p className="text-lg text-muted-foreground">
-              Whether you're a software engineer or a creative writer, MDViewer
-              adapts to your needs.
+              Whether you&apos;re a software engineer or a creative writer,
+              MDViewer adapts to your needs.
             </p>
           </div>
           <div className="grid md:grid-cols-2 gap-12">
@@ -240,9 +377,8 @@ export default function HomePage() {
                 MDViewer to draft high-quality README files that impress on
                 GitHub and GitLab. With <strong>syntax highlighting</strong> for
                 over 100 languages, you can verify your code blocks are properly
-                formatted before you commit. Our tool supports task lists,
-                nested structures, and complex tables essential for technical
-                specs.
+                formatted before you commit. Our tool supports task lists, nested
+                structures, and complex tables essential for technical specs.
               </p>
               <ul className="space-y-3">
                 <li className="flex items-center gap-2 text-sm">
@@ -267,8 +403,8 @@ export default function HomePage() {
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Focus on the narrative, not the tags. Markdown allows writers to
-                stay in the "flow state" without reaching for formatting
-                buttons. MDViewer acts as your{" "}
+                stay in the &quot;flow state&quot; without reaching for
+                formatting buttons. MDViewer acts as your{" "}
                 <strong>distraction-free writing environment</strong>. Convert
                 your thoughts into clean, semantically correct HTML that can be
                 pasted directly into Medium, Dev.to, or your personal WordPress
@@ -300,10 +436,10 @@ export default function HomePage() {
               <h2 className="text-4xl font-bold">Master the Markdown Syntax</h2>
               <div className="space-y-6 text-slate-700 dark:text-slate-200 text-lg leading-relaxed">
                 <p>
-                  Markdown is more than just a writing format; it is a
-                  philosophy of simplicity. By using plain-text characters to
-                  represent formatting, you ensure that your documents remain
-                  readable now and 50 years into the future.
+                  Markdown is more than just a writing format; it is a philosophy
+                  of simplicity. By using plain-text characters to represent
+                  formatting, you ensure that your documents remain readable now
+                  and 50 years into the future.
                 </p>
                 <p>
                   From simple <strong>headers</strong> and{" "}
@@ -402,8 +538,8 @@ export default function HomePage() {
                 <h4 className="text-xl font-bold">Hierarchy Matters</h4>
                 <p className="text-muted-foreground leading-relaxed">
                   Always start with a single H1 for your title. Use H2 for main
-                  sections and H3 for sub-points. This isn't just for looks—it's
-                  critical for{" "}
+                  sections and H3 for sub-points. This isn&apos;t just for
+                  looks—it&apos;s critical for{" "}
                   <strong>SEO and screen-reader accessibility</strong>.
                 </p>
               </div>
@@ -454,9 +590,9 @@ export default function HomePage() {
               </h3>
               <p className="text-muted-foreground leading-relaxed">
                 Absolutely. Our core mission is to empower the global developer
-                and writing community with free, high-quality tools. There are
-                no plans to add paywalls or premium subscriptions for the
-                markdown viewer.
+                and writing community with free, high-quality tools. There are no
+                plans to add paywalls or premium subscriptions for the markdown
+                viewer.
               </p>
             </div>
             <div className="py-8 space-y-3">
@@ -486,11 +622,10 @@ export default function HomePage() {
                 Does it support export to PDF or HTML?
               </h3>
               <p className="text-muted-foreground leading-relaxed">
-                Currently, you can easily copy the rendered markdown or the raw
-                code. For PDF, we recommend using your browser's "Print"
-                functionality (Ctrl+P / Cmd+P), as our CSS is optimized for
-                clean, professional-grade printing with proper margins and
-                typography.
+                Yes! You can export your document as HTML, download it as a .md
+                file, or use the PDF export button which opens your browser&apos;s
+                print dialog for saving as PDF. All export options are available
+                in the preview toolbar.
               </p>
             </div>
           </div>

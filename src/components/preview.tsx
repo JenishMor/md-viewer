@@ -6,7 +6,7 @@ import rehypeHighlight from "rehype-highlight";
 import rehypeKatex from "rehype-katex";
 import "highlight.js/styles/github-dark.css";
 import "katex/dist/katex.min.css";
-import { Download } from "lucide-react";
+import { Download, FileText, Printer } from "lucide-react";
 
 interface PreviewProps {
   content: string;
@@ -34,7 +34,6 @@ export function Preview({
       scrollSourceRef.current !== "editor"
     )
       return;
-
     const el = scrollContainerRef.current;
     el.scrollTop = scrollRatio * (el.scrollHeight - el.clientHeight);
   }, [scrollRatio, isScrollSyncEnabled, scrollSourceRef]);
@@ -42,16 +41,13 @@ export function Preview({
   // Preview → Editor scroll sync
   const handleScroll = () => {
     if (!scrollContainerRef.current || !isScrollSyncEnabled) return;
-
     scrollSourceRef.current = "preview";
-
     const el = scrollContainerRef.current;
     const ratio = el.scrollTop / (el.scrollHeight - el.clientHeight);
-
     onScrollSync(ratio);
   };
 
-  const handleDownload = () => {
+  const handleDownloadHtml = () => {
     if (previewRef.current) {
       const blob = new Blob([previewRef.current.innerHTML], {
         type: "text/html",
@@ -65,25 +61,95 @@ export function Preview({
     }
   };
 
+  const handleDownloadMd = () => {
+    const blob = new Blob([content], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "document.md";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const handleExportPdf = () => {
+    if (!previewRef.current) return;
+    const iframe = document.createElement("iframe");
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "none";
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentDocument;
+    if (!doc) return;
+
+    doc.open();
+    doc.write(`<!DOCTYPE html>
+<html>
+<head>
+  <title>MDViewer Export</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; color: #1a1a1a; line-height: 1.7; }
+    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; }
+    pre { background: #f4f4f5; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.875rem; }
+    code { font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace; font-size: 0.875em; }
+    p code { background: #f4f4f5; padding: 0.15em 0.4em; border-radius: 3px; }
+    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+    th, td { border: 1px solid #d4d4d8; padding: 8px 12px; text-align: left; }
+    th { background: #f4f4f5; font-weight: 600; }
+    img { max-width: 100%; height: auto; }
+    blockquote { border-left: 4px solid #d4d4d8; margin: 1em 0; padding: 0.5em 1em; color: #52525b; }
+    hr { border: none; border-top: 1px solid #d4d4d8; margin: 2em 0; }
+    a { color: #2563eb; }
+    @media print { body { padding: 0; } }
+  </style>
+</head>
+<body>${previewRef.current.innerHTML}</body>
+</html>`);
+    doc.close();
+
+    iframe.contentWindow?.focus();
+    iframe.contentWindow?.print();
+
+    setTimeout(() => document.body.removeChild(iframe), 1000);
+  };
+
+  const previewBtn =
+    "inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-foreground transition-colors cursor-pointer";
+
   return (
     <div className="h-full w-full flex flex-col">
       <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/50">
         <span className="text-sm font-medium text-muted-foreground">
           Preview
         </span>
-        <div className="flex items-center space-x-2">
-          <div className="relative group">
-            <button
-              onClick={handleDownload}
-              aria-label="Download HTML"
-              className="inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-foreground transition-colors cursor-pointer"
-            >
-              <Download className="h-4 w-4" />
-            </button>
-            <span className="absolute bottom-full mb-2 w-max bg-gray-800 text-white text-xs rounded py-1 px-2 z-50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity">
-              Download HTML
-            </span>
-          </div>
+        <div className="flex items-center space-x-1">
+          <button
+            onClick={handleDownloadMd}
+            aria-label="Download Markdown"
+            className={previewBtn}
+            title="Download .md"
+          >
+            <FileText className="h-4 w-4" />
+          </button>
+          <button
+            onClick={handleDownloadHtml}
+            aria-label="Download HTML"
+            className={previewBtn}
+            title="Download HTML"
+          >
+            <Download className="h-4 w-4" />
+          </button>
+          <button
+            onClick={handleExportPdf}
+            aria-label="Export PDF"
+            className={previewBtn}
+            title="Export PDF"
+          >
+            <Printer className="h-4 w-4" />
+          </button>
         </div>
       </div>
       <div
