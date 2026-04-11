@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import dynamic from "next/dynamic";
 import { Layout } from "@/components/layout";
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -8,6 +8,18 @@ import { Link2, Link2Off } from "lucide-react";
 import { DEFAULT_MARKDOWN } from "@/data/default-markdown";
 import { DocumentTabs } from "@/components/document-tabs";
 import { useUndoRedo } from "@/lib/use-undo-redo";
+import { ZenMode } from "@/components/zen-mode";
+import { TemplateBuilder } from "@/components/template-builder";
+import {
+  CommandPalette,
+  type PaletteAction,
+} from "@/components/command-palette";
+import {
+  applyWrap,
+  applyLinePrefix,
+  insertBlock,
+} from "@/lib/formatting";
+import LZString from "lz-string";
 
 interface Document {
   id: string;
@@ -52,6 +64,11 @@ export default function HomePage() {
   const scrollSourceRef = useRef<"editor" | "preview" | null>(null);
   const [isScrollSyncEnabled, setIsScrollSyncEnabled] = useState(true);
   const history = useUndoRedo();
+  const [zenMode, setZenMode] = useState(false);
+  const [templatesOpen, setTemplatesOpen] = useState(false);
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const editorTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const markdownRef = useRef("");
 
   // Derive current markdown from active document
   const activeDoc = documents.find((d) => d.id === activeDocId);
@@ -90,8 +107,149 @@ export default function HomePage() {
     }
   }, [activeDocId, markdown, history]);
 
-  // Initialize: load docs from localStorage or migrate old single-doc
+  // Keep ref in sync for command palette
+  markdownRef.current = markdown;
+
+  // Share handler
+  const handleShare = useCallback(async () => {
+    const compressed = LZString.compressToEncodedURIComponent(markdownRef.current);
+    const url = `${window.location.origin}${window.location.pathname}#lz=${compressed}`;
+    if (url.length > 8000) {
+      alert(
+        "Document is too large to share via URL. Try a shorter document.",
+      );
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+  }, []);
+
+  // Template insertion
+  const handleTemplateInsert = useCallback(
+    (content: string) => {
+      const ta = editorTextareaRef.current;
+      if (ta) {
+        insertBlock(
+          ta,
+          markdownRef.current,
+          (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setMarkdown(e.target.value),
+          content,
+        );
+      } else {
+        setMarkdown(markdownRef.current + "\n" + content);
+      }
+    },
+    [setMarkdown],
+  );
+
+  // onChange wrapper for command palette formatting
+  const onChangeHandler = useCallback(
+    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+      setMarkdown(e.target.value);
+    },
+    [setMarkdown],
+  );
+
+  // Tab operations (defined before palette actions which reference handleNewTab)
+  const handleNewTab = useCallback(() => {
+    const newDoc: Document = {
+      id: generateId(),
+      name: `Untitled ${documents.length + 1}`,
+      content: "",
+    };
+    setDocuments((prev) => [...prev, newDoc]);
+    setActiveDocId(newDoc.id);
+  }, [documents.length]);
+
+  // Command palette actions
+  const paletteActions: PaletteAction[] = useMemo(() => {
+    const ta = () => editorTextareaRef.current;
+    const val = () => markdownRef.current;
+
+    const fmt = (
+      id: string,
+      name: string,
+      fn: () => void,
+      shortcut?: string,
+    ): PaletteAction => ({
+      id,
+      name,
+      shortcut,
+      section: "Format",
+      handler: fn,
+    });
+
+    return [
+      // Format
+      fmt("bold", "Bold", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "**", "**", "bold"); }, "Ctrl+B"),
+      fmt("italic", "Italic", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "*", "*", "italic"); }, "Ctrl+I"),
+      fmt("strikethrough", "Strikethrough", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "~~", "~~", "text"); }),
+      fmt("h1", "Heading 1", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "# "); }),
+      fmt("h2", "Heading 2", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "## "); }),
+      fmt("h3", "Heading 3", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "### "); }),
+      fmt("link", "Insert Link", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "[", "](url)", "link text"); }, "Ctrl+K"),
+      fmt("image", "Insert Image", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "![", "](url)", "alt text"); }),
+      fmt("code", "Inline Code", () => { const t = ta(); if (t) applyWrap(t, val(), onChangeHandler, "`", "`", "code"); }),
+      fmt("codeblock", "Code Block", () => { const t = ta(); if (t) insertBlock(t, val(), onChangeHandler, "```\n\n```\n", 4); }),
+      fmt("ul", "Unordered List", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "- "); }),
+      fmt("ol", "Ordered List", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "1. "); }),
+      fmt("quote", "Blockquote", () => { const t = ta(); if (t) applyLinePrefix(t, val(), onChangeHandler, "> "); }),
+      fmt("table", "Insert Table", () => { const t = ta(); if (t) insertBlock(t, val(), onChangeHandler, "| Col 1 | Col 2 | Col 3 |\n| --- | --- | --- |\n| Cell | Cell | Cell |\n"); }),
+      fmt("hr", "Horizontal Rule", () => { const t = ta(); if (t) insertBlock(t, val(), onChangeHandler, "---\n"); }),
+      // Edit
+      { id: "undo", name: "Undo", shortcut: "Ctrl+Z", section: "Edit", handler: handleUndo },
+      { id: "redo", name: "Redo", shortcut: "Ctrl+Y", section: "Edit", handler: handleRedo },
+      // File
+      { id: "new-doc", name: "New Document", section: "File", handler: handleNewTab },
+      { id: "share", name: "Share Link", section: "File", handler: handleShare },
+      // View
+      { id: "zen", name: "Zen Mode", section: "View", handler: () => setZenMode(true) },
+      { id: "templates", name: "Open Templates", section: "View", handler: () => setTemplatesOpen(true) },
+    ];
+  }, [onChangeHandler, handleUndo, handleRedo, handleShare, handleNewTab]);
+
+  // Global keyboard shortcut for command palette
   useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "p") {
+        e.preventDefault();
+        setCommandPaletteOpen((p) => !p);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Initialize: check URL share first, then localStorage
+  useEffect(() => {
+    // Check for shared content in URL hash
+    const hash = window.location.hash;
+    let sharedContent: string | null = null;
+
+    if (hash.startsWith("#lz=")) {
+      sharedContent = LZString.decompressFromEncodedURIComponent(hash.slice(4));
+    } else if (hash.startsWith("#md=")) {
+      // Backward compat with old base64 links
+      try {
+        sharedContent = new TextDecoder().decode(
+          Uint8Array.from(atob(hash.slice(4)), (c) => c.charCodeAt(0)),
+        );
+      } catch { /* ignore */ }
+    }
+
+    if (sharedContent) {
+      const sharedDoc: Document = {
+        id: generateId(),
+        name: "Shared Document",
+        content: sharedContent,
+      };
+      setDocuments([sharedDoc]);
+      setActiveDocId(sharedDoc.id);
+      setIsInitialized(true);
+      window.history.replaceState(null, "", window.location.pathname);
+      return;
+    }
+
     const savedDocs = localStorage.getItem(DOCS_KEY);
     const savedActive = localStorage.getItem(ACTIVE_KEY);
 
@@ -140,17 +298,6 @@ export default function HomePage() {
     media.addEventListener("change", listener);
     return () => media.removeEventListener("change", listener);
   }, []);
-
-  // Tab operations
-  const handleNewTab = () => {
-    const newDoc: Document = {
-      id: generateId(),
-      name: `Untitled ${documents.length + 1}`,
-      content: "",
-    };
-    setDocuments((prev) => [...prev, newDoc]);
-    setActiveDocId(newDoc.id);
-  };
 
   const handleCloseTab = (id: string) => {
     if (documents.length <= 1) return;
@@ -226,6 +373,9 @@ export default function HomePage() {
                     onRedo={handleRedo}
                     canUndo={history.canUndo}
                     canRedo={history.canRedo}
+                    onZenMode={() => setZenMode(true)}
+                    onOpenTemplates={() => setTemplatesOpen(true)}
+                    onTextareaRef={(el) => { editorTextareaRef.current = el; }}
                     className="flex-1"
                   />
                 </div>
@@ -262,6 +412,7 @@ export default function HomePage() {
                     onScrollSync={setScrollRatio}
                     scrollSourceRef={scrollSourceRef}
                     isScrollSyncEnabled={isScrollSyncEnabled}
+                    onShare={handleShare}
                   />
                 </div>
               </Panel>
@@ -282,6 +433,9 @@ export default function HomePage() {
                   onRedo={handleRedo}
                   canUndo={history.canUndo}
                   canRedo={history.canRedo}
+                  onZenMode={() => setZenMode(true)}
+                  onOpenTemplates={() => setTemplatesOpen(true)}
+                  onTextareaRef={(el) => { editorTextareaRef.current = el; }}
                   className="flex-1"
                 />
               </div>
@@ -292,6 +446,7 @@ export default function HomePage() {
                   onScrollSync={setScrollRatio}
                   scrollSourceRef={scrollSourceRef}
                   isScrollSyncEnabled={isScrollSyncEnabled}
+                  onShare={handleShare}
                 />
               </div>
             </div>
@@ -631,6 +786,32 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+
+      {/* Zen Mode Overlay */}
+      {zenMode && (
+        <ZenMode
+          value={markdown}
+          onChange={(e) => setMarkdown(e.target.value)}
+          onExit={() => setZenMode(false)}
+          onUndo={handleUndo}
+          onRedo={handleRedo}
+        />
+      )}
+
+      {/* Template Builder Modal */}
+      {templatesOpen && (
+        <TemplateBuilder
+          onInsert={handleTemplateInsert}
+          onClose={() => setTemplatesOpen(false)}
+        />
+      )}
+
+      {/* Command Palette */}
+      <CommandPalette
+        isOpen={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        actions={paletteActions}
+      />
     </Layout>
   );
 }
