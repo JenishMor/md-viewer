@@ -42,9 +42,11 @@ test.describe("Home Page - Core Functionality", () => {
     await editor.fill(testContent);
 
     // Wait until localStorage actually contains the new content rather than relying on a fixed timeout.
+    // Multi-doc storage: documents are persisted as a JSON array under "md-viewer-docs",
+    // so the test content appears inside the stringified blob.
     await page.waitForFunction(
       (expected) =>
-        localStorage.getItem("md-viewer-content")?.includes(expected) ?? false,
+        localStorage.getItem("md-viewer-docs")?.includes(expected) ?? false,
       testContent,
     );
 
