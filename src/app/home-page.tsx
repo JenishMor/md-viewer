@@ -61,9 +61,19 @@ export default function HomePage() {
 
   return (
     <Layout>
+      {/* Hero / Crawlable Intro */}
+      <section className="text-center max-w-3xl mx-auto mb-6">
+        <h1 className="text-3xl md:text-4xl font-extrabold tracking-tight mb-3">
+          Free Online Markdown Editor &amp; Viewer
+        </h1>
+        <p className="text-muted-foreground text-base md:text-lg leading-relaxed">
+          Write, preview, and perfect your Markdown in real time. MDViewer supports GitHub Flavored Markdown (GFM), syntax highlighting for 100+ languages, LaTeX math, tables, and task lists — all processed locally in your browser with zero server uploads.
+        </p>
+      </section>
+
       {/* Tool Section */}
       <section
-        className="w-full mb-12"
+        className="w-full mb-6"
         aria-label="Markdown Editor and Preview"
       >
         <div className="h-[750px] flex flex-col">
@@ -153,7 +163,7 @@ export default function HomePage() {
       </section>
 
       {/* Content Sections */}
-      <div className="space-y-32 py-12 border-t border-border">
+      <div className="space-y-16 py-8 border-t border-border">
         {/* Intro Section */}
         <section className="max-w-4xl mx-auto text-center space-y-8">
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-400 dark:via-blue-300 dark:to-indigo-400 bg-clip-text text-transparent py-2">
@@ -283,7 +293,7 @@ export default function HomePage() {
         </section>
 
         {/* Detailed Education Section */}
-        <section className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-[40px] p-12 md:p-20 overflow-hidden relative border border-slate-200 dark:border-slate-800">
+        <section className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-white rounded-3xl p-8 md:p-12 overflow-hidden relative border border-slate-200 dark:border-slate-800">
           <div className="absolute top-0 right-0 p-10 opacity-10 blur-2xl bg-blue-500 h-64 w-64 rounded-full"></div>
           <div className="grid md:grid-cols-2 gap-16 items-center relative z-10">
             <div className="space-y-8">
@@ -379,7 +389,7 @@ export default function HomePage() {
         </section>
 
         {/* Best Practices Section */}
-        <section className="max-w-4xl mx-auto space-y-12 py-12">
+        <section className="max-w-4xl mx-auto space-y-8 py-6">
           <h2 className="text-3xl font-bold text-center">
             Best Practices for Productive Writing
           </h2>
@@ -430,7 +440,7 @@ export default function HomePage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="max-w-3xl mx-auto space-y-12">
+        <section className="max-w-3xl mx-auto space-y-8">
           <div className="text-center space-y-4">
             <h2 className="text-4xl font-bold">Frequently Asked Questions</h2>
             <p className="text-muted-foreground text-lg">
