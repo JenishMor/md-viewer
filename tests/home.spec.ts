@@ -41,8 +41,7 @@ test.describe("Home Page - Core Functionality", () => {
     await editor.clear();
     await editor.fill(testContent);
 
-    // Wait until localStorage actually contains the new content rather than
-    // relying on a fixed timeout.
+    // Wait until localStorage actually contains the new content rather than relying on a fixed timeout.
     await page.waitForFunction(
       (expected) =>
         localStorage.getItem("md-viewer-content")?.includes(expected) ?? false,
@@ -63,9 +62,7 @@ test.describe("Home Page - Markdown Rendering", () => {
     await waitForPageReady(page);
   });
 
-  // One consolidated test exercises all GFM/CommonMark features we care
-  // about. Each feature was previously its own test, which multiplied the
-  // setup cost (page load + textarea fill) without adding coverage.
+  // One consolidated test exercises all GFM/CommonMark features we care about.
   test("should render core markdown features (headings, lists, code, links, blockquote, table, strikethrough)", async ({
     page,
   }) => {

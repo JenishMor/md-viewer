@@ -41,10 +41,7 @@ export default defineConfig({
     video: 'retain-on-failure',
   },
 
-  /* Configure projects for major browsers.
-   * We deliberately keep this small: a desktop Chromium build covers the
-   * vast majority of users, and Mobile Chrome covers the responsive layout.
-   * Add Firefox/WebKit only if/when we ship browser-specific code paths. */
+  /* Configure projects for major browsers. */
   projects: [
     {
       name: 'chromium',

@@ -3,11 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { waitForPageReady } from "./helpers";
 
 /**
- * Accessibility tests use axe-core to surface WCAG violations. We enforce
- * a hard pass on critical/serious violations in both light and dark mode.
- *
- * If a new genuine a11y issue is introduced, fix it. Don't downgrade these
- * assertions to warn-only just to make CI green.
+ * Accessibility tests use axe-core to surface WCAG violations.
  */
 
 type ViolationLike = {
@@ -73,8 +69,7 @@ test.describe("Accessibility", () => {
   test("dark mode should have no critical/serious axe violations", async ({
     page,
   }) => {
-    // Apply dark color scheme before navigation so next-themes picks it up
-    // on the very first render.
+    // Apply dark color scheme before navigation so next-themes picks it up on the very first render.
     await page.emulateMedia({ colorScheme: "dark" });
     await page.goto("/");
     await waitForPageReady(page);

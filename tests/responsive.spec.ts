@@ -2,9 +2,7 @@ import { test, expect } from "@playwright/test";
 import { waitForPageReady } from "./helpers";
 
 /**
- * We only check three representative viewports rather than every device
- * size combination — the layout has two breakpoints (mobile vs desktop at
- * 1024px), so testing one of each plus a tablet is enough.
+ * We only check three representative viewports rather than every device size combination — the layout has two breakpoints (mobile vs desktop at
  */
 const viewports = [
   { name: "Mobile", width: 375, height: 667 },

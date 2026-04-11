@@ -25,9 +25,6 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        # We only run the `chromium` project plus `Mobile Chrome`, which
-        # also uses the chromium engine. No need to download Firefox or
-        # WebKit binaries — saves ~1 min per run.
         run: npx playwright install --with-deps chromium
 
       - name: Build application

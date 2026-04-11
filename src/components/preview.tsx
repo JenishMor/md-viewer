@@ -91,7 +91,6 @@ export function Preview({
         ref={scrollContainerRef}
         onScroll={handleScroll}
         // Make the scrollable region focusable so keyboard users can scroll
-        // it (axe rule: scrollable-region-focusable / WCAG 2.1.1).
         tabIndex={0}
         role="region"
         aria-label="Markdown preview"
@@ -107,10 +106,6 @@ export function Preview({
               a: ({ ...props }) => (
                 <a target="_blank" rel="noopener noreferrer" {...props} />
               ),
-              // highlight.js's CSS gives `code.hljs` `overflow-x: auto`,
-              // making each code block its own scrollable region. Axe (and
-              // WCAG 2.1.1) requires scrollable regions to be focusable so
-              // keyboard users can scroll them — hence tabIndex={0}.
               code: ({ className, children, ...props }) => {
                 const isHighlighted = className?.includes("hljs");
                 return (

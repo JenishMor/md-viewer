@@ -3,15 +3,6 @@ import { waitForPageReady } from "./helpers";
 
 /**
  * Performance smoke tests.
- *
- * Notes on what we *don't* test here and why:
- * - "Bundle size" / "memory leaks": these are better suited to a build-time
- *   check or a dedicated profiling run; in e2e they only catch order-of-
- *   magnitude regressions and produce noisy failures.
- * - "Slow 3G" / "offline mode": both depend on emulation that behaves
- *   inconsistently across browsers and CI environments.
- * - "Cache localStorage efficiently": measured wall-clock reload time which
- *   is dominated by Next.js cold start, not by what we're trying to test.
  */
 test.describe("Performance smoke", () => {
   test("should become interactive within an acceptable time", async ({
