@@ -11,9 +11,7 @@
     "test:headed": "playwright test --headed",
     "test:ui": "playwright test --ui",
     "test:chromium": "playwright test --project=chromium",
-    "test:firefox": "playwright test --project=firefox",
-    "test:webkit": "playwright test --project=webkit",
-    "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:mobile": "playwright test --project=\"Mobile Chrome\"",
     "test:debug": "playwright test --debug",
     "test:report": "playwright show-report"
   },
@@ -43,6 +41,7 @@
     "@types/node": "^24.10.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "baseline-browser-mapping": "^2.10.17",
     "eslint": "^9",
     "eslint-config-next": "16.0.7",
     "tailwindcss": "^4",
