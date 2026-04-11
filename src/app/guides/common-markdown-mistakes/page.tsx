@@ -91,7 +91,7 @@ export default function CommonMarkdownMistakesGuide() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <article className="max-w-4xl mx-auto py-12 px-4 space-y-12">
+      <article className="max-w-4xl mx-auto py-12 px-4 space-y-12 w-full min-w-0 break-words">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">

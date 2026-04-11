@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function About() {
   return (
     <Layout>
-      <article className="max-w-4xl mx-auto py-12 px-4 space-y-16">
+      <article className="max-w-4xl mx-auto py-12 px-4 space-y-16 w-full min-w-0 break-words">
         {/* Hero Section */}
         <header className="text-center space-y-6">
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 dark:from-blue-400 dark:via-blue-300 dark:to-indigo-400 bg-clip-text text-transparent py-2">
