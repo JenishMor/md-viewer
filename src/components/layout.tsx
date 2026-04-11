@@ -70,7 +70,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
             </nav>
           </div>
           <div className="flex items-center gap-4">
-            <div className="hidden md:flex w-[300px] h-[40px] items-center justify-center overflow-hidden">
+            {/* AdBanner is shown from `lg` (≥1024px) only. At the `md` (768px)
+                breakpoint the desktop nav links already appear, and adding a
+                300px ad banner overflows the header — see responsive tests. */}
+            <div className="hidden lg:flex w-[300px] h-[40px] items-center justify-center overflow-hidden">
               <AdBanner
                 dataAdSlot={process.env.NEXT_PUBLIC_HEADER_AD_SLOT_ID ?? ""}
                 dataFullWidthResponsive={false}
@@ -93,11 +96,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        {/* Mobile Navigation - always rendered, visibility toggled via CSS */}
+        {/* Mobile Navigation - always rendered, visibility toggled via CSS.
+            We use the `inert` attribute (rather than `aria-hidden`) when the
+            menu is closed, because aria-hidden alone leaves the child <Link>s
+            in the tab order, triggering axe's `aria-hidden-focus` rule.
+            `inert` removes the subtree from BOTH the a11y tree and the tab
+            order, which is the modern, correct behaviour. */}
         <nav
           className={`md:hidden border-t border-border bg-background overflow-hidden transition-all duration-200 ease-in-out ${mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0 border-t-0"}`}
           aria-label="Mobile navigation"
-          aria-hidden={!mobileMenuOpen}
+          inert={!mobileMenuOpen}
         >
           <div className="container mx-auto px-4 py-4 space-y-1">
             <Link

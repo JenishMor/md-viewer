@@ -87,9 +87,14 @@ export function Preview({
         </div>
       </div>
       <div
-        className="flex-1 overflow-auto p-4"
+        className="flex-1 overflow-auto p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         ref={scrollContainerRef}
         onScroll={handleScroll}
+        // Make the scrollable region focusable so keyboard users can scroll
+        // it (axe rule: scrollable-region-focusable / WCAG 2.1.1).
+        tabIndex={0}
+        role="region"
+        aria-label="Markdown preview"
       >
         <article
           ref={previewRef}
@@ -102,6 +107,22 @@ export function Preview({
               a: ({ ...props }) => (
                 <a target="_blank" rel="noopener noreferrer" {...props} />
               ),
+              // highlight.js's CSS gives `code.hljs` `overflow-x: auto`,
+              // making each code block its own scrollable region. Axe (and
+              // WCAG 2.1.1) requires scrollable regions to be focusable so
+              // keyboard users can scroll them — hence tabIndex={0}.
+              code: ({ className, children, ...props }) => {
+                const isHighlighted = className?.includes("hljs");
+                return (
+                  <code
+                    className={className}
+                    tabIndex={isHighlighted ? 0 : undefined}
+                    {...props}
+                  >
+                    {children}
+                  </code>
+                );
+              },
             }}
           >
             {content}
