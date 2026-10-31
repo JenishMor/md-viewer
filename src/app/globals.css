@@ -72,3 +72,97 @@
     @apply bg-background text-foreground overflow-x-hidden;
   }
 }
+/* Visual editor (TipTap) */
+.visual-editor ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+.visual-editor ul[data-type="taskList"] > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.visual-editor ul[data-type="taskList"] > li > label {
+  margin-top: 0.35em;
+  user-select: none;
+}
+.visual-editor ul[data-type="taskList"] > li > div {
+  flex: 1;
+}
+.visual-editor ul[data-type="taskList"] > li p {
+  margin: 0;
+}
+.visual-editor table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+}
+.visual-editor td,
+.visual-editor th {
+  border: 1px solid var(--border);
+  padding: 0.25rem 0.5rem;
+  vertical-align: top;
+  position: relative;
+}
+.visual-editor .selectedCell::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--primary) 15%, transparent);
+  pointer-events: none;
+}
+.visual-editor .md-raw-inline {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--muted);
+  color: var(--foreground);
+  border: 1px dashed var(--border);
+  border-radius: 4px;
+  padding: 0 0.3em;
+  cursor: pointer;
+}
+.visual-editor .md-raw-inline.ProseMirror-selectednode {
+  outline: 2px solid var(--primary);
+}
+.visual-editor pre:has(> code.language-md-preserved)::before {
+  content: "Markdown source — kept exactly as written";
+  display: block;
+  font-family: inherit;
+  font-size: 0.7rem;
+  opacity: 0.75;
+  margin-bottom: 0.25rem;
+}
+.visual-editor img.ProseMirror-selectednode {
+  outline: 2px solid var(--primary);
+}
+
+/* Long equations scroll instead of overflowing small screens. */
+.markdown-preview .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.markdown-preview ul.contains-task-list {
+  list-style: none;
+  padding-left: 0.25rem;
+}
+.markdown-preview ul.contains-task-list ul.contains-task-list {
+  padding-left: 1.5rem;
+}
+
+/* Label special fenced blocks while editing visually. */
+.visual-editor pre:has(> code.language-mermaid)::before,
+.visual-editor pre:has(> code.language-chartjs)::before {
+  display: block;
+  font-family: inherit;
+  font-size: 0.7rem;
+  opacity: 0.75;
+  margin-bottom: 0.25rem;
+}
+.visual-editor pre:has(> code.language-mermaid)::before {
+  content: "Mermaid diagram — rendered in the preview";
+}
+.visual-editor pre:has(> code.language-chartjs)::before {
+  content: "Chart.js JSON — rendered in the preview";
+}

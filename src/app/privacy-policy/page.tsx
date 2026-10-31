@@ -18,7 +18,7 @@ export default function PrivacyPolicy() {
         <header className="space-y-4 border-b pb-6">
           <h1 className="text-4xl font-bold">Privacy Policy</h1>
           <p className="text-muted-foreground">
-            Last updated: February 22, 2026
+            Last updated: October 31, 2026
           </p>
           <p className="text-muted-foreground text-sm">
             This policy applies to the website{" "}
@@ -229,11 +229,45 @@ export default function PrivacyPolicy() {
               <li>Is not accessible to us or any third party</li>
               <li>
                 Can be cleared at any time by clearing your browser data or
-                using the &quot;Clear&quot; button in the editor
+                using <strong>Documents → Clear all local data</strong> in the
+                editor
               </li>
               <li>
                 Persists only in the specific browser and device where it was
-                created
+                created. It is not backed up or synced, so deleted browser data
+                cannot be recovered by us
+              </li>
+              <li>
+                Includes a &quot;Recently deleted&quot; list that keeps deleted
+                documents for up to 30 days so you can restore them, and your
+                editor preferences (Markdown or Visual mode, layout)
+              </li>
+            </ul>
+          </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-medium">2.4 Share Links, Export and Paste</h3>
+            <ul className="list-disc list-inside space-y-2 ml-4">
+              <li>
+                <strong>Share links</strong> are created only when you choose
+                Share and confirm. The whole document is compressed into the
+                part of the link after the <code>#</code> sign. Browsers do not
+                send that part to our servers, but anyone who receives the link
+                can read the document, and the link cannot be revoked.
+              </li>
+              <li>
+                <strong>Import, export and copy</strong> (Markdown, HTML, print
+                to PDF) happen entirely in your browser. Exported HTML files
+                load KaTeX math styles from the jsDelivr CDN when opened.
+              </li>
+              <li>
+                <strong>Pasting from Word or Google Docs</strong> is converted
+                to Markdown in your browser; clipboard content is not uploaded.
+              </li>
+              <li>
+                <strong>Images</strong> referenced by URL in your Markdown are
+                loaded by your browser from the site that hosts them, which can
+                see your IP address, as with any web page.
               </li>
             </ul>
           </div>

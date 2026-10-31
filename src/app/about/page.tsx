@@ -118,10 +118,10 @@ export default function About() {
               </div>
               <h3 className="text-xl font-bold">Privacy First</h3>
               <p className="text-muted-foreground leading-relaxed">
-                Your content stays on your device. We use browser-based storage
-                (LocalStorage and IndexedDB) so your work never touches our
-                servers. No accounts, no cloud sync that we control — your data
-                is yours alone.
+                Your content stays on your device. Documents are saved in your
+                browser&apos;s local storage, so your Markdown is not uploaded to
+                our servers. No accounts, no cloud sync that we control — your
+                data is yours alone.
               </p>
             </div>
             <div className="p-8 rounded-2xl border bg-card hover:shadow-lg transition-shadow space-y-4">

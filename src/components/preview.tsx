@@ -1,13 +1,30 @@
-import { useEffect, useRef, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import remarkMath from "remark-math";
-import rehypeHighlight from "rehype-highlight";
-import rehypeKatex from "rehype-katex";
+import {
+  Component,
+  memo,
+  useDeferredValue,
+  useMemo,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
+import ReactMarkdown, { type Components } from "react-markdown";
+import type { Element, ElementContent } from "hast";
 import "highlight.js/styles/github-dark.css";
 import "katex/dist/katex.min.css";
-import { Download, FileText, Printer, List, Share2, Check } from "lucide-react";
+import { FileCode2, List } from "lucide-react";
 import { TableOfContents } from "@/components/table-of-contents";
+import { MermaidBlock } from "@/components/mermaid-block";
+import { ChartBlock } from "@/components/chart-block";
+import {
+  CHART_LANGS,
+  DIAGRAM_LANGS,
+  codeLanguage,
+  rehypePlugins,
+  remarkPlugins,
+  remarkRehypeOptions,
+} from "@/lib/markdown/pipeline";
+import { splitMarkdown } from "@/lib/markdown/chunks";
 
 interface PreviewProps {
   content: string;
@@ -15,7 +32,181 @@ interface PreviewProps {
   onScrollSync: (ratio: number) => void;
   scrollSourceRef: React.MutableRefObject<"editor" | "preview" | null>;
   isScrollSyncEnabled: boolean;
-  onShare?: () => Promise<void>;
+  /** Called with the source offset of a task list item whose checkbox was clicked. */
+  onToggleTask?: (offset: number) => void;
+  onArticleRef?: (el: HTMLElement | null) => void;
+}
+
+function textOf(node: ElementContent | Element): string {
+  if (node.type === "text") return node.value;
+  if (node.type === "element") return node.children.map(textOf).join("");
+  return "";
+}
+
+function buildComponents(onToggleTask?: (offset: number) => void): Components {
+  return {
+    a: ({ node: _node, href, ...props }) => {
+      const internal = href?.startsWith("#");
+      return (
+        <a
+          href={href}
+          {...(internal ? {} : { target: "_blank", rel: "noopener noreferrer" })}
+          {...props}
+        />
+      );
+    },
+    code: ({ node: _node, className, children, ...props }) => {
+      const isHighlighted = className?.includes("hljs");
+      return (
+        <code
+          className={className}
+          tabIndex={isHighlighted ? 0 : undefined}
+          {...props}
+        >
+          {children}
+        </code>
+      );
+    },
+    pre: ({ node, children, ...props }) => {
+      const code = node?.children.find(
+        (c): c is Element => c.type === "element" && c.tagName === "code",
+      );
+      const lang = codeLanguage(code);
+      if (code && lang && DIAGRAM_LANGS.includes(lang)) {
+        return <MermaidBlock code={textOf(code)} />;
+      }
+      if (code && lang && CHART_LANGS.includes(lang)) {
+        return <ChartBlock source={textOf(code)} />;
+      }
+      if (code?.properties?.dataFrontmatter) {
+        return (
+          <div className="not-prose my-4 rounded-lg border border-border bg-muted/40 text-sm" data-frontmatter-block>
+            <div className="flex items-center gap-1.5 border-b border-border px-3 py-1.5 text-xs text-muted-foreground">
+              <FileCode2 className="h-3.5 w-3.5" aria-hidden />
+              Frontmatter ({lang})
+            </div>
+            <pre className="m-0 overflow-x-auto px-3 py-2 font-mono text-xs">{children}</pre>
+          </div>
+        );
+      }
+      return <pre {...props}>{children}</pre>;
+    },
+    table: ({ node: _node, ...props }) => (
+      <div className="overflow-x-auto" data-table-wrapper>
+        <table {...props} />
+      </div>
+    ),
+    img: ({ node: _node, alt, ...props }) => (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img alt={alt ?? ""} loading="lazy" {...props} />
+    ),
+    li: ({ node, className, ...props }) => {
+      const isTask = typeof className === "string" && className.includes("task-list-item");
+      const offset = node?.position?.start.offset;
+      return (
+        <li
+          className={className}
+          data-task-offset={isTask && offset !== undefined ? offset : undefined}
+          {...props}
+        />
+      );
+    },
+    input: ({ node: _node, type, checked, disabled, ...props }) => {
+      if (type !== "checkbox" || !onToggleTask) {
+        return <input type={type} checked={checked} disabled={disabled} readOnly {...props} />;
+      }
+      return (
+        <input
+          type="checkbox"
+          checked={Boolean(checked)}
+          aria-label={checked ? "Mark task as not done" : "Mark task as done"}
+          className="cursor-pointer"
+          onChange={(e) => {
+            const li = e.currentTarget.closest<HTMLElement>("li[data-task-offset]");
+            // Offsets are relative to the chunk that rendered this item.
+            const chunk = li?.closest<HTMLElement>("[data-chunk-offset]");
+            const offset = Number(li?.dataset.taskOffset) + Number(chunk?.dataset.chunkOffset ?? 0);
+            if (Number.isFinite(offset)) onToggleTask(offset);
+          }}
+          {...props}
+        />
+      );
+    },
+  };
+}
+
+const MarkdownRenderer = memo(function MarkdownRenderer({
+  content,
+  onToggleTask,
+}: {
+  content: string;
+  onToggleTask?: (offset: number) => void;
+}) {
+  return (
+    <ReactMarkdown
+      remarkPlugins={remarkPlugins}
+      rehypePlugins={rehypePlugins}
+      remarkRehypeOptions={remarkRehypeOptions}
+      components={buildComponents(onToggleTask)}
+    >
+      {content}
+    </ReactMarkdown>
+  );
+});
+
+/**
+ * Large documents render as independently memoized chunks of top-level
+ * blocks, so typing re-renders only the chunk being edited.
+ */
+function ChunkedMarkdown({
+  content,
+  onToggleTask,
+}: {
+  content: string;
+  onToggleTask?: (offset: number) => void;
+}) {
+  const chunks = useMemo(() => splitMarkdown(content), [content]);
+  if (!chunks) return <MarkdownRenderer content={content} onToggleTask={onToggleTask} />;
+  return (
+    <>
+      {chunks.map((chunk, i) => (
+        <div key={i} className="contents" data-chunk-offset={chunk.offset}>
+          <MarkdownRenderer content={chunk.text} onToggleTask={onToggleTask} />
+        </div>
+      ))}
+    </>
+  );
+}
+
+/** Keeps a rendering failure from blanking the editor; recovers on the next edit. */
+class PreviewErrorBoundary extends Component<
+  { resetKey: string; children: ReactNode },
+  { error: Error | null; key: string }
+> {
+  state = { error: null as Error | null, key: this.props.resetKey };
+
+  static getDerivedStateFromProps(
+    props: { resetKey: string },
+    state: { error: Error | null; key: string },
+  ) {
+    return props.resetKey !== state.key ? { error: null, key: props.resetKey } : null;
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { error };
+  }
+
+  render() {
+    if (this.state.error) {
+      return (
+        <div role="alert" className="not-prose rounded-lg border border-red-300 bg-red-50 p-4 text-sm text-red-900 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100">
+          The preview could not be rendered: {this.state.error.message}. Your
+          Markdown is unchanged — keep editing and the preview will retry.
+        </div>
+      );
+    }
+    return this.props.children;
+  }
 }
 
 export function Preview({
@@ -24,20 +215,14 @@ export function Preview({
   onScrollSync,
   scrollSourceRef,
   isScrollSyncEnabled,
-  onShare,
+  onToggleTask,
+  onArticleRef,
 }: PreviewProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const previewRef = useRef<HTMLElement>(null);
+  const previewRef = useRef<HTMLElement | null>(null);
   const [tocOpen, setTocOpen] = useState(false);
-  const [shared, setShared] = useState(false);
-
-  const handleShare = async () => {
-    if (onShare) {
-      await onShare();
-      setShared(true);
-      setTimeout(() => setShared(false), 2000);
-    }
-  };
+  // Rendering lags behind typing on large documents instead of blocking it.
+  const deferredContent = useDeferredValue(content);
 
   const handleHeadingClick = (index: number) => {
     const headings = previewRef.current?.querySelectorAll(
@@ -70,75 +255,6 @@ export function Preview({
     onScrollSync(ratio);
   };
 
-  const handleDownloadHtml = () => {
-    if (previewRef.current) {
-      const blob = new Blob([previewRef.current.innerHTML], {
-        type: "text/html",
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "preview.html";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-  };
-
-  const handleDownloadMd = () => {
-    const blob = new Blob([content], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "document.md";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
-  const handleExportPdf = () => {
-    if (!previewRef.current) return;
-    const iframe = document.createElement("iframe");
-    iframe.style.position = "fixed";
-    iframe.style.right = "0";
-    iframe.style.bottom = "0";
-    iframe.style.width = "0";
-    iframe.style.height = "0";
-    iframe.style.border = "none";
-    document.body.appendChild(iframe);
-
-    const doc = iframe.contentDocument;
-    if (!doc) return;
-
-    doc.open();
-    doc.write(`<!DOCTYPE html>
-<html>
-<head>
-  <title>MDViewer Export</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; padding: 2rem; max-width: 800px; margin: 0 auto; color: #1a1a1a; line-height: 1.7; }
-    h1, h2, h3, h4, h5, h6 { margin-top: 1.5em; margin-bottom: 0.5em; }
-    pre { background: #f4f4f5; padding: 1rem; border-radius: 6px; overflow-x: auto; font-size: 0.875rem; }
-    code { font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace; font-size: 0.875em; }
-    p code { background: #f4f4f5; padding: 0.15em 0.4em; border-radius: 3px; }
-    table { border-collapse: collapse; width: 100%; margin: 1em 0; }
-    th, td { border: 1px solid #d4d4d8; padding: 8px 12px; text-align: left; }
-    th { background: #f4f4f5; font-weight: 600; }
-    img { max-width: 100%; height: auto; }
-    blockquote { border-left: 4px solid #d4d4d8; margin: 1em 0; padding: 0.5em 1em; color: #52525b; }
-    hr { border: none; border-top: 1px solid #d4d4d8; margin: 2em 0; }
-    a { color: #2563eb; }
-    @media print { body { padding: 0; } }
-  </style>
-</head>
-<body>${previewRef.current.innerHTML}</body>
-</html>`);
-    doc.close();
-
-    iframe.contentWindow?.focus();
-    iframe.contentWindow?.print();
-
-    setTimeout(() => document.body.removeChild(iframe), 1000);
-  };
-
   const previewBtn =
     "inline-flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-background hover:text-foreground transition-colors cursor-pointer";
 
@@ -154,6 +270,8 @@ export function Preview({
               onClick={() => setTocOpen((p) => !p)}
               className={`${previewBtn} ${tocOpen ? "bg-accent text-foreground" : ""}`}
               title="Table of Contents"
+              aria-label="Table of Contents"
+              aria-expanded={tocOpen}
             >
               <List className="h-4 w-4" />
             </button>
@@ -166,43 +284,6 @@ export function Preview({
               </div>
             )}
           </div>
-          {onShare && (
-            <button
-              onClick={handleShare}
-              className={previewBtn}
-              title="Share Link"
-            >
-              {shared ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <Share2 className="h-4 w-4" />
-              )}
-            </button>
-          )}
-          <button
-            onClick={handleDownloadMd}
-            aria-label="Download Markdown"
-            className={previewBtn}
-            title="Download .md"
-          >
-            <FileText className="h-4 w-4" />
-          </button>
-          <button
-            onClick={handleDownloadHtml}
-            aria-label="Download HTML"
-            className={previewBtn}
-            title="Download HTML"
-          >
-            <Download className="h-4 w-4" />
-          </button>
-          <button
-            onClick={handleExportPdf}
-            aria-label="Export PDF"
-            className={previewBtn}
-            title="Export PDF"
-          >
-            <Printer className="h-4 w-4" />
-          </button>
         </div>
       </div>
       <div
@@ -215,32 +296,15 @@ export function Preview({
         aria-label="Markdown preview"
       >
         <article
-          ref={previewRef}
-          className="prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border [&_pre_code]:text-slate-50 text-foreground"
+          ref={(el) => {
+            previewRef.current = el;
+            onArticleRef?.(el);
+          }}
+          className="markdown-preview prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border [&_pre_code]:text-slate-50 text-foreground"
         >
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkMath]}
-            rehypePlugins={[rehypeHighlight, rehypeKatex]}
-            components={{
-              a: ({ ...props }) => (
-                <a target="_blank" rel="noopener noreferrer" {...props} />
-              ),
-              code: ({ className, children, ...props }) => {
-                const isHighlighted = className?.includes("hljs");
-                return (
-                  <code
-                    className={className}
-                    tabIndex={isHighlighted ? 0 : undefined}
-                    {...props}
-                  >
-                    {children}
-                  </code>
-                );
-              },
-            }}
-          >
-            {content}
-          </ReactMarkdown>
+          <PreviewErrorBoundary resetKey={deferredContent}>
+            <ChunkedMarkdown content={deferredContent} onToggleTask={onToggleTask} />
+          </PreviewErrorBoundary>
         </article>
       </div>
     </div>
