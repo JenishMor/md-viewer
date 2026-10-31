@@ -9,7 +9,7 @@ import {
   Heading2,
   Heading3,
   Link,
-  Image,
+  Image as ImageIcon,
   Code,
   Braces,
   List,
@@ -146,7 +146,7 @@ export function FormattingToolbar({
         onClick={() => wrap("![", "](url)", "alt text")}
         title="Image"
       >
-        <Image className="h-3.5 w-3.5" />
+        <ImageIcon className="h-3.5 w-3.5" />
       </button>
 
       <div className={sepClass} />

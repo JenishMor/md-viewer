@@ -83,18 +83,19 @@ export function handleKeyboardShortcut(
 ): boolean {
   const mod = e.ctrlKey || e.metaKey;
   if (!mod) return false;
+  const key = e.key.toLowerCase();
 
-  if (e.key === "b") {
+  if (key === "b" && !e.shiftKey) {
     e.preventDefault();
     applyWrap(textarea, value, onChange, "**", "**", "bold text");
     return true;
   }
-  if (e.key === "i") {
+  if (key === "i" && !e.shiftKey) {
     e.preventDefault();
     applyWrap(textarea, value, onChange, "*", "*", "italic text");
     return true;
   }
-  if (e.key === "k") {
+  if (key === "k") {
     e.preventDefault();
     if (e.shiftKey) {
       applyWrap(textarea, value, onChange, "`", "`", "code");

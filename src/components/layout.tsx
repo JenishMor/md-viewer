@@ -214,6 +214,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </li>
                 <li>
                   <Link
+                    href="/guides/editor-features"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Editor Features
+                  </Link>
+                </li>
+                <li>
+                  <Link
                     href="/guides/readme-best-practices"
                     className="hover:text-foreground transition-colors"
                   >

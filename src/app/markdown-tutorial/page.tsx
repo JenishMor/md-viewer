@@ -228,6 +228,11 @@ export default function MarkdownTutorial() {
               </a>
             </li>
             <li>
+              <a href="#diagrams-charts-math" className="text-primary hover:underline">
+                Diagrams, Charts &amp; Math
+              </a>
+            </li>
+            <li>
               <a
                 href="#best-practices"
                 className="text-primary hover:underline"
@@ -860,6 +865,8 @@ export default function MarkdownTutorial() {
             <p className="text-muted-foreground">
               Markdown supports inline HTML for advanced formatting needs. This
               is useful for features Markdown doesn't natively support.
+              MDViewer renders safe tags like these and removes anything that
+              could run code, such as scripts, iframes and event handlers.
             </p>
             <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-4 sm:p-6 border font-mono text-sm space-y-3 overflow-x-auto">
               <div className="text-xs text-muted-foreground font-sans font-medium">
@@ -878,6 +885,40 @@ export default function MarkdownTutorial() {
               </div>
             </div>
           </div>
+        </section>
+
+        <section id="diagrams-charts-math" className="space-y-6 scroll-mt-20">
+          <h3 className="text-2xl font-bold">Diagrams, Charts &amp; Math</h3>
+          <p className="text-muted-foreground">
+            MDViewer extends Markdown with fenced blocks for{" "}
+            <strong>Mermaid</strong> diagrams and <strong>Chart.js</strong>{" "}
+            charts, and <code>$…$</code> / <code>$$…$$</code> for KaTeX math.
+            Mermaid and math also render on GitHub; <code>chartjs</code> blocks
+            are specific to MDViewer and show as plain code elsewhere.
+          </p>
+          <pre className="bg-slate-900 text-slate-50 p-4 rounded-xl overflow-x-auto text-sm">
+            <code>{`\`\`\`mermaid
+sequenceDiagram
+  Writer->>MDViewer: Type Markdown
+  MDViewer-->>Writer: Live preview
+\`\`\`
+
+\`\`\`chartjs
+{ "type": "pie",
+  "data": { "labels": ["Docs", "Code"],
+            "datasets": [{ "data": [40, 60] }] } }
+\`\`\`
+
+Inline math: $a^2 + b^2 = c^2$`}</code>
+          </pre>
+          <p className="text-muted-foreground">
+            The{" "}
+            <Link href="/guides/editor-features" className="text-primary hover:underline">
+              editor features guide
+            </Link>{" "}
+            covers supported diagram and chart types, chart options, math
+            limitations, the visual editor, paste from Word, and export.
+          </p>
         </section>
 
         {/* Best Practices */}
@@ -985,6 +1026,18 @@ export default function MarkdownTutorial() {
         <section className="space-y-6">
           <h2 className="text-2xl font-bold">Continue Learning</h2>
           <div className="grid md:grid-cols-2 gap-6">
+            <Link
+              href="/guides/editor-features"
+              className="group p-6 bg-card rounded-2xl border hover:shadow-lg transition-all"
+            >
+              <h3 className="font-bold group-hover:text-primary transition-colors">
+                Diagrams, Charts, Math &amp; Visual Editing →
+              </h3>
+              <p className="text-sm text-muted-foreground mt-2">
+                Use Mermaid, Chart.js, KaTeX, the visual editor and export in
+                MDViewer.
+              </p>
+            </Link>
             <Link
               href="/guides/readme-best-practices"
               className="group p-6 bg-card rounded-2xl border hover:shadow-lg transition-all"

@@ -8,6 +8,7 @@ import {
   Lightbulb,
   ArrowRight,
   AlertTriangle,
+  Workflow,
 } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -33,6 +34,17 @@ export const metadata: Metadata = {
 };
 
 const guides = [
+  {
+    slug: "editor-features",
+    title: "Editor Guide: Diagrams, Charts, Math, Visual Editing & Export",
+    description:
+      "Use Mermaid diagrams, Chart.js charts, KaTeX math, the visual editor, Word and Google Docs paste, local documents and export in MDViewer — including their limits.",
+    category: "Using MDViewer",
+    readTime: "10 min read",
+    icon: Workflow,
+    color: "blue",
+    featured: false,
+  },
   {
     slug: "readme-best-practices",
     title: "How to Write Perfect README Files: A Developer's Complete Guide",

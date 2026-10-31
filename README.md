@@ -10,14 +10,20 @@ A free, open-source, and online tool to view and edit Markdown files with a real
 
 ## Key Features
 
-- **Live Preview**: See your rendered Markdown instantly as you type.
-- **Resizable Panels**: Adjust the editor and preview panels for a comfortable workspace on desktop.
-- **Responsive Design**: A seamless experience on both desktop and mobile devices.
-- **GFM Support**: Full support for GitHub Flavored Markdown, including tables, code blocks, and more.
-- **Syntax Highlighting**: Code blocks are highlighted for better readability.
-- **Math Formulas**: Write and preview math formulas using KaTeX.
-- **Theme Toggle**: Switch between light and dark modes.
-- **Persistent Content**: Your content is automatically saved to your browser's local storage.
+- **Live Preview**: See your rendered Markdown as you type; rendering yields to typing on large documents.
+- **Markdown and Visual modes**: Edit the source, or format visually (TipTap) without writing syntax. Unsupported syntax (math, raw HTML, frontmatter, footnotes) is preserved verbatim.
+- **GFM Support**: Tables, task lists (clickable in the preview), footnotes, autolinks, strikethrough, and YAML/TOML frontmatter.
+- **Mermaid diagrams**: ` ```mermaid ` blocks, lazy-loaded, theme-aware, with zoom and copy-source.
+- **Charts**: ` ```chartjs ` blocks with validated JSON (no executable code).
+- **Math Formulas**: KaTeX inline (`$…$`) and display (`$$…$$`) math.
+- **Paste from Word / Google Docs**: Cleaned and converted to Markdown in the browser.
+- **Local documents**: Multiple documents with autosave, rename, duplicate, delete with 30-day recovery, and "clear all local data". Stored in `localStorage` only — not synced or backed up.
+- **Import / export**: Open `.md`/`.txt` files, download Markdown or standalone HTML, print to PDF via the browser, copy Markdown or rich HTML.
+- **Share**: Opt-in share links that carry the document in the URL fragment, and copy-ready output for blog platforms.
+- **Sanitized HTML**: Inline HTML is rendered through GitHub's allow-list; scripts and event handlers are removed.
+- **Resizable, responsive layout** with editor-only, split and preview-only views, plus light and dark themes.
+
+See [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md) for the audit, architecture notes, known limitations, and a manual QA checklist.
 
 ## Tech Stack
 

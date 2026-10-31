@@ -9,6 +9,7 @@ export interface Template {
 export const templateCategories = [
   { id: "readme", name: "README Sections" },
   { id: "docs", name: "Document Templates" },
+  { id: "visual", name: "Diagrams, Charts & Math" },
 ];
 
 export const templates: Template[] = [
@@ -307,6 +308,116 @@ Describe the technical approach at a high level.
 
 - Metric one
 - Metric two
+
+`,
+  },
+  {
+    id: "visual-flowchart",
+    name: "Mermaid Flowchart",
+    description: "Decision flow rendered as a diagram",
+    category: "visual",
+    content: `\`\`\`mermaid
+flowchart TD
+  A[Start] --> B{Valid?}
+  B -->|Yes| C[Continue]
+  B -->|No| D[Fix input]
+  D --> B
+\`\`\`
+
+`,
+  },
+  {
+    id: "visual-sequence",
+    name: "Mermaid Sequence Diagram",
+    description: "Messages between participants",
+    category: "visual",
+    content: `\`\`\`mermaid
+sequenceDiagram
+  participant U as User
+  participant A as App
+  participant S as Server
+  U->>A: Click "Save"
+  A->>S: POST /documents
+  S-->>A: 201 Created
+  A-->>U: Show "Saved"
+\`\`\`
+
+`,
+  },
+  {
+    id: "visual-gantt",
+    name: "Mermaid Gantt Chart",
+    description: "Project timeline",
+    category: "visual",
+    content: `\`\`\`mermaid
+gantt
+  title Release plan
+  dateFormat YYYY-MM-DD
+  section Build
+    Design      :a1, 2026-01-05, 7d
+    Implement   :a2, after a1, 14d
+  section Ship
+    Test        :a3, after a2, 5d
+    Launch      :milestone, after a3, 0d
+\`\`\`
+
+`,
+  },
+  {
+    id: "visual-bar-chart",
+    name: "Bar Chart",
+    description: "Chart.js bar chart from JSON",
+    category: "visual",
+    content: `\`\`\`chartjs
+{
+  "type": "bar",
+  "data": {
+    "labels": ["Jan", "Feb", "Mar", "Apr"],
+    "datasets": [
+      { "label": "2025", "data": [12, 19, 15, 22] },
+      { "label": "2026", "data": [14, 23, 18, 27] }
+    ]
+  },
+  "options": {
+    "plugins": { "title": { "text": "Monthly sales" } },
+    "scales": { "y": { "beginAtZero": true } }
+  }
+}
+\`\`\`
+
+`,
+  },
+  {
+    id: "visual-pie-chart",
+    name: "Pie Chart",
+    description: "Chart.js pie chart from JSON",
+    category: "visual",
+    content: `\`\`\`chartjs
+{
+  "type": "pie",
+  "data": {
+    "labels": ["Docs", "Code", "Tests"],
+    "datasets": [{ "label": "Time spent", "data": [30, 50, 20] }]
+  },
+  "options": { "plugins": { "title": { "text": "Where the week went" } } }
+}
+\`\`\`
+
+`,
+  },
+  {
+    id: "visual-math",
+    name: "Math (KaTeX)",
+    description: "Inline and display equations",
+    category: "visual",
+    content: `Inline math: $E = mc^2$, $\\sqrt{a^2 + b^2}$.
+
+$$
+\\begin{aligned}
+  f(x) &= \\frac{1}{\\sigma\\sqrt{2\\pi}} e^{-\\frac{(x-\\mu)^2}{2\\sigma^2}} \\\\
+  A &= \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}
+\\end{aligned}
+$$
 
 `,
   },

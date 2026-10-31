@@ -61,6 +61,8 @@ export function DocumentTabs({
                 : "bg-muted/50 border-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
             }`}
             onClick={() => onSwitch(tab.id)}
+            data-tab-name={tab.name}
+            aria-current={isActive ? "page" : undefined}
             onDoubleClick={() => startRename(tab.id, tab.name)}
           >
             {editingId === tab.id ? (
@@ -87,6 +89,7 @@ export function DocumentTabs({
                   startRename(tab.id, tab.name);
                 }}
                 title="Rename"
+                aria-label={`Rename ${tab.name}`}
               >
                 <Pencil className="h-3 w-3" />
               </button>
@@ -98,7 +101,8 @@ export function DocumentTabs({
                   e.stopPropagation();
                   onClose(tab.id);
                 }}
-                title="Close tab"
+                title="Delete document"
+                aria-label={`Delete ${tab.name}`}
               >
                 <X className="h-3 w-3" />
               </button>
@@ -110,6 +114,7 @@ export function DocumentTabs({
         className="flex items-center justify-center p-1.5 rounded-t-lg text-muted-foreground hover:bg-muted hover:text-foreground transition-colors cursor-pointer shrink-0"
         onClick={onNew}
         title="New document"
+        aria-label="New document"
       >
         <Plus className="h-4 w-4" />
       </button>

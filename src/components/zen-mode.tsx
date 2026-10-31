@@ -42,12 +42,13 @@ export function ZenMode({
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const mod = e.ctrlKey || e.metaKey;
-    if (mod && e.key === "z" && !e.shiftKey) {
+    const key = e.key.toLowerCase();
+    if (mod && key === "z" && !e.shiftKey) {
       e.preventDefault();
       onUndo();
       return;
     }
-    if (mod && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
+    if (mod && (key === "y" || (key === "z" && e.shiftKey))) {
       e.preventDefault();
       onRedo();
       return;

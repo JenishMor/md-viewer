@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { handleKeyboardShortcut } from "@/lib/formatting";
+import { cleanPastedHtml, isOfficeHtml } from "@/lib/paste";
+import { editorHtmlToMarkdown } from "@/lib/markdown/convert";
 import { FormattingToolbar } from "@/components/formatting-toolbar";
 import {
   Copy,
@@ -16,7 +18,6 @@ interface EditorProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  initialValue: string;
   scrollRatio: number;
   onScrollSync: (ratio: number) => void;
   scrollSourceRef: React.MutableRefObject<"editor" | "preview" | null>;
@@ -28,6 +29,12 @@ interface EditorProps
   onZenMode?: () => void;
   onOpenTemplates?: () => void;
   onTextareaRef?: (el: HTMLTextAreaElement | null) => void;
+  /** Opens a dropped or picked file. The parent decides where it goes. */
+  onOpenFile: (file: File) => void;
+  onRequestImport: () => void;
+  onRequestClear: () => void;
+  onRequestReset: () => void;
+  onNotify?: (message: string, kind?: "success" | "error" | "info") => void;
 }
 
 function computeStats(text: string) {
@@ -44,7 +51,6 @@ const headerBtn =
 export function Editor({
   value,
   onChange,
-  initialValue,
   scrollRatio,
   onScrollSync,
   scrollSourceRef,
@@ -56,6 +62,11 @@ export function Editor({
   onZenMode,
   onOpenTemplates,
   onTextareaRef,
+  onOpenFile,
+  onRequestImport,
+  onRequestClear,
+  onRequestReset,
+  onNotify,
   className,
   ...props
 }: EditorProps) {
@@ -70,52 +81,40 @@ export function Editor({
     },
     [onTextareaRef],
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
   const stats = computeStats(value);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(value);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      onNotify?.("Clipboard access was blocked by the browser.", "error");
+    }
   };
 
-  const handleClear = () => {
-    onChange({
-      target: { value: "" },
-    } as React.ChangeEvent<HTMLTextAreaElement>);
-  };
-
-  const handleReset = () => {
-    onChange({
-      target: { value: initialValue },
-    } as React.ChangeEvent<HTMLTextAreaElement>);
-  };
-
-  const readFile = useCallback(
-    (file: File) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const content = e.target?.result;
-        if (typeof content === "string") {
-          onChange({
-            target: { value: content },
-          } as React.ChangeEvent<HTMLTextAreaElement>);
-        }
-      };
-      reader.readAsText(file);
-    },
-    [onChange],
-  );
-
-  const handleFileImport = () => {
-    fileInputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) readFile(file);
-    e.target.value = "";
+  // Rich text from Word / Google Docs becomes Markdown. Everything else
+  // (including Ctrl+Shift+V) pastes as plain text, as usual.
+  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+    const html = e.clipboardData.getData("text/html");
+    if (!html || !isOfficeHtml(html)) return;
+    e.preventDefault();
+    const { html: clean, warnings } = cleanPastedHtml(html);
+    const markdown = editorHtmlToMarkdown(clean).trim();
+    const ta = e.currentTarget;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const next = value.slice(0, start) + markdown + value.slice(end);
+    onChange({ target: { value: next } } as React.ChangeEvent<HTMLTextAreaElement>);
+    requestAnimationFrame(() => {
+      ta.selectionStart = ta.selectionEnd = start + markdown.length;
+    });
+    onNotify?.(
+      warnings.length
+        ? `Converted pasted rich text to Markdown. ${warnings.join(" ")}`
+        : "Converted pasted rich text to Markdown. Use Ctrl+Shift+V to paste plain text.",
+      warnings.length ? "error" : "info",
+    );
   };
 
   const handleDragOver = (e: React.DragEvent) => {
@@ -132,20 +131,21 @@ export function Editor({
     e.preventDefault();
     setIsDragOver(false);
     const file = e.dataTransfer.files[0];
-    if (file) readFile(file);
+    if (file) onOpenFile(file);
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     const mod = e.ctrlKey || e.metaKey;
+    const key = e.key.toLowerCase();
 
     // Undo: Ctrl+Z
-    if (mod && e.key === "z" && !e.shiftKey) {
+    if (mod && key === "z" && !e.shiftKey) {
       e.preventDefault();
       onUndo?.();
       return;
     }
     // Redo: Ctrl+Y or Ctrl+Shift+Z
-    if (mod && (e.key === "y" || (e.key === "z" && e.shiftKey))) {
+    if (mod && (key === "y" || (key === "z" && e.shiftKey))) {
       e.preventDefault();
       onRedo?.();
       return;
@@ -184,40 +184,32 @@ export function Editor({
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
     >
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept=".md,.markdown,.mdx,.txt,.text"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-2 border-b border-border bg-muted/50">
         <span className="text-sm font-medium text-muted-foreground">
           Markdown Input
         </span>
         <div className="flex items-center space-x-1">
-          <button onClick={handleFileImport} className={headerBtn} title="Open File">
+          <button onClick={onRequestImport} className={headerBtn} title="Open File" aria-label="Open file">
             <FolderOpen className="h-4 w-4" />
           </button>
           {onOpenTemplates && (
-            <button onClick={onOpenTemplates} className={headerBtn} title="Templates">
+            <button onClick={onOpenTemplates} className={headerBtn} title="Templates" aria-label="Templates">
               <LayoutTemplate className="h-4 w-4" />
             </button>
           )}
           {onZenMode && (
-            <button onClick={onZenMode} className={headerBtn} title="Zen Mode">
+            <button onClick={onZenMode} className={headerBtn} title="Zen Mode" aria-label="Zen mode">
               <Maximize2 className="h-4 w-4" />
             </button>
           )}
-          <button onClick={handleClear} className={headerBtn} title="Clear Markdown">
+          <button onClick={onRequestClear} className={headerBtn} title="Clear Markdown" aria-label="Clear Markdown">
             <X className="h-4 w-4" />
           </button>
-          <button onClick={handleReset} className={headerBtn} title="Reset to Default">
+          <button onClick={onRequestReset} className={headerBtn} title="Reset to Default" aria-label="Reset to default">
             <RotateCcw className="h-4 w-4" />
           </button>
-          <button onClick={handleCopy} className={headerBtn} title="Copy Markdown">
+          <button onClick={handleCopy} className={headerBtn} title="Copy Markdown" aria-label="Copy Markdown">
             {copied ? (
               <Check className="h-4 w-4 text-green-500" />
             ) : (
@@ -248,6 +240,8 @@ export function Editor({
         value={value}
         onChange={onChange}
         onKeyDown={handleKeyDown}
+        onPaste={handlePaste}
+        aria-label="Markdown editor"
         placeholder="# Type your markdown here..."
         onScroll={handleScroll}
         spellCheck={false}
