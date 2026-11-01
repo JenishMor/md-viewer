@@ -1,14 +1,21 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Layout } from '@/components/layout';
+
+export const metadata: Metadata = {
+  title: 'Page not found',
+  robots: { index: false, follow: true },
+};
 
 export default function NotFound() {
   return (
     <Layout>
       <div className="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6 px-4">
-        <h1 className="text-6xl font-extrabold text-primary">404</h1>
-        <h2 className="text-3xl font-bold">Page Not Found</h2>
+        <p className="text-6xl font-extrabold text-primary" aria-hidden="true">404</p>
+        <h1 className="text-3xl font-bold">Page not found</h1>
         <p className="text-xl text-muted-foreground max-w-md">
-          Oops! It seems the markdown document or page you're looking for doesn't exist or has been moved.
+          This page doesn&apos;t exist or has moved. Your documents are safe —
+          they&apos;re stored in your browser, not on this page.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           <Link 

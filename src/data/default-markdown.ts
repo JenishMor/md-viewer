@@ -1,59 +1,44 @@
-export const DEFAULT_MARKDOWN = `# MD Viewer & Live Markdown Preview
+export const DEFAULT_MARKDOWN = `# Welcome to MDViewer
 
-Welcome to the ultimate **MD Viewer**! This tool offers a powerful **live markdown editor** and **real-time preview** to streamline your writing process. Whether you're a developer or a content creator, our **markdown preview** functionality makes it easy to work with .md files.
+Type in the editor and the preview updates as you go. This sample shows what MDViewer renders — edit it, or replace it with your own document.
 
-## 🚀 Key Features
+## Open your own file
 
-- **Live Markdown Preview:** See your formatted text instantly as you type.
-- **Visual & Code Editing:** Use the visual editor for a WYSIWYG experience or write directly in Markdown.
-- **GFM Support:** Full support for GitHub Flavored Markdown, including tables, code blocks, and more.
-- **Paste from Anywhere:** Copy content from Word or Google Docs and see it converted to clean Markdown.
-- **Dark Mode Support:** Switch between light and dark themes for a comfortable writing experience.
+Use **Open file** above the editor, drag a \`.md\` file onto it, or paste text. Your documents are saved in this browser, not uploaded.
 
-## 💡 Why Use a Live MD Viewer?
+## Formatting basics
 
-A good **MD viewer** with a **live preview** saves you time and effort. You don't have to switch between windows or guess what your formatting looks like. It's perfect for:
-1. Drafting GitHub README files.
-2. Writing technical documentation.
-3. Creating blog posts with Markdown.
-4. Taking clean, formatted notes.
+Text can be **bold**, *italic*, ~~struck through~~ or \`inline code\`. Links look like [the Markdown tutorial](https://www.mdviewer.in/markdown-tutorial).
 
-### Text Formatting
-This text is **bold**, this is *italic*, and this is ***both***. You can also use ~~strikethrough~~.
+> Tip: switch to **Visual** mode to format without writing Markdown.
 
-### Lists
-**Unordered List:**
-- First item
-- Second item
-  - Nested item
-- Third item
+### Lists and tasks
 
-**Ordered List:**
-1. First step
-2. Second step
-3. Third step
+1. Write your draft
+2. Check the preview
+3. Export or share
 
-### 📊 Tables
-| Feature | Supported | Description |
-| :--- | :---: | :--- |
-| GFM | ✅ | Full support for GitHub standard |
-| Tables | ✅ | Clean and responsive |
-| Math | ✅ | LaTeX support |
+- [x] GitHub Flavored Markdown
+- [x] Tables and task lists
+- [ ] Your first document
 
-### 💻 Code Blocks
-Our **live markdown preview** handles code beautifully with syntax highlighting.
+### Tables
+
+| Feature        | Syntax            |
+| :------------- | :---------------- |
+| Heading        | \`# Title\`         |
+| Bold           | \`**text**\`        |
+| Link           | \`[text](url)\`     |
+
+### Code
+
 \`\`\`javascript
-function sayHello(name) {
-    console.log(\`Hello, \${name}!\`);
+function greet(name) {
+  return \`Hello, \${name}!\`;
 }
 \`\`\`
 
-### 💬 Blockquote
-> "This is the best markdown preview tool I've ever used. The live editor is a game-changer!"
-> 
-> — A Happy Developer
-
 ---
 
-**Get started now:** Edit this text in the **live markdown editor** and see the magic of our **MD viewer**! ✨
+Want diagrams, charts or math? Open **Templates** in the editor toolbar and choose *Diagrams, Charts & Math*.
 `;

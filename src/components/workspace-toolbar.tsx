@@ -76,7 +76,7 @@ function Segmented<T extends string>({
   label: string;
   value: T;
   onChange: (v: T) => void;
-  options: { value: T; label: string; icon: ReactNode; hideLabel?: boolean }[];
+  options: { value: T; label: string; icon: ReactNode; hideLabel?: boolean; compactLabel?: boolean }[];
 }) {
   return (
     <div role="radiogroup" aria-label={label} className="inline-flex rounded-md bg-muted p-0.5">
@@ -96,7 +96,7 @@ function Segmented<T extends string>({
           }`}
         >
           {o.icon}
-          {!o.hideLabel && <span>{o.label}</span>}
+          {!o.hideLabel && <span className={o.compactLabel ? "hidden sm:inline" : undefined}>{o.label}</span>}
         </button>
       ))}
     </div>
@@ -148,9 +148,11 @@ function ExportMenu({ onExport }: { onExport: (action: ExportAction) => void }) 
         className={toolBtn}
         aria-haspopup="menu"
         aria-expanded={open}
+        aria-label="Export"
+        title="Export"
         onClick={() => setOpen((o) => !o)}
       >
-        <Download className="h-4 w-4" aria-hidden /> Export
+        <Download className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">Export</span>
         <ChevronDown className="h-3.5 w-3.5" aria-hidden />
       </button>
       {open && (
@@ -206,8 +208,14 @@ export function WorkspaceToolbar({
         <Files className="h-4 w-4" aria-hidden /> Documents
         <span className="rounded bg-muted px-1.5 text-xs">{documentCount}</span>
       </button>
-      <button type="button" className={toolBtn} onClick={onImport} title="Open a .md, .markdown or .txt file">
-        <Upload className="h-4 w-4" aria-hidden /> Open file
+      <button
+        type="button"
+        className={toolBtn}
+        onClick={onImport}
+        aria-label="Open file"
+        title="Open a .md, .markdown or .txt file"
+      >
+        <Upload className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">Open file</span>
       </button>
       <SaveIndicator status={status} />
 
@@ -232,8 +240,8 @@ export function WorkspaceToolbar({
           ]}
         />
         <ExportMenu onExport={onExport} />
-        <button type="button" className={toolBtn} onClick={onPublish}>
-          <Send className="h-4 w-4" aria-hidden /> Share
+        <button type="button" className={toolBtn} onClick={onPublish} aria-label="Share" title="Share">
+          <Send className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">Share</span>
         </button>
         <button
           type="button"

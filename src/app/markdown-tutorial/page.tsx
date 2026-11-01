@@ -1,34 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title:
-    "Complete Markdown Tutorial 2026 | Learn Markdown Syntax from Beginner to Advanced",
+export const metadata: Metadata = pageMetadata({
+  title: "Markdown Tutorial: Learn the Syntax Step by Step",
   description:
-    "Master Markdown with our comprehensive 2026 tutorial. Learn basic syntax, GitHub Flavored Markdown (GFM), tables, code blocks, and advanced techniques. Perfect for developers, writers, and students.",
-  keywords: [
-    "markdown tutorial",
-    "learn markdown",
-    "markdown syntax",
-    "markdown guide",
-    "github flavored markdown",
-    "gfm tutorial",
-    "markdown for beginners",
-    "markdown cheat sheet",
-    "how to write markdown",
-    "markdown formatting",
-  ],
-  openGraph: {
-    title: "Complete Markdown Tutorial 2026 | Learn Markdown Syntax",
-    description:
-      "Master Markdown with our comprehensive tutorial. From basic syntax to advanced GitHub Flavored Markdown techniques.",
-    url: "https://mdviewer.in/markdown-tutorial",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "Learn Markdown syntax with examples: headings, emphasis, lists, links, images, code blocks, tables, task lists and GitHub Flavored Markdown. Practise in a live editor.",
+  path: "/markdown-tutorial",
+  type: "article",
+});
 
 export default function MarkdownTutorial() {
   const jsonLd = {
@@ -43,27 +25,27 @@ export default function MarkdownTutorial() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-01-01",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/markdown-tutorial",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/markdown-tutorial",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -72,13 +54,13 @@ export default function MarkdownTutorial() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Tutorial",
-            item: "https://mdviewer.in/markdown-tutorial",
+            item: "https://www.mdviewer.in/markdown-tutorial",
           },
         ],
       },
@@ -121,7 +103,7 @@ export default function MarkdownTutorial() {
               ~15 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -136,8 +118,6 @@ export default function MarkdownTutorial() {
             <time dateTime="2025-01-01">Published Jan 1, 2025</time>
           </div>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Table of Contents */}
         <nav className="bg-muted/50 rounded-2xl p-4 sm:p-6 border">
@@ -261,9 +241,9 @@ export default function MarkdownTutorial() {
               note-taking to writing entire books.
             </p>
             <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-4 sm:p-6">
-              <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
+              <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
                 💡 Fun Fact
-              </h4>
+              </h3>
               <p className="text-blue-800 dark:text-blue-200 text-base">
                 This very tutorial is written in Markdown! When you see it
                 rendered on MDViewer, you're seeing how Markdown transforms into
@@ -554,11 +534,11 @@ export default function MarkdownTutorial() {
                   <tr className="border-b">
                     <td className="p-3">Basic Link</td>
                     <td className="p-3 font-mono bg-muted/50 text-xs">
-                      [MDViewer](https://mdviewer.in)
+                      [MDViewer](https://www.mdviewer.in)
                     </td>
                     <td className="p-3">
                       <a
-                        href="https://mdviewer.in"
+                        href="https://www.mdviewer.in"
                         className="text-primary hover:underline"
                       >
                         MDViewer
@@ -568,11 +548,11 @@ export default function MarkdownTutorial() {
                   <tr className="border-b">
                     <td className="p-3">With Title</td>
                     <td className="p-3 font-mono bg-muted/50 text-xs">
-                      [MDViewer](https://mdviewer.in "Editor")
+                      [MDViewer](https://www.mdviewer.in "Editor")
                     </td>
                     <td className="p-3">
                       <a
-                        href="https://mdviewer.in"
+                        href="https://www.mdviewer.in"
                         title="Editor"
                         className="text-primary hover:underline"
                       >
@@ -583,14 +563,14 @@ export default function MarkdownTutorial() {
                   <tr className="border-b">
                     <td className="p-3">Auto-link</td>
                     <td className="p-3 font-mono bg-muted/50 text-xs">
-                      &lt;https://mdviewer.in&gt;
+                      &lt;https://www.mdviewer.in&gt;
                     </td>
                     <td className="p-3">
                       <a
-                        href="https://mdviewer.in"
+                        href="https://www.mdviewer.in"
                         className="text-primary hover:underline"
                       >
-                        https://mdviewer.in
+                        https://www.mdviewer.in
                       </a>
                     </td>
                   </tr>
@@ -803,7 +783,7 @@ export default function MarkdownTutorial() {
                   RENDERED OUTPUT
                 </div>
                 <ul className="space-y-2">
-                  <li className="flex items-center gap-2">
+                  <li><label className="flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked
@@ -813,8 +793,8 @@ export default function MarkdownTutorial() {
                     <span className="line-through text-muted-foreground">
                       Write the tutorial
                     </span>
-                  </li>
-                  <li className="flex items-center gap-2">
+                  </label></li>
+                  <li><label className="flex items-center gap-2">
                     <input
                       type="checkbox"
                       checked
@@ -824,15 +804,15 @@ export default function MarkdownTutorial() {
                     <span className="line-through text-muted-foreground">
                       Add code examples
                     </span>
-                  </li>
-                  <li className="flex items-center gap-2">
+                  </label></li>
+                  <li><label className="flex items-center gap-2">
                     <input type="checkbox" disabled className="rounded" />{" "}
                     Review and edit
-                  </li>
-                  <li className="flex items-center gap-2">
+                  </label></li>
+                  <li><label className="flex items-center gap-2">
                     <input type="checkbox" disabled className="rounded" />{" "}
                     Publish
-                  </li>
+                  </label></li>
                 </ul>
               </div>
             </div>
@@ -930,9 +910,9 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
                 1
               </div>
               <div className="space-y-2">
-                <h4 className="text-lg font-bold">
+                <h3 className="text-lg font-bold">
                   Use Consistent Heading Hierarchy
-                </h4>
+                </h3>
                 <p className="text-muted-foreground">
                   Start with a single H1, then use H2 for main sections, H3 for
                   subsections. Never skip heading levels (e.g., H1 → H3).
@@ -944,9 +924,9 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
                 2
               </div>
               <div className="space-y-2">
-                <h4 className="text-lg font-bold">
+                <h3 className="text-lg font-bold">
                   Always Add Alt Text to Images
-                </h4>
+                </h3>
                 <p className="text-muted-foreground">
                   Descriptive alt text improves accessibility for screen readers
                   and helps with SEO. Never leave it empty.
@@ -958,9 +938,9 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
                 3
               </div>
               <div className="space-y-2">
-                <h4 className="text-lg font-bold">
+                <h3 className="text-lg font-bold">
                   Specify Language in Code Blocks
-                </h4>
+                </h3>
                 <p className="text-muted-foreground">
                   Always add the language identifier after triple backticks
                   (e.g., ```javascript) for proper syntax highlighting.
@@ -972,9 +952,9 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
                 4
               </div>
               <div className="space-y-2">
-                <h4 className="text-lg font-bold">
+                <h3 className="text-lg font-bold">
                   Use Blank Lines Generously
-                </h4>
+                </h3>
                 <p className="text-muted-foreground">
                   Add blank lines between sections, before and after code
                   blocks, and around lists. It improves readability in both raw
@@ -987,9 +967,9 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
                 5
               </div>
               <div className="space-y-2">
-                <h4 className="text-lg font-bold">
+                <h3 className="text-lg font-bold">
                   Keep Lines Under 80-120 Characters
-                </h4>
+                </h3>
                 <p className="text-muted-foreground">
                   Long lines are hard to read in plain text. Break them
                   naturally at sentence or clause boundaries.
@@ -1064,6 +1044,8 @@ Inline math: $a^2 + b^2 = c^2$`}</code>
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

@@ -1,15 +1,14 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Terms of Service | MDViewer - Usage Terms and Conditions",
+export const metadata: Metadata = pageMetadata({
+  title: "Terms of Service",
   description:
-    "Read the MDViewer Terms of Service. Understand your rights and responsibilities when using our free online Markdown editor, including usage policies, intellectual property, and liability.",
-  alternates: {
-    canonical: "https://mdviewer.in/terms-of-service",
-  },
-};
+    "The terms for using MDViewer, the free online Markdown editor: acceptable use, your content, intellectual property and liability.",
+  path: "/terms-of-service",
+});
 
 export default function TermsOfService() {
   return (
@@ -23,7 +22,7 @@ export default function TermsOfService() {
           <p className="text-muted-foreground text-sm">
             These terms apply to the website{" "}
             <Link
-              href="https://mdviewer.in"
+              href="https://www.mdviewer.in"
               className="text-primary hover:underline"
             >
               mdviewer.in
@@ -132,7 +131,7 @@ export default function TermsOfService() {
           <p>
             By accessing and using{" "}
             <Link
-              href="https://mdviewer.in"
+              href="https://www.mdviewer.in"
               className="text-primary hover:underline"
             >
               MDViewer

@@ -4,7 +4,7 @@
 
 A free, open-source, and online tool to view and edit Markdown files with a real-time preview.
 
-**Live at: [mdviewer.in](https://mdviewer.in)**
+**Live at: [mdviewer.in](https://www.mdviewer.in)**
 
 ![MD Viewer Screenshot](https://www.mdviewer.in/logo.png) 
 
@@ -23,7 +23,7 @@ A free, open-source, and online tool to view and edit Markdown files with a real
 - **Sanitized HTML**: Inline HTML is rendered through GitHub's allow-list; scripts and event handlers are removed.
 - **Resizable, responsive layout** with editor-only, split and preview-only views, plus light and dark themes.
 
-See [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md) for the audit, architecture notes, known limitations, and a manual QA checklist.
+See [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md) for the editor architecture, limitations and QA checklist, and [docs/SEO-UX-AUDIT.md](docs/SEO-UX-AUDIT.md) for the SEO and UX audit.
 
 ## Tech Stack
 
@@ -36,49 +36,17 @@ See [docs/IMPROVEMENTS.md](docs/IMPROVEMENTS.md) for the audit, architecture not
 
 ## Testing & CI/CD
 
-This project includes a comprehensive testing setup with:
-
-- ✅ **End-to-End Testing** with [Playwright](https://playwright.dev/)
-- ✅ **Cross-Browser Testing** (Chromium, Firefox, WebKit)
-- ✅ **Accessibility Testing** (WCAG 2.1 AA compliance)
-- ✅ **Responsive Design Testing** (Mobile & Desktop)
-- ✅ **Performance Testing** (Core Web Vitals)
-- ✅ **GitHub Actions CI/CD** (Automated testing on PRs)
-
-### Quick Start
+End-to-end tests use [Playwright](https://playwright.dev/) and run against a production build in two projects: Desktop Chrome and a mobile Chrome profile (Pixel 5). They cover Markdown rendering and sanitization, Mermaid and chart blocks, the visual editor and paste conversion, local documents and autosave, import/export, share links, responsive layout, and accessibility checks with axe-core (no critical or serious violations).
 
 ```bash
-# Install test dependencies
 npm install
-
-# Install Playwright browsers
-npx playwright install --with-deps
-
-# Run all tests
-npm test
-
-# Run tests in UI mode (recommended)
-npm run test:ui
-
-# View test report
-npm run test:report
+npx playwright install --with-deps chromium
+npm test                # build, start and run all tests
+npm run test:ui         # interactive mode
+npm run test:report     # open the last HTML report
 ```
 
-### Documentation
-
-- 📖 [Testing Quick Start Guide](TESTING_QUICKSTART.md) - Get started in 5 minutes
-- 📚 [Complete Testing Documentation](TESTING.md) - Comprehensive testing guide
-- 🔒 [Branch Protection Setup](BRANCH_PROTECTION.md) - Configure GitHub PR protection
-
-### CI/CD Workflow
-
-All pull requests to `main` automatically run:
-- Cross-browser tests (Chrome, Firefox, Safari)
-- Mobile responsiveness tests
-- Accessibility compliance checks
-- Performance benchmarks
-
-PRs can only be merged when all tests pass ✅
+GitHub Actions runs the suite on every pull request to `main` and nightly (`.github/workflows/`).
 
 ## Getting Started
 
@@ -86,7 +54,7 @@ To run the project locally, follow these steps:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/md-viewer.git
+   git clone https://github.com/JenishMor/md-viewer.git
    cd md-viewer
    ```
 

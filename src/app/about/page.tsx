@@ -1,20 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 import { Github, Mail, Heart, Zap, Shield, Users } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "About MDViewer | Meet the Creator & Our Mission",
+export const metadata: Metadata = pageMetadata({
+  title: "About MDViewer",
   description:
-    "Learn about MDViewer, the free online Markdown editor created by Jenish Mor. Discover our mission to empower developers, writers, and content creators with powerful, privacy-focused tools.",
-  openGraph: {
-    title: "About MDViewer | Meet the Creator & Our Mission",
-    description:
-      "Learn about MDViewer, the free online Markdown editor created by Jenish Mor. Discover our mission to empower developers, writers, and content creators.",
-    url: "https://mdviewer.in/about",
-    type: "website",
-  },
-};
+    "Why MDViewer exists, who builds it, and the principles behind it: a free, open-source Markdown editor that keeps your documents in your browser.",
+  path: "/about",
+  absoluteTitle: true,
+});
 
 export default function About() {
   return (

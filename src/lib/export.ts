@@ -1,4 +1,5 @@
-import katex from "katex";
+// Only the version is needed; importing katex itself would pull ~260 KB into the first page load.
+import { version as katexVersion } from "katex/package.json";
 
 /** Turns a document name into a safe, portable file name (without extension). */
 export function sanitizeFilename(name: string, fallback = "document"): string {
@@ -121,7 +122,7 @@ figure { text-align: center; break-inside: avoid; }
 `;
 
 export function buildStandaloneHtml(title: string, bodyHtml: string): string {
-  const katexCss = `https://cdn.jsdelivr.net/npm/katex@${katex.version}/dist/katex.min.css`;
+  const katexCss = `https://cdn.jsdelivr.net/npm/katex@${katexVersion}/dist/katex.min.css`;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>

@@ -1,30 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Markdown for Bloggers: From Draft to Published Post | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "Markdown for Bloggers: Draft to Published Post",
   description:
-    "Learn how content creators use Markdown to write faster, format consistently, and publish to platforms like Dev.to, Medium, and WordPress. Speed up your blogging workflow.",
-  keywords: [
-    "markdown for bloggers",
-    "blog writing markdown",
-    "medium markdown",
-    "dev.to markdown",
-    "wordpress markdown",
-    "content creation",
-    "blogging workflow",
-  ],
-  openGraph: {
-    title: "Markdown for Bloggers: From Draft to Published Post",
-    description:
-      "How content creators use Markdown to write faster and publish to various platforms.",
-    url: "https://mdviewer.in/guides/markdown-for-bloggers",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "How bloggers use Markdown to draft faster and publish to Dev.to, Medium, WordPress, Ghost and static site generators without reformatting.",
+  path: "/guides/markdown-for-bloggers",
+  type: "article",
+});
 
 export default function MarkdownForBloggersGuide() {
   const jsonLd = {
@@ -38,27 +24,27 @@ export default function MarkdownForBloggersGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-02-15",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/markdown-for-bloggers",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/markdown-for-bloggers",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -67,19 +53,19 @@ export default function MarkdownForBloggersGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Markdown for Bloggers",
-            item: "https://mdviewer.in/guides/markdown-for-bloggers",
+            item: "https://www.mdviewer.in/guides/markdown-for-bloggers",
           },
         ],
       },
@@ -119,7 +105,7 @@ export default function MarkdownForBloggersGuide() {
               10 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -143,8 +129,6 @@ export default function MarkdownForBloggersGuide() {
             faster and publish smarter.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Why Bloggers Love Markdown */}
         <section className="space-y-6">
@@ -306,7 +290,7 @@ draft: false
                 1
               </div>
               <div>
-                <h4 className="font-semibold">Draft in Your Favorite Editor</h4>
+                <h3 className="font-semibold">Draft in Your Favorite Editor</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Use VS Code, Obsidian, or MDViewer to write your draft. Focus
                   on content, not formatting.
@@ -318,7 +302,7 @@ draft: false
                 2
               </div>
               <div>
-                <h4 className="font-semibold">Preview & Polish</h4>
+                <h3 className="font-semibold">Preview & Polish</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Use a live preview to check formatting. Add images, refine
                   headers, and ensure code blocks are correct.
@@ -330,7 +314,7 @@ draft: false
                 3
               </div>
               <div>
-                <h4 className="font-semibold">Store in Git (Optional)</h4>
+                <h3 className="font-semibold">Store in Git (Optional)</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Version control your posts. Track changes, collaborate with
                   editors, and never lose a draft.
@@ -342,7 +326,7 @@ draft: false
                 4
               </div>
               <div>
-                <h4 className="font-semibold">Publish to Platform</h4>
+                <h3 className="font-semibold">Publish to Platform</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Copy to Dev.to, import to Medium, or push to your static site.
                   Your Markdown is ready.
@@ -357,44 +341,44 @@ draft: false
           <h2 className="text-3xl font-bold">Essential Blog Post Elements</h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">📌 Compelling Introduction</h4>
+              <h3 className="font-semibold mb-2">📌 Compelling Introduction</h3>
               <p className="text-sm text-muted-foreground">
                 Hook readers in the first paragraph. State the problem you're
                 solving.
               </p>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">📋 Scannable Headings</h4>
+              <h3 className="font-semibold mb-2">📋 Scannable Headings</h3>
               <p className="text-sm text-muted-foreground">
                 Use H2 for main sections, H3 for subsections. Make them
                 descriptive.
               </p>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">💻 Code Examples</h4>
+              <h3 className="font-semibold mb-2">💻 Code Examples</h3>
               <p className="text-sm text-muted-foreground">
                 For technical posts, include copy-pasteable code with syntax
                 highlighting.
               </p>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">🖼️ Images & Diagrams</h4>
+              <h3 className="font-semibold mb-2">🖼️ Images & Diagrams</h3>
               <p className="text-sm text-muted-foreground">
                 Visual content increases engagement. Include screenshots and
                 diagrams.
               </p>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">📝 Conclusion & CTA</h4>
+              <h3 className="font-semibold mb-2">📝 Conclusion & CTA</h3>
               <p className="text-sm text-muted-foreground">
                 Summarize key takeaways. Include a call-to-action (follow,
                 comment, etc.).
               </p>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">
+              <h3 className="font-semibold mb-2">
                 🔗 Internal & External Links
-              </h4>
+              </h3>
               <p className="text-sm text-muted-foreground">
                 Link to related posts and authoritative sources for context and
                 SEO.
@@ -456,6 +440,8 @@ draft: false
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

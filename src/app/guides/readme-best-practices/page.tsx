@@ -1,32 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title:
-    "How to Write Perfect README Files: A Developer's Complete Guide | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "How to Write a Good README (With Examples)",
   description:
-    "Master the art of README writing for GitHub. Learn structure, essential sections, badges, screenshots, and real examples that make your projects stand out and attract contributors.",
-  keywords: [
-    "readme best practices",
-    "how to write readme",
-    "github readme guide",
-    "readme template",
-    "readme examples",
-    "open source readme",
-    "project documentation",
-    "readme.md guide",
-  ],
-  openGraph: {
-    title: "How to Write Perfect README Files: A Developer's Complete Guide",
-    description:
-      "Master the art of README writing for GitHub. Learn structure, essential sections, badges, and examples that make your projects stand out.",
-    url: "https://mdviewer.in/guides/readme-best-practices",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "Write README files people actually read: recommended structure, essential sections, badges, screenshots and copy-ready Markdown examples for GitHub projects.",
+  path: "/guides/readme-best-practices",
+  type: "article",
+});
 
 export default function ReadmeBestPracticesGuide() {
   const jsonLd = {
@@ -41,27 +25,27 @@ export default function ReadmeBestPracticesGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-01-15",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/readme-best-practices",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/readme-best-practices",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -70,19 +54,19 @@ export default function ReadmeBestPracticesGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "README Best Practices",
-            item: "https://mdviewer.in/guides/readme-best-practices",
+            item: "https://www.mdviewer.in/guides/readme-best-practices",
           },
         ],
       },
@@ -125,7 +109,7 @@ export default function ReadmeBestPracticesGuide() {
               Updated Feb 2026
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -149,8 +133,6 @@ export default function ReadmeBestPracticesGuide() {
             contributors.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Table of Contents */}
         <nav className="bg-muted/50 rounded-2xl p-6 border">
@@ -254,9 +236,9 @@ export default function ReadmeBestPracticesGuide() {
             </p>
           </div>
           <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-            <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
+            <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
               💡 Real Impact
-            </h4>
+            </h3>
             <p className="text-blue-800 dark:text-blue-200">
               Repositories with clear README files are generally easier to
               understand, easier to onboard to, and more likely to receive
@@ -865,6 +847,8 @@ Project Link: [https://github.com/username/project-name](https://github.com/user
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );
