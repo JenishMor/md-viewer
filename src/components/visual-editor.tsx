@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { EditorContent, useEditor, useEditorState, type Editor as TiptapEditor } from "@tiptap/react";
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
 import type { EditorProps } from "@tiptap/pm/view";
+import { DOMSerializer } from "@tiptap/pm/model";
 import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import { Table, TableCell, TableHeader, TableRow } from "@tiptap/extension-table";
@@ -40,6 +41,7 @@ import {
   type PreservedSummary,
 } from "@/lib/markdown/convert";
 import { cleanPastedHtml } from "@/lib/paste";
+import type { AiTarget } from "@/lib/ai/target";
 
 /** Inline Markdown the visual editor can't represent (math, raw HTML, footnote refs), kept verbatim. */
 const RawInline = Node.create({
@@ -130,6 +132,34 @@ function promptImage(editor: TiptapEditor) {
   }
   const alt = window.prompt("Alternative text (describe the image)") ?? "";
   editor.chain().focus().setImage({ src: src.trim(), alt }).run();
+}
+
+/** The selected content as Markdown, with a way to replace it. Null when nothing is selected. */
+function selectionTarget(editor: TiptapEditor): AiTarget | null {
+  const { state } = editor;
+  const { from, to, empty } = state.selection;
+  if (empty) return null;
+  const container = document.createElement("div");
+  container.appendChild(DOMSerializer.fromSchema(editor.schema).serializeFragment(state.doc.slice(from, to).content));
+  const text = editorHtmlToMarkdown(container.innerHTML).trim();
+  if (!text) return null;
+  const doc = state.doc;
+  return {
+    text,
+    scope: "selection",
+    apply(result, mode) {
+      if (editor.isDestroyed || editor.state.doc !== doc) return false;
+      const html = markdownToEditorHtml(result).html;
+      if (mode === "replace") {
+        editor.chain().focus().insertContentAt({ from, to }, html).run();
+      } else {
+        // After the top-level block the selection ends in.
+        const $to = doc.resolve(to);
+        editor.chain().focus().insertContentAt($to.depth > 0 ? $to.after(1) : to, html).run();
+      }
+      return true;
+    },
+  };
 }
 
 const LinkShortcut = Extension.create({
@@ -345,11 +375,13 @@ interface VisualEditorProps {
   markdown: string;
   onChange: (markdown: string) => void;
   onPasteWarnings?: (warnings: string[]) => void;
+  /** Receives a function that captures the current selection for AI actions. */
+  onSelectionTargetReady?: (getTarget: (() => AiTarget | null) | null) => void;
 }
 
 const EMIT_DELAY_MS = 200;
 
-export function VisualEditor({ markdown, onChange, onPasteWarnings }: VisualEditorProps) {
+export function VisualEditor({ markdown, onChange, onPasteWarnings, onSelectionTargetReady }: VisualEditorProps) {
   const [initial] = useState(() => markdownToEditorHtml(markdown));
   const [preserved, setPreserved] = useState<PreservedSummary>(initial.preserved);
   const lastMarkdown = useRef(markdown);
@@ -431,6 +463,12 @@ export function VisualEditor({ markdown, onChange, onPasteWarnings }: VisualEdit
   useEffect(() => {
     editorRef.current = editor;
   }, [editor]);
+
+  useEffect(() => {
+    if (!editor || !onSelectionTargetReady) return;
+    onSelectionTargetReady(() => selectionTarget(editor));
+    return () => onSelectionTargetReady(null);
+  }, [editor, onSelectionTargetReady]);
 
   // Flush the last edit when leaving visual mode.
   useEffect(() => () => {

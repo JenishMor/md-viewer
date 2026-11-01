@@ -51,6 +51,8 @@ import {
   waitForRenderedBlocks,
 } from "@/lib/export";
 import { safeGet, safeRemove, safeSet } from "@/lib/storage";
+import { AI_ACTIONS, AI_ENABLED, type AiActionId } from "@/lib/ai/actions";
+import { sourceTarget, type AiTarget } from "@/lib/ai/target";
 import LZString from "lz-string";
 
 const PREFS_KEY = "md-viewer-prefs";
@@ -116,6 +118,12 @@ const VisualEditor = dynamic(
   { ssr: false, loading: () => paneSkeleton },
 );
 
+// Loaded on the first AI click, so AI adds nothing to the initial page load.
+const AiDialog = dynamic(
+  () => import("@/components/ai-dialog").then((mod) => mod.AiDialog),
+  { ssr: false },
+);
+
 export default function HomePage({ children }: { children?: React.ReactNode }) {
   const docs = useDocuments(DEFAULT_MARKDOWN);
   const {
@@ -154,7 +162,9 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
   const [editorMode, setEditorMode] = useState<EditorMode>("markdown");
   const [viewMode, setViewMode] = useState<ViewMode>("split");
   const [offscreenPreview, setOffscreenPreview] = useState(false);
+  const [ai, setAi] = useState<{ target: AiTarget | null; action?: AiActionId; key: number } | null>(null);
   const editorTextareaRef = useRef<HTMLTextAreaElement | null>(null);
+  const visualSelectionRef = useRef<(() => AiTarget | null) | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const articleRef = useRef<HTMLElement | null>(null);
   const { toasts, toast, dismiss } = useToasts();
@@ -474,6 +484,26 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
     setEditorMode((m) => (m === "markdown" ? "visual" : "markdown"));
   }, []);
 
+  // AI works on the selection captured when it opens, or on the whole document.
+  const openAi = useCallback(
+    (action?: AiActionId) => {
+      const getMarkdown = () => markdownRef.current;
+      let target: AiTarget | null = null;
+      if (editorMode === "visual") {
+        target = visualSelectionRef.current?.() ?? sourceTarget(getMarkdown, setMarkdown, 0, 0);
+      } else {
+        const ta = editorTextareaRef.current;
+        target = sourceTarget(getMarkdown, setMarkdown, ta?.selectionStart ?? 0, ta?.selectionEnd ?? 0);
+      }
+      setAi((prev) => ({ target, action, key: (prev?.key ?? 0) + 1 }));
+    },
+    [editorMode, setMarkdown],
+  );
+
+  const handleVisualSelectionReady = useCallback((get: (() => AiTarget | null) | null) => {
+    visualSelectionRef.current = get;
+  }, []);
+
   // Template insertion
   const handleTemplateInsert = useCallback(
     (content: string) => {
@@ -536,8 +566,17 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
       { id: "zen", name: "Zen Mode", section: "View", handler: () => setZenMode(true) },
       { id: "templates", name: "Open Templates", section: "View", handler: () => setTemplatesOpen(true) },
       { id: "shortcuts", name: "Keyboard Shortcuts", section: "View", handler: () => setShortcutsOpen(true) },
+      // AI
+      ...(AI_ENABLED
+        ? AI_ACTIONS.map((a) => ({
+            id: `ai-${a.id}`,
+            name: `AI: ${a.label}`,
+            section: "AI",
+            handler: () => openAi(a.id),
+          }))
+        : []),
     ];
-  }, [runSourceFormat, handleUndo, handleRedo, handleNewTab, requestImport, handleExport, toggleEditorMode]);
+  }, [runSourceFormat, handleUndo, handleRedo, handleNewTab, requestImport, handleExport, toggleEditorMode, openAi]);
 
   // Global keyboard shortcuts
   useEffect(() => {
@@ -617,6 +656,7 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
               markdown={markdown}
               onChange={setMarkdown}
               onPasteWarnings={(w) => toast(w.join(" "), { kind: "error" })}
+              onSelectionTargetReady={handleVisualSelectionReady}
             />
           )}
         </div>
@@ -684,6 +724,7 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
           onExport={handleExport}
           onPublish={() => setPublishOpen(true)}
           onShowShortcuts={() => setShortcutsOpen(true)}
+          onAi={AI_ENABLED ? () => openAi() : undefined}
         />
 
         {/* Document Tabs */}
@@ -852,6 +893,25 @@ export default function HomePage({ children }: { children?: React.ReactNode }) {
       />
 
       <ShortcutsDialog open={shortcutsOpen} onClose={() => setShortcutsOpen(false)} />
+
+      {ai && (
+        <AiDialog
+          key={ai.key}
+          open
+          target={ai.target}
+          initialAction={ai.action}
+          onClose={() => setAi(null)}
+          onApplied={(message) => toast(message, { kind: "success" })}
+          onCopy={async (text) => {
+            try {
+              await copyText(text);
+              toast("AI result copied to clipboard.", { kind: "success" });
+            } catch {
+              toast("The browser blocked clipboard access.", { kind: "error" });
+            }
+          }}
+        />
+      )}
 
       {confirmDialog}
       <Toaster toasts={toasts} onDismiss={dismiss} />

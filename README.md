@@ -70,6 +70,21 @@ To run the project locally, follow these steps:
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## AI assist (optional)
+
+AI assist improves, corrects, shortens, explains or formats the selected text (or the whole document) with Google Gemini. It is off unless enabled.
+
+1. Copy `.env.example` to `.env.local`.
+2. Set `NEXT_PUBLIC_AI_ENABLED=true` and `GEMINI_API_KEY` (from [Google AI Studio](https://aistudio.google.com/apikey)).
+3. Restart `npm run dev`, or rebuild for production: the flag is read at build time.
+
+How it works:
+- The browser calls `POST /api/ai` (`src/app/api/ai/route.ts`) with an action name and the text. Prompts live on the server, and the key never reaches the browser.
+- The route checks the request's origin, the user's region (the free tier can't serve the EEA, UK or Switzerland), input size, per-user limits and a site-wide daily budget, then streams the model's answer.
+- Text is never stored or logged. Set `UPSTASH_REDIS_REST_URL`/`TOKEN` in production so limits are shared across serverless instances.
+
+Tests mock the model (`tests/ai.spec.ts`), so CI needs no key. See [docs/AI-INTEGRATION-PROPOSAL.md](docs/AI-INTEGRATION-PROPOSAL.md) for the design and roadmap.
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

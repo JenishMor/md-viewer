@@ -17,7 +17,7 @@ export default function PrivacyPolicy() {
         <header className="space-y-4 border-b pb-6">
           <h1 className="text-4xl font-bold">Privacy Policy</h1>
           <p className="text-muted-foreground">
-            Last updated: October 31, 2026
+            Last updated: November 1, 2026
           </p>
           <p className="text-muted-foreground text-sm">
             This policy applies to the website{" "}
@@ -222,8 +222,9 @@ export default function PrivacyPolicy() {
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>
-                Is stored <strong>entirely on your device</strong> and is never
-                transmitted to our servers
+                Is stored <strong>entirely on your device</strong> and is not
+                transmitted to our servers, except text you choose to send with
+                AI assist (see 2.5)
               </li>
               <li>Is not accessible to us or any third party</li>
               <li>
@@ -267,6 +268,50 @@ export default function PrivacyPolicy() {
                 <strong>Images</strong> referenced by URL in your Markdown are
                 loaded by your browser from the site that hosts them, which can
                 see your IP address, as with any web page.
+              </li>
+            </ul>
+          </div>
+
+          <div id="ai-features" className="space-y-4 scroll-mt-20">
+            <h3 className="text-xl font-medium">2.5 AI Assist</h3>
+            <p>
+              AI assist (improve, fix grammar, shorten, explain and format as
+              Markdown) is optional. When you choose an AI action:
+            </p>
+            <ul className="list-disc list-inside space-y-2 ml-4">
+              <li>
+                The text you selected, or the whole current document if nothing
+                is selected, is sent through our server to{" "}
+                <strong>Google Gemini</strong> to produce the result. Nothing is
+                sent until you click an action.
+              </li>
+              <li>
+                We do <strong>not</strong> store or log that text or the result.
+                Our server records only technical details (the action, text
+                length, response time and errors) and temporarily counts
+                requests per IP address to enforce daily limits.
+              </li>
+              <li>
+                MDViewer currently uses Gemini&apos;s free tier. Under{" "}
+                <a
+                  href="https://ai.google.dev/gemini-api/terms"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:underline"
+                >
+                  Google&apos;s Gemini API terms
+                </a>
+                , Google may use free-tier requests and responses to improve its
+                products, and human reviewers may read them. Do not send
+                passwords, personal data or confidential material.
+              </li>
+              <li>
+                AI assist is not offered in the European Economic Area, the
+                United Kingdom or Switzerland while it runs on the free tier.
+              </li>
+              <li>
+                AI results can be inaccurate. They are shown for your review and
+                only change your document if you apply them.
               </li>
             </ul>
           </div>
@@ -565,6 +610,36 @@ export default function PrivacyPolicy() {
               for details on how they handle data.
             </p>
           </div>
+
+          <div className="space-y-4">
+            <h3 className="text-xl font-medium">5.4 Google Gemini</h3>
+            <p>
+              If you use AI assist, the text you send is processed by the Google
+              Gemini API as described in{" "}
+              <a href="#ai-features" className="text-primary hover:underline">
+                section 2.5
+              </a>
+              . See the{" "}
+              <a
+                href="https://ai.google.dev/gemini-api/terms"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Gemini API Additional Terms
+              </a>{" "}
+              and{" "}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Google&apos;s Privacy Policy
+              </a>
+              .
+            </p>
+          </div>
         </section>
 
         {/* Data Storage and Security */}
@@ -587,8 +662,9 @@ export default function PrivacyPolicy() {
             </li>
             <li>
               <strong>Local-first architecture:</strong> Your Markdown content
-              is stored only in your browser&apos;s localStorage and never
-              transmitted to our servers
+              is stored only in your browser&apos;s localStorage. It is
+              transmitted only when you use AI assist, and is not stored on our
+              servers
             </li>
             <li>
               <strong>Content Security:</strong> We implement security headers
