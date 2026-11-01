@@ -1,5 +1,6 @@
 // Only the version is needed; importing katex itself would pull ~260 KB into the first page load.
 import { version as katexVersion } from "katex/package.json";
+import { renderAllBlocks } from "@/lib/lazy-blocks";
 
 /** Turns a document name into a safe, portable file name (without extension). */
 export function sanitizeFilename(name: string, fallback = "document"): string {
@@ -44,6 +45,8 @@ function escapeHtml(text: string) {
  * Returns false if some were still rendering when the timeout expired.
  */
 export async function waitForRenderedBlocks(article: HTMLElement, timeoutMs = 10000) {
+  // Blocks that haven't scrolled into view yet haven't rendered either.
+  renderAllBlocks();
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     const pending = article.querySelector(

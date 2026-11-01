@@ -22,6 +22,28 @@ test.describe("Home Page - Core Functionality", () => {
     expect(content).toContain("Welcome to MDViewer");
   });
 
+  test("default document showcases every supported feature", async ({ page }) => {
+    const article = page.locator("article.markdown-preview").first();
+    for (const heading of ["Formatting", "Lists and tasks", "Tables", "Code with syntax highlighting", "Diagrams (Mermaid)", "Charts (Chart.js)", "Math (KaTeX)", "Collapsible sections"]) {
+      await expect(article.getByRole("heading", { name: heading })).toBeVisible();
+    }
+    await expect(article.locator("input[type=checkbox]")).toHaveCount(3);
+    await expect(article.locator("table").first().locator("th")).toHaveCount(3);
+    await expect(article.locator("pre code.hljs").first()).toBeVisible();
+    await expect(article.locator(".katex-display")).toHaveCount(1);
+    await expect(article.locator("[data-footnotes] li")).toHaveCount(1);
+    await expect(article.locator("details summary")).toHaveText("Click to expand");
+
+    // Diagram and chart render once scrolled into view.
+    const diagram = article.locator("[data-mermaid-block]");
+    await diagram.scrollIntoViewIfNeeded();
+    await expect(diagram.locator("[data-mermaid-svg] svg")).toBeVisible({ timeout: 20000 });
+    const chart = article.locator("[data-chart-block] canvas[data-rendered]");
+    await article.locator("[data-chart-block]").scrollIntoViewIfNeeded();
+    await expect(chart).toHaveCount(1, { timeout: 20000 });
+    await expect(article.locator("[data-block-error], [role=alert]")).toHaveCount(0);
+  });
+
   test("should update preview when typing in editor", async ({ page }) => {
     const editor = page.locator("textarea");
     await editor.clear();

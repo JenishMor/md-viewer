@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { Minus, Plus, RotateCcw, Workflow } from "lucide-react";
 import { BlockError, CopySourceButton } from "@/components/block-chrome";
+import { useNearViewport } from "@/lib/lazy-blocks";
 
 type MermaidApi = typeof import("mermaid").default;
 
@@ -67,8 +68,11 @@ export function MermaidBlock({ code }: { code: string }) {
     return cached ? { svg: cached } : null;
   });
   const [scale, setScale] = useState(1);
+  const figureRef = useRef<HTMLElement>(null);
+  const near = useNearViewport(figureRef);
 
   useEffect(() => {
+    if (!near) return;
     let cancelled = false;
     // Debounce so diagrams don't re-render on every keystroke.
     const timer = setTimeout(() => {
@@ -85,7 +89,7 @@ export function MermaidBlock({ code }: { code: string }) {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [id, source, theme]);
+  }, [id, source, theme, near]);
 
   if (!source) return null;
 
@@ -102,6 +106,7 @@ export function MermaidBlock({ code }: { code: string }) {
 
   return (
     <figure
+      ref={figureRef}
       className="not-prose my-6 rounded-lg border border-border bg-card"
       data-mermaid-block
     >
@@ -154,7 +159,7 @@ export function MermaidBlock({ code }: { code: string }) {
             dangerouslySetInnerHTML={{ __html: result.svg }}
           />
         ) : (
-          <div className="h-32 animate-pulse rounded bg-muted" aria-label="Rendering diagram" />
+          <div className="h-32 animate-pulse rounded bg-muted" role="status" aria-label="Rendering diagram" />
         )}
       </div>
     </figure>

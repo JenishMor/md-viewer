@@ -10,6 +10,7 @@ import {
   type SafeChartConfig,
 } from "@/lib/chart-config";
 import { BlockError, CopySourceButton } from "@/components/block-chrome";
+import { useNearViewport } from "@/lib/lazy-blocks";
 
 // Categorical palette, validated for CVD separation against the app's light
 // (#ffffff) and dark (#020617) surfaces. Hues are assigned in fixed order.
@@ -144,9 +145,11 @@ export function ChartBlock({ source }: { source: string }) {
   const { resolvedTheme } = useTheme();
   const mode = resolvedTheme === "dark" ? "dark" : "light";
   const [renderError, setRenderError] = useState<string | null>(null);
+  const figureRef = useRef<HTMLElement>(null);
+  const near = useNearViewport(figureRef);
 
   useEffect(() => {
-    if (!parsed.ok || !canvasRef.current) return;
+    if (!near || !parsed.ok || !canvasRef.current) return;
     let chart: ChartInstance | null = null;
     let cancelled = false;
     const canvas = canvasRef.current;
@@ -167,7 +170,7 @@ export function ChartBlock({ source }: { source: string }) {
       delete canvas.dataset.rendered;
       chart?.destroy();
     };
-  }, [parsed, mode]);
+  }, [parsed, mode, near]);
 
   if (!parsed.ok || renderError) {
     return (
@@ -182,7 +185,7 @@ export function ChartBlock({ source }: { source: string }) {
 
   const description = describeChart(parsed.config);
   return (
-    <figure className="not-prose my-6 rounded-lg border border-border bg-card" data-chart-block>
+    <figure ref={figureRef} className="not-prose my-6 rounded-lg border border-border bg-card" data-chart-block>
       <div
         className="flex items-center justify-between gap-2 border-b border-border px-3 py-1.5 text-xs text-muted-foreground"
         data-export-ignore
