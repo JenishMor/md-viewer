@@ -305,6 +305,7 @@ export function Preview({
       <div
         className="flex-1 overflow-auto p-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         ref={scrollContainerRef}
+        data-scroll-root
         onScroll={handleScroll}
         // Make the scrollable region focusable so keyboard users can scroll
         tabIndex={0}

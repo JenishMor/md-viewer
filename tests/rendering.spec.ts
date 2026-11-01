@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { readFile } from "node:fs/promises";
 import { previewArticle, setMarkdown, waitForPageReady } from "./helpers";
 
 test.beforeEach(async ({ page }) => {
@@ -207,9 +208,31 @@ stateDiagram-v2
 \`\`\`
 `,
     );
-    const svgs = previewArticle(page).locator("[data-mermaid-svg] svg");
-    await expect(svgs).toHaveCount(4, { timeout: 20000 });
-    await expect(previewArticle(page).locator("[data-mermaid-block]").first()).toContainText("Start");
+    // Diagrams render as they scroll into view.
+    const blocks = previewArticle(page).locator("[data-mermaid-block]");
+    await expect(blocks).toHaveCount(4);
+    for (let i = 0; i < 4; i++) {
+      await blocks.nth(i).scrollIntoViewIfNeeded();
+      await expect(blocks.nth(i).locator("[data-mermaid-svg] svg")).toHaveCount(1, { timeout: 20000 });
+    }
+    await expect(blocks.first()).toContainText("Start");
+  });
+
+  test("renders diagrams only when they scroll near view, but exports them all", async ({ page }) => {
+    const filler = Array.from({ length: 80 }, (_, i) => `Paragraph ${i + 1} of filler text.`).join("\n\n");
+    await setMarkdown(page, `# Top\n\n${filler}\n\n\`\`\`mermaid\nflowchart LR\n  Far --> Away\n\`\`\`\n`);
+    const block = previewArticle(page).locator("[data-mermaid-block]");
+    await expect(block).toHaveCount(1);
+    await page.waitForTimeout(1500);
+    await expect(block.locator("[data-mermaid-svg] svg")).toHaveCount(0);
+
+    // Export renders it even though it's still off-screen.
+    const download = page.waitForEvent("download");
+    await page.getByRole("button", { name: "Export" }).click();
+    await page.getByRole("menuitem", { name: /Download HTML/ }).click();
+    const html = await readFile((await (await download).path())!, "utf-8");
+    expect(html).toContain("Away");
+    expect(html).toMatch(/<svg[\s\S]*Far/);
   });
 
   test("shows an isolated error for invalid syntax and keeps rendering other content", async ({ page }) => {
