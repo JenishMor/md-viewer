@@ -31,6 +31,9 @@ jobs:
 
       - name: Build application
         run: npm run build
+        env:
+          # AI UI is tested with a mocked model; no Gemini key is used in CI.
+          NEXT_PUBLIC_AI_ENABLED: "true"
 
       - name: Run all tests
         run: npx playwright test

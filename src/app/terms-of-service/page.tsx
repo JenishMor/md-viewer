@@ -17,7 +17,7 @@ export default function TermsOfService() {
         <header className="space-y-4 border-b pb-6">
           <h1 className="text-4xl font-bold">Terms of Service</h1>
           <p className="text-muted-foreground">
-            Last updated: February 22, 2026
+            Last updated: November 1, 2026
           </p>
           <p className="text-muted-foreground text-sm">
             These terms apply to the website{" "}
@@ -299,9 +299,14 @@ export default function TermsOfService() {
           <ul className="list-disc list-inside space-y-2 ml-4">
             <li>
               <strong>
-                Your content is never uploaded to or stored on our servers.
+                Your content is never stored on our servers.
               </strong>{" "}
-              We have no access to the Markdown you write.
+              It leaves your browser only when you choose an AI assist action,
+              which sends the selected text to Google Gemini as described in our{" "}
+              <Link href="/privacy-policy#ai-features" className="text-primary hover:underline">
+                Privacy Policy
+              </Link>
+              . AI results can be inaccurate; review them before relying on them.
             </li>
             <li>
               <strong>

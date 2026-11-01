@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import {
   AlertTriangle,
   Check,
@@ -18,10 +18,12 @@ import {
   PenLine,
   Printer,
   Send,
+  Sparkles,
   SquarePen,
   Upload,
 } from "lucide-react";
 import type { SaveStatus } from "@/lib/use-documents";
+import { safeGet, safeSet } from "@/lib/storage";
 
 export type EditorMode = "markdown" | "visual";
 export type ViewMode = "split" | "editor" | "preview";
@@ -173,6 +175,111 @@ function ExportMenu({ onExport }: { onExport: (action: ExportAction) => void }) 
   );
 }
 
+const AI_TIP_KEY = "md-viewer-ai-tip-dismissed";
+const AI_TIP_DELAY_MS = 1200;
+
+/** AI button with a one-time tip that introduces the feature. */
+function AiButton({ onClick }: { onClick: () => void }) {
+  const [tipOpen, setTipOpen] = useState(false);
+  const tipRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (safeGet(AI_TIP_KEY) !== "1") setTipOpen(true);
+    }, AI_TIP_DELAY_MS);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const dismiss = () => {
+    safeSet(AI_TIP_KEY, "1");
+    setTipOpen(false);
+  };
+
+  // Keep the tip inside the viewport and its arrow pointing at the button.
+  useLayoutEffect(() => {
+    if (!tipOpen) return;
+    const place = () => {
+      const tip = tipRef.current;
+      const button = buttonRef.current;
+      if (!tip || !button) return;
+      const rect = button.getBoundingClientRect();
+      const width = tip.offsetWidth;
+      const center = rect.left + rect.width / 2;
+      const left = Math.min(Math.max(center - width / 2, 16), window.innerWidth - width - 16);
+      tip.style.left = `${left - rect.left}px`;
+      tip.style.setProperty("--arrow-x", `${center - left}px`);
+    };
+    place();
+    window.addEventListener("resize", place);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") dismiss();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("resize", place);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [tipOpen]);
+
+  return (
+    <div className="relative">
+      <button
+        ref={buttonRef}
+        type="button"
+        className={`${toolBtn} ${tipOpen ? "bg-accent text-foreground ring-2 ring-primary" : ""}`}
+        // Keep the editor's selection: the AI works on what is selected.
+        onMouseDown={(e) => e.preventDefault()}
+        onClick={() => {
+          if (tipOpen) dismiss();
+          onClick();
+        }}
+        aria-label="AI assist"
+        aria-describedby={tipOpen ? "ai-tip-body" : undefined}
+        title="AI assist: improve, fix, shorten, explain or format the selection"
+      >
+        <Sparkles className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">AI</span>
+      </button>
+      {tipOpen && (
+        <div
+          ref={tipRef}
+          role="dialog"
+          aria-labelledby="ai-tip-title"
+          aria-describedby="ai-tip-body"
+          className="absolute top-full z-50 mt-3 w-72 max-w-[calc(100vw-2rem)] rounded-lg border border-border bg-card p-4 text-left text-card-foreground shadow-xl"
+        >
+          <span
+            aria-hidden
+            className="absolute -top-1.5 h-3 w-3 -translate-x-1/2 rotate-45 border-l border-t border-border bg-card"
+            style={{ left: "var(--arrow-x, 50%)" }}
+          />
+          <p id="ai-tip-title" className="flex items-center gap-2 text-sm font-semibold">
+            <Sparkles className="h-4 w-4 text-primary" aria-hidden />
+            New: AI assist
+            <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-primary">
+              Beta
+            </span>
+          </p>
+          <p id="ai-tip-body" className="mt-2 text-sm text-muted-foreground">
+            Select text, or use the whole document, then click AI to improve the writing, fix
+            grammar, shorten it, explain it or turn rough notes into Markdown. Nothing is sent
+            until you choose an action.
+          </p>
+          <div className="mt-3 flex justify-end">
+            <button
+              type="button"
+              className="rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:opacity-90 cursor-pointer"
+              onClick={dismiss}
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function WorkspaceToolbar({
   status,
   documentCount,
@@ -185,6 +292,7 @@ export function WorkspaceToolbar({
   onExport,
   onPublish,
   onShowShortcuts,
+  onAi,
 }: {
   status: SaveStatus;
   documentCount: number;
@@ -197,6 +305,8 @@ export function WorkspaceToolbar({
   onExport: (action: ExportAction) => void;
   onPublish: () => void;
   onShowShortcuts: () => void;
+  /** Present only when AI features are enabled. */
+  onAi?: () => void;
 }) {
   return (
     <div
@@ -239,6 +349,7 @@ export function WorkspaceToolbar({
             { value: "preview", label: "Preview only", icon: <Eye className="h-3.5 w-3.5" aria-hidden />, hideLabel: true },
           ]}
         />
+        {onAi && <AiButton onClick={onAi} />}
         <ExportMenu onExport={onExport} />
         <button type="button" className={toolBtn} onClick={onPublish} aria-label="Share" title="Share">
           <Send className="h-4 w-4" aria-hidden /> <span className="hidden sm:inline">Share</span>
