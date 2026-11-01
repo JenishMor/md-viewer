@@ -1,15 +1,14 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Privacy Policy | MDViewer - How We Protect Your Data",
+export const metadata: Metadata = pageMetadata({
+  title: "Privacy Policy",
   description:
-    "Read the MDViewer privacy policy. Learn how we handle your data, our cookie policy, third-party services, your rights under GDPR and CCPA, and our commitment to your privacy.",
-  alternates: {
-    canonical: "https://mdviewer.in/privacy-policy",
-  },
-};
+    "How MDViewer handles your data: documents stay in your browser's local storage, what analytics and advertising services collect, and your rights.",
+  path: "/privacy-policy",
+});
 
 export default function PrivacyPolicy() {
   return (
@@ -23,7 +22,7 @@ export default function PrivacyPolicy() {
           <p className="text-muted-foreground text-sm">
             This policy applies to the website{" "}
             <Link
-              href="https://mdviewer.in"
+              href="https://www.mdviewer.in"
               className="text-primary hover:underline"
             >
               mdviewer.in
@@ -127,7 +126,7 @@ export default function PrivacyPolicy() {
             and what choices you have regarding your data when you use our free
             online Markdown editor at{" "}
             <Link
-              href="https://mdviewer.in"
+              href="https://www.mdviewer.in"
               className="text-primary hover:underline"
             >
               mdviewer.in

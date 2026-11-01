@@ -1,30 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Markdown vs. Rich Text: When to Use What | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "Markdown vs. Rich Text: When to Use Each",
   description:
-    "Understand the key differences between Markdown and rich text editors like Word and Google Docs. Learn when to use each format and how to choose the right tool for your writing.",
-  keywords: [
-    "markdown vs word",
-    "markdown vs rich text",
-    "why use markdown",
-    "markdown benefits",
-    "plain text vs rich text",
-    "markdown advantages",
-    "when to use markdown",
-  ],
-  openGraph: {
-    title: "Markdown vs. Rich Text: When to Use What",
-    description:
-      "Understand the differences between Markdown and rich text editors. Learn when each format shines.",
-    url: "https://mdviewer.in/guides/markdown-vs-rich-text",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "How Markdown differs from rich text editors like Word and Google Docs, where each one works best, and how to move content between them.",
+  path: "/guides/markdown-vs-rich-text",
+  type: "article",
+});
 
 export default function MarkdownVsRichTextGuide() {
   const jsonLd = {
@@ -38,27 +24,27 @@ export default function MarkdownVsRichTextGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-02-01",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/markdown-vs-rich-text",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/markdown-vs-rich-text",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -67,19 +53,19 @@ export default function MarkdownVsRichTextGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Markdown vs. Rich Text",
-            item: "https://mdviewer.in/guides/markdown-vs-rich-text",
+            item: "https://www.mdviewer.in/guides/markdown-vs-rich-text",
           },
         ],
       },
@@ -119,7 +105,7 @@ export default function MarkdownVsRichTextGuide() {
               8 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -143,8 +129,6 @@ export default function MarkdownVsRichTextGuide() {
             right choice.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Introduction */}
         <section className="space-y-6">
@@ -432,9 +416,9 @@ export default function MarkdownVsRichTextGuide() {
             </p>
           </div>
           <div className="bg-purple-50 dark:bg-purple-950/30 border border-purple-200 dark:border-purple-800 rounded-xl p-6">
-            <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-2">
+            <h3 className="font-bold text-purple-900 dark:text-purple-100 mb-2">
               💡 Pro Tip
-            </h4>
+            </h3>
             <p className="text-purple-800 dark:text-purple-200">
               Even if your final output is a Word document, consider writing
               your first draft in Markdown. The distraction-free environment
@@ -495,6 +479,8 @@ export default function MarkdownVsRichTextGuide() {
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

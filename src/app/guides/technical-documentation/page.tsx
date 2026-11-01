@@ -1,30 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Creating Technical Documentation with Markdown | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "Writing Technical Documentation in Markdown",
   description:
-    "Learn professional techniques for writing user guides, API docs, and knowledge bases using Markdown. Structure, style, and tools that documentation experts use.",
-  keywords: [
-    "technical documentation",
-    "documentation markdown",
-    "api documentation",
-    "user guide markdown",
-    "knowledge base",
-    "technical writing",
-    "docs as code",
-  ],
-  openGraph: {
-    title: "Creating Technical Documentation with Markdown",
-    description:
-      "Professional techniques for writing user guides, API docs, and knowledge bases using Markdown.",
-    url: "https://mdviewer.in/guides/technical-documentation",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "Structure, style and tooling for user guides, API documentation and knowledge bases written in Markdown, with examples you can adapt.",
+  path: "/guides/technical-documentation",
+  type: "article",
+});
 
 export default function TechnicalDocumentationGuide() {
   const jsonLd = {
@@ -38,27 +24,27 @@ export default function TechnicalDocumentationGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-02-10",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/technical-documentation",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/technical-documentation",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -67,19 +53,19 @@ export default function TechnicalDocumentationGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Technical Documentation",
-            item: "https://mdviewer.in/guides/technical-documentation",
+            item: "https://www.mdviewer.in/guides/technical-documentation",
           },
         ],
       },
@@ -119,7 +105,7 @@ export default function TechnicalDocumentationGuide() {
               14 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -143,8 +129,6 @@ export default function TechnicalDocumentationGuide() {
             approach used by GitHub, Microsoft, and leading tech companies.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Why Docs Matter */}
         <section className="space-y-6">
@@ -207,9 +191,9 @@ export default function TechnicalDocumentationGuide() {
             </p>
           </div>
           <div className="bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
-            <h4 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
+            <h3 className="font-bold text-blue-900 dark:text-blue-100 mb-2">
               🔧 Popular Docs-as-Code Tools
-            </h4>
+            </h3>
             <ul className="text-sm text-blue-800 dark:text-blue-200 space-y-1">
               <li>
                 • <strong>MkDocs</strong> — Python-based, Material theme
@@ -324,7 +308,7 @@ export default function TechnicalDocumentationGuide() {
                 1
               </div>
               <div>
-                <h4 className="font-semibold">Start with a Clear Hierarchy</h4>
+                <h3 className="font-semibold">Start with a Clear Hierarchy</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Use headings consistently. Each page should have one H1.
                   Subsections use H2, H3, etc. Never skip levels.
@@ -336,7 +320,7 @@ export default function TechnicalDocumentationGuide() {
                 2
               </div>
               <div>
-                <h4 className="font-semibold">Lead with the Answer</h4>
+                <h3 className="font-semibold">Lead with the Answer</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Put the most important information first. Users scan
                   documentation—make key points visible immediately.
@@ -348,7 +332,7 @@ export default function TechnicalDocumentationGuide() {
                 3
               </div>
               <div>
-                <h4 className="font-semibold">Use Consistent Formatting</h4>
+                <h3 className="font-semibold">Use Consistent Formatting</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Create a style guide: how to format code, when to use
                   admonitions, how to structure examples.
@@ -360,7 +344,7 @@ export default function TechnicalDocumentationGuide() {
                 4
               </div>
               <div>
-                <h4 className="font-semibold">Cross-Link Generously</h4>
+                <h3 className="font-semibold">Cross-Link Generously</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Connect related concepts. Don't make users search for
                   information that's relevant to what they're reading.
@@ -421,31 +405,31 @@ export default function TechnicalDocumentationGuide() {
           </div>
           <div className="space-y-4">
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">
+              <h3 className="font-semibold mb-2">
                 📋 Task Lists for Prerequisites
-              </h4>
+              </h3>
               <code className="text-sm bg-muted px-2 py-1 rounded">
                 - [x] Node.js 18+ installed
               </code>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">
+              <h3 className="font-semibold mb-2">
                 📊 Tables for Parameter Reference
-              </h4>
+              </h3>
               <code className="text-sm bg-muted px-2 py-1 rounded">
                 | Param | Type | Description |
               </code>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">
+              <h3 className="font-semibold mb-2">
                 💻 Fenced Code with Language
-              </h4>
+              </h3>
               <code className="text-sm bg-muted px-2 py-1 rounded">
                 ```javascript
               </code>
             </div>
             <div className="p-5 bg-card rounded-xl border">
-              <h4 className="font-semibold mb-2">💬 Blockquotes for Notes</h4>
+              <h3 className="font-semibold mb-2">💬 Blockquotes for Notes</h3>
               <code className="text-sm bg-muted px-2 py-1 rounded">
                 &gt; **Note:** Important information here
               </code>
@@ -506,6 +490,8 @@ export default function TechnicalDocumentationGuide() {
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

@@ -5,9 +5,8 @@ import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import remarkFrontmatter from "remark-frontmatter";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema, type Options as SanitizeSchema } from "rehype-sanitize";
 import rehypeHighlight from "rehype-highlight";
-import rehypeKatex from "rehype-katex";
 import { visit } from "unist-util-visit";
 
 /**
@@ -41,7 +40,7 @@ function remarkFrontmatterBlock() {
  * GitHub's allow-list. Scripts, styles, iframes, forms, event handlers and
  * javascript: URLs are removed. Images may use http(s) or data: URLs.
  */
-export const sanitizeSchema = {
+export const sanitizeSchema: SanitizeSchema = {
   ...defaultSchema,
   attributes: {
     ...defaultSchema.attributes,
@@ -88,8 +87,32 @@ export const rehypePlugins: PluggableList = [
     rehypeHighlight,
     { plainText: [...DIAGRAM_LANGS, ...CHART_LANGS, "yaml-frontmatter"] },
   ],
-  [rehypeKatex, { throwOnError: false, strict: "ignore" }],
 ];
+
+/** Cheap check for remark-math syntax, so KaTeX is only downloaded when needed. */
+export function mayContainMath(markdown: string) {
+  return markdown.includes("$");
+}
+
+let mathPlugin: PluggableList[number] | null = null;
+let mathPluginPromise: Promise<PluggableList[number]> | null = null;
+
+/** The KaTeX plugin if it has already been loaded. */
+export function loadedMathPlugin() {
+  return mathPlugin;
+}
+
+/** Loads KaTeX (~260 KB of JS plus its CSS and fonts) on first use. */
+export function loadMathPlugin() {
+  mathPluginPromise ??= Promise.all([
+    import("rehype-katex"),
+    import("katex/dist/katex.min.css"),
+  ]).then(([mod]) => {
+    mathPlugin = [mod.default, { throwOnError: false, strict: "ignore" }];
+    return mathPlugin;
+  });
+  return mathPluginPromise;
+}
 
 export const remarkRehypeOptions = { allowDangerousHtml: true };
 

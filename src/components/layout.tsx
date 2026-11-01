@@ -29,15 +29,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
               className="flex items-center space-x-2"
               aria-label="MDViewer Home"
             >
-              <div className="relative h-12 w-48 dark:bg-[#020617] rounded">
-                <Image
-                  src="/md-logo.png"
-                  alt="MDViewer - Free Online Markdown Editor and Viewer"
-                  fill
-                  className="object-contain dark:invert dark:mix-blend-screen"
-                  priority
-                />
-              </div>
+              {/* md-logo.png is 494×161; render it at its display size so only a small file is fetched. */}
+              <Image
+                src="/md-logo.png"
+                alt="MDViewer"
+                width={123}
+                height={40}
+                className="h-10 w-auto dark:invert dark:mix-blend-screen"
+                priority
+              />
             </Link>
             <nav
               className="hidden md:flex items-center gap-6"
@@ -151,17 +151,16 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
             <div className="sm:col-span-2 space-y-4">
-              <div className="relative h-10 w-40">
-                <Image
-                  src="/md-logo.png"
-                  alt="MDViewer - Free Online Markdown Editor and Viewer"
-                  fill
-                  className="object-contain dark:invert dark:mix-blend-screen"
-                />
-              </div>
+              <Image
+                src="/md-logo.png"
+                alt="MDViewer"
+                width={110}
+                height={36}
+                className="h-9 w-auto dark:invert dark:mix-blend-screen"
+              />
               <p className="text-sm text-muted-foreground max-w-xs">
-                The ultimate free online tool to view and edit Markdown files
-                with real-time preview and GFM support.
+                A free online Markdown viewer and editor with live preview.
+                Your documents stay in your browser.
               </p>
             </div>
             <div>
@@ -181,6 +180,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                     className="hover:text-foreground transition-colors"
                   >
                     Markdown Tutorial
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/markdown-to-html"
+                    className="hover:text-foreground transition-colors"
+                  >
+                    Markdown to HTML
                   </Link>
                 </li>
                 <li>

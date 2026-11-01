@@ -1,15 +1,12 @@
 import { Metadata } from 'next';
+import { pageMetadata } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: 'Contact Us | MDViewer Support',
-  description: 'Get in touch with the MDViewer team. Report bugs, request features, or ask questions about our free online Markdown editor. We typically respond within 24-48 hours.',
-  openGraph: {
-    title: 'Contact Us | MDViewer Support',
-    description: 'Get in touch with the MDViewer team. Report bugs, request features, or ask questions about our free online Markdown editor.',
-    url: 'https://mdviewer.in/contact',
-    type: 'website',
-  },
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact",
+  description:
+    "Contact the MDViewer team to report a bug, request a feature or ask a question about the online Markdown editor.",
+  path: "/contact",
+});
 
 export default function ContactLayout({
   children,

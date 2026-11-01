@@ -1,29 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Common Markdown Mistakes and How to Avoid Them | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "Common Markdown Mistakes and How to Fix Them",
   description:
-    "Avoid frustrating formatting issues with this guide to the most common Markdown mistakes developers make. Learn proper syntax, spacing, and escape techniques.",
-  keywords: [
-    "markdown mistakes",
-    "markdown errors",
-    "markdown troubleshooting",
-    "markdown not rendering",
-    "markdown syntax errors",
-    "markdown formatting issues",
-  ],
-  openGraph: {
-    title: "Common Markdown Mistakes and How to Avoid Them",
-    description:
-      "Avoid frustrating formatting issues with this guide to the most common Markdown mistakes.",
-    url: "https://mdviewer.in/guides/common-markdown-mistakes",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "The Markdown formatting mistakes that break lists, headings, code blocks, links and tables, and the exact syntax that fixes each one.",
+  path: "/guides/common-markdown-mistakes",
+  type: "article",
+});
 
 export default function CommonMarkdownMistakesGuide() {
   const jsonLd = {
@@ -37,27 +24,27 @@ export default function CommonMarkdownMistakesGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-03-10",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/common-markdown-mistakes",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/common-markdown-mistakes",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -66,19 +53,19 @@ export default function CommonMarkdownMistakesGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Common Mistakes",
-            item: "https://mdviewer.in/guides/common-markdown-mistakes",
+            item: "https://www.mdviewer.in/guides/common-markdown-mistakes",
           },
         ],
       },
@@ -118,7 +105,7 @@ export default function CommonMarkdownMistakesGuide() {
               7 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -141,8 +128,6 @@ export default function CommonMarkdownMistakesGuide() {
             the most common formatting issues.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Mistakes List */}
         <section className="space-y-10">
@@ -550,6 +535,8 @@ export default function CommonMarkdownMistakesGuide() {
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

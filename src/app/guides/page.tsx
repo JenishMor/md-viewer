@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 import {
@@ -11,27 +12,12 @@ import {
   Workflow,
 } from "lucide-react";
 
-export const metadata: Metadata = {
-  title: "Markdown Guides & Tutorials | MDViewer Learning Center",
+export const metadata: Metadata = pageMetadata({
+  title: "Markdown Guides for Developers and Writers",
   description:
-    "Comprehensive guides and tutorials to master Markdown. Learn README writing, documentation best practices, GFM features, and advanced techniques for developers and writers.",
-  keywords: [
-    "markdown guides",
-    "markdown tutorials",
-    "learn markdown",
-    "markdown documentation",
-    "github markdown guide",
-    "technical writing guides",
-    "developer documentation",
-  ],
-  openGraph: {
-    title: "Markdown Guides & Tutorials | MDViewer Learning Center",
-    description:
-      "Comprehensive guides and tutorials to master Markdown. From beginner basics to advanced documentation techniques.",
-    url: "https://mdviewer.in/guides",
-    type: "website",
-  },
-};
+    "Practical Markdown guides: writing README files, technical documentation, GitHub Flavored Markdown, tables, blogging workflows and common mistakes to avoid.",
+  path: "/guides",
+});
 
 const guides = [
   {
@@ -203,29 +189,6 @@ export default function GuidesPage() {
             </Link>
           </div>
         </div>
-
-        <section className="rounded-2xl border bg-muted/40 p-6 space-y-3">
-          <h2 className="text-xl font-bold">How these guides are created</h2>
-          <p className="text-muted-foreground">
-            Guides are drafted by Jenish Mor and reviewed by the MDViewer
-            editorial team. We test examples in MDViewer before publishing,
-            remove unsupported claims, and revise pages when Markdown tooling or
-            platform behavior changes.
-          </p>
-          <p className="text-sm text-muted-foreground">
-            For author details and contact information, see the About and
-            Contact pages.
-          </p>
-          <div className="flex flex-wrap gap-3 text-sm">
-            <Link href="/about" className="text-primary hover:underline">
-              About
-            </Link>
-            <span className="text-muted-foreground">•</span>
-            <Link href="/contact" className="text-primary hover:underline">
-              Contact
-            </Link>
-          </div>
-        </section>
 
         {/* Featured Guides */}
         <section className="space-y-8">
@@ -422,6 +385,29 @@ export default function GuidesPage() {
                 </li>
               </ul>
             </div>
+          </div>
+        </section>
+
+        <section className="rounded-2xl border bg-muted/40 p-6 space-y-3">
+          <h2 className="text-xl font-bold">How these guides are created</h2>
+          <p className="text-muted-foreground">
+            Guides are drafted by Jenish Mor and reviewed by the MDViewer
+            editorial team. We test examples in MDViewer before publishing,
+            remove unsupported claims, and revise pages when Markdown tooling or
+            platform behavior changes.
+          </p>
+          <p className="text-sm text-muted-foreground">
+            For author details and contact information, see the About and
+            Contact pages.
+          </p>
+          <div className="flex flex-wrap gap-3 text-sm">
+            <Link href="/about" className="text-primary hover:underline">
+              About
+            </Link>
+            <span className="text-muted-foreground">•</span>
+            <Link href="/contact" className="text-primary hover:underline">
+              Contact
+            </Link>
           </div>
         </section>
 

@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useTheme } from "next-themes";
+import { useEffect, useRef } from "react";
 
 declare global {
   interface Window {
@@ -16,6 +15,8 @@ type AdBannerProps = {
   className?: string;
 };
 
+// Ads are rendered exactly as Google serves them: AdSense policy does not allow
+// altering ad appearance (e.g. inverting colours for dark mode).
 export function AdBanner({
   dataAdSlot,
   dataAdFormat,
@@ -23,45 +24,28 @@ export function AdBanner({
   className = "",
 }: AdBannerProps) {
   const adRef = useRef<HTMLModElement>(null);
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
-
+    const ad = adRef.current;
+    // Skip empty slots and containers hidden via CSS (e.g. on mobile), which
+    // would otherwise raise "No slot size for availableWidth=0".
+    if (!dataAdSlot || !ad || ad.innerHTML !== "" || ad.offsetWidth === 0) return;
     try {
-      // Check if the ad has already been loaded in this container
-      if (adRef.current && adRef.current.innerHTML === "") {
-        // Only initialize if the container is visible (has width)
-        // This prevents "No slot size for availableWidth=0" error when hidden via CSS (e.g. on mobile)
-        if (adRef.current.offsetWidth > 0) {
-          window.adsbygoogle = window.adsbygoogle || [];
-          window.adsbygoogle.push({});
-        }
-      }
+      window.adsbygoogle = window.adsbygoogle || [];
+      window.adsbygoogle.push({});
     } catch (err) {
       console.error("AdSense error:", err);
     }
-  }, [resolvedTheme, mounted]);
+  }, [dataAdSlot]);
 
-  const isDark = mounted && resolvedTheme === "dark";
+  if (!dataAdSlot) return null;
 
   return (
     <div className={`w-full h-full overflow-hidden ${className}`}>
       <ins
-        key={resolvedTheme}
         ref={adRef}
         className="adsbygoogle"
-        style={{
-          display: "block",
-          width: "100%",
-          height: "100%",
-          filter: isDark ? "invert(1) hue-rotate(180deg)" : "none",
-        }}
+        style={{ display: "block", width: "100%", height: "100%" }}
         data-ad-client="ca-pub-8617635656002994"
         data-ad-slot={dataAdSlot}
         {...(dataAdFormat ? { "data-ad-format": dataAdFormat } : {})}

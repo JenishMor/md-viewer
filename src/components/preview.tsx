@@ -9,9 +9,9 @@ import {
   type ReactNode,
 } from "react";
 import ReactMarkdown, { type Components } from "react-markdown";
+import type { PluggableList } from "unified";
 import type { Element, ElementContent } from "hast";
 import "highlight.js/styles/github-dark.css";
-import "katex/dist/katex.min.css";
 import { FileCode2, List } from "lucide-react";
 import { TableOfContents } from "@/components/table-of-contents";
 import { MermaidBlock } from "@/components/mermaid-block";
@@ -20,6 +20,9 @@ import {
   CHART_LANGS,
   DIAGRAM_LANGS,
   codeLanguage,
+  loadMathPlugin,
+  loadedMathPlugin,
+  mayContainMath,
   rehypePlugins,
   remarkPlugins,
   remarkRehypeOptions,
@@ -137,15 +140,17 @@ function buildComponents(onToggleTask?: (offset: number) => void): Components {
 
 const MarkdownRenderer = memo(function MarkdownRenderer({
   content,
+  plugins,
   onToggleTask,
 }: {
   content: string;
+  plugins: PluggableList;
   onToggleTask?: (offset: number) => void;
 }) {
   return (
     <ReactMarkdown
       remarkPlugins={remarkPlugins}
-      rehypePlugins={rehypePlugins}
+      rehypePlugins={plugins}
       remarkRehypeOptions={remarkRehypeOptions}
       components={buildComponents(onToggleTask)}
     >
@@ -160,18 +165,20 @@ const MarkdownRenderer = memo(function MarkdownRenderer({
  */
 function ChunkedMarkdown({
   content,
+  plugins,
   onToggleTask,
 }: {
   content: string;
+  plugins: PluggableList;
   onToggleTask?: (offset: number) => void;
 }) {
   const chunks = useMemo(() => splitMarkdown(content), [content]);
-  if (!chunks) return <MarkdownRenderer content={content} onToggleTask={onToggleTask} />;
+  if (!chunks) return <MarkdownRenderer content={content} plugins={plugins} onToggleTask={onToggleTask} />;
   return (
     <>
       {chunks.map((chunk, i) => (
         <div key={i} className="contents" data-chunk-offset={chunk.offset}>
-          <MarkdownRenderer content={chunk.text} onToggleTask={onToggleTask} />
+          <MarkdownRenderer content={chunk.text} plugins={plugins} onToggleTask={onToggleTask} />
         </div>
       ))}
     </>
@@ -223,6 +230,15 @@ export function Preview({
   const [tocOpen, setTocOpen] = useState(false);
   // Rendering lags behind typing on large documents instead of blocking it.
   const deferredContent = useDeferredValue(content);
+  const [mathPlugin, setMathPlugin] = useState(loadedMathPlugin);
+  const needsMath = !mathPlugin && mayContainMath(deferredContent);
+  useEffect(() => {
+    if (needsMath) loadMathPlugin().then(setMathPlugin);
+  }, [needsMath]);
+  const plugins = useMemo(
+    () => (mathPlugin ? [...rehypePlugins, mathPlugin] : rehypePlugins),
+    [mathPlugin],
+  );
 
   const handleHeadingClick = (index: number) => {
     const headings = previewRef.current?.querySelectorAll(
@@ -303,7 +319,7 @@ export function Preview({
           className="markdown-preview prose dark:prose-invert max-w-none prose-headings:scroll-mt-20 prose-headings:text-foreground prose-p:text-foreground prose-strong:text-foreground prose-code:text-foreground prose-li:text-foreground prose-a:text-blue-600 dark:prose-a:text-blue-400 hover:prose-a:underline prose-pre:bg-slate-900 prose-pre:border prose-pre:border-border [&_pre_code]:text-slate-50 text-foreground"
         >
           <PreviewErrorBoundary resetKey={deferredContent}>
-            <ChunkedMarkdown content={deferredContent} onToggleTask={onToggleTask} />
+            <ChunkedMarkdown content={deferredContent} plugins={plugins} onToggleTask={onToggleTask} />
           </PreviewErrorBoundary>
         </article>
       </div>

@@ -91,6 +91,9 @@ test.describe("Visual editor", () => {
     await page.keyboard.press("Home");
     await page.keyboard.press("Shift+End");
     await expect.poll(() => page.evaluate(() => window.getSelection()?.toString())).toBe("plain words here");
+    // The DOM selection updates instantly; ProseMirror syncs its state from the async
+    // selectionchange event, so let it catch up before using the toolbar.
+    await page.waitForTimeout(100);
     const bold = page.getByRole("button", { name: "Bold", exact: true });
     await expect(bold).toHaveAttribute("aria-pressed", "false");
     await bold.click();

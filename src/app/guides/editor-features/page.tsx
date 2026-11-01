@@ -1,31 +1,15 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "MDViewer Editor Guide: Mermaid Diagrams, Charts, Math, Visual Editing & Export",
+export const metadata: Metadata = pageMetadata({
+  title: "Editor Guide: Diagrams, Charts, Math & Export",
   description:
-    "How to use MDViewer's advanced features: Mermaid diagrams, Chart.js charts from JSON, KaTeX math, the visual editor, pasting from Word and Google Docs, local documents, import, export and share links — with their limitations.",
-  keywords: [
-    "mermaid markdown editor",
-    "markdown chart",
-    "chart.js markdown",
-    "katex markdown",
-    "wysiwyg markdown editor",
-    "paste word to markdown",
-    "google docs to markdown",
-    "markdown to pdf",
-    "markdown to html",
-  ],
-  alternates: { canonical: "https://mdviewer.in/guides/editor-features" },
-  openGraph: {
-    title: "MDViewer Editor Guide: Diagrams, Charts, Math, Visual Editing & Export",
-    description:
-      "Mermaid diagrams, Chart.js charts, KaTeX math, visual editing, Word/Google Docs paste, local documents and export in MDViewer.",
-    url: "https://mdviewer.in/guides/editor-features",
-    type: "article",
-  },
-};
+    "How to use Mermaid diagrams, Chart.js charts, KaTeX math, the visual editor, Word and Google Docs paste, local documents, import, export and share links in MDViewer.",
+  path: "/guides/editor-features",
+  type: "article",
+});
 
 const sections = [
   ["modes", "Markdown and Visual modes"],
@@ -59,17 +43,17 @@ export default function EditorFeaturesGuide() {
       {
         "@type": "TechArticle",
         headline: "MDViewer Editor Guide: Mermaid Diagrams, Charts, Math, Visual Editing & Export",
-        publisher: { "@type": "Organization", name: "MDViewer", url: "https://mdviewer.in" },
+        publisher: { "@type": "Organization", name: "MDViewer", url: "https://www.mdviewer.in" },
         datePublished: "2026-10-31",
         dateModified: "2026-10-31",
-        mainEntityOfPage: "https://mdviewer.in/guides/editor-features",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/editor-features",
       },
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://mdviewer.in" },
-          { "@type": "ListItem", position: 2, name: "Guides", item: "https://mdviewer.in/guides" },
-          { "@type": "ListItem", position: 3, name: "Editor features", item: "https://mdviewer.in/guides/editor-features" },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://www.mdviewer.in" },
+          { "@type": "ListItem", position: 2, name: "Guides", item: "https://www.mdviewer.in/guides" },
+          { "@type": "ListItem", position: 3, name: "Editor features", item: "https://www.mdviewer.in/guides/editor-features" },
         ],
       },
     ],

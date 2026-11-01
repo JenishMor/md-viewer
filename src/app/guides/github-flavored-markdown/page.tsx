@@ -1,32 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "The Complete Guide to GitHub Flavored Markdown (GFM) | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "GitHub Flavored Markdown (GFM): Complete Guide",
   description:
-    "Master GitHub Flavored Markdown with our comprehensive guide. Learn tables, task lists, autolinks, strikethrough, syntax highlighting, and all GFM extensions used on GitHub.",
-  keywords: [
-    "github flavored markdown",
-    "gfm guide",
-    "gfm tutorial",
-    "github markdown",
-    "markdown tables",
-    "task lists markdown",
-    "syntax highlighting",
-    "markdown autolinks",
-    "strikethrough markdown",
-  ],
-  openGraph: {
-    title: "The Complete Guide to GitHub Flavored Markdown (GFM)",
-    description:
-      "Master all GFM extensions—tables, task lists, autolinks, strikethrough, and syntax highlighting.",
-    url: "https://mdviewer.in/guides/github-flavored-markdown",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "Everything GitHub Flavored Markdown adds to standard Markdown: tables, task lists, strikethrough, autolinks, footnotes, syntax highlighting and allowed HTML.",
+  path: "/guides/github-flavored-markdown",
+  type: "article",
+});
 
 export default function GFMGuide() {
   const jsonLd = {
@@ -40,27 +24,27 @@ export default function GFMGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-01-20",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/github-flavored-markdown",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/github-flavored-markdown",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -69,19 +53,19 @@ export default function GFMGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "GitHub Flavored Markdown",
-            item: "https://mdviewer.in/guides/github-flavored-markdown",
+            item: "https://www.mdviewer.in/guides/github-flavored-markdown",
           },
         ],
       },
@@ -124,7 +108,7 @@ export default function GFMGuide() {
               Updated Feb 2026
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -148,8 +132,6 @@ export default function GFMGuide() {
             for your GitHub projects.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Table of Contents */}
         <nav className="bg-muted/50 rounded-2xl p-6 border">
@@ -235,9 +217,9 @@ export default function GFMGuide() {
             </p>
           </div>
           <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-xl p-6">
-            <h4 className="font-bold text-green-900 dark:text-green-100 mb-2">
+            <h3 className="font-bold text-green-900 dark:text-green-100 mb-2">
               🐙 GFM Specification
-            </h4>
+            </h3>
             <p className="text-green-800 dark:text-green-200">
               GFM is formally specified at{" "}
               <a
@@ -422,26 +404,26 @@ export default function GFMGuide() {
                 RENDERED OUTPUT
               </div>
               <ul className="space-y-2">
-                <li className="flex items-center gap-2">
+                <li><label className="flex items-center gap-2">
                   <input type="checkbox" checked disabled className="rounded" />{" "}
                   <span className="line-through text-muted-foreground">
                     Complete feature A
                   </span>
-                </li>
-                <li className="flex items-center gap-2">
+                </label></li>
+                <li><label className="flex items-center gap-2">
                   <input type="checkbox" checked disabled className="rounded" />{" "}
                   <span className="line-through text-muted-foreground">
                     Write unit tests
                   </span>
-                </li>
-                <li className="flex items-center gap-2">
+                </label></li>
+                <li><label className="flex items-center gap-2">
                   <input type="checkbox" disabled className="rounded" /> Code
                   review
-                </li>
-                <li className="flex items-center gap-2">
+                </label></li>
+                <li><label className="flex items-center gap-2">
                   <input type="checkbox" disabled className="rounded" /> Deploy
                   to production
-                </li>
+                </label></li>
               </ul>
             </div>
           </div>
@@ -520,7 +502,7 @@ export default function GFMGuide() {
             </div>
             <div className="space-y-2">
               <div>
-                https://mdviewer.in →{" "}
+                https://www.mdviewer.in →{" "}
                 <span className="text-primary underline">clickable link</span>
               </div>
               <div>
@@ -551,7 +533,7 @@ export default function GFMGuide() {
                 SYNTAX
               </div>
               <div>```language</div>
-              <div>// your code here</div>
+              <div>{"// your code here"}</div>
               <div>```</div>
             </div>
 
@@ -782,6 +764,8 @@ export default function GFMGuide() {
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

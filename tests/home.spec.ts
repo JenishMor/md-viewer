@@ -19,7 +19,7 @@ test.describe("Home Page - Core Functionality", () => {
     await expect(preview).toBeVisible();
 
     const content = await editor.inputValue();
-    expect(content).toContain("MD Viewer");
+    expect(content).toContain("Welcome to MDViewer");
   });
 
   test("should update preview when typing in editor", async ({ page }) => {

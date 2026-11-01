@@ -1,29 +1,16 @@
 import { Metadata } from "next";
+import { pageMetadata } from "@/lib/site";
 import { Layout } from "@/components/layout";
 import { EditorialNote } from "@/components/editorial-note";
 import Link from "next/link";
 
-export const metadata: Metadata = {
-  title: "Markdown Tables: From Basic to Advanced Styling | MDViewer",
+export const metadata: Metadata = pageMetadata({
+  title: "Markdown Tables: Syntax, Alignment & Tips",
   description:
-    "Master table creation in Markdown. Learn alignment, formatting within cells, and workarounds for complex table layouts. Complete guide with examples.",
-  keywords: [
-    "markdown tables",
-    "markdown table alignment",
-    "gfm tables",
-    "markdown table formatting",
-    "table in markdown",
-    "markdown table guide",
-  ],
-  openGraph: {
-    title: "Markdown Tables: From Basic to Advanced Styling",
-    description:
-      "Master table creation in Markdown with alignment, cell formatting, and advanced techniques.",
-    url: "https://mdviewer.in/guides/markdown-tables-guide",
-    type: "article",
-  },
-  authors: [{ name: "Jenish Mor" }],
-};
+    "Create Markdown tables: header rows, column alignment, formatting inside cells, escaping pipes, and workarounds for wide or complex tables.",
+  path: "/guides/markdown-tables-guide",
+  type: "article",
+});
 
 export default function MarkdownTablesGuide() {
   const jsonLd = {
@@ -37,27 +24,27 @@ export default function MarkdownTablesGuide() {
         author: {
           "@type": "Person",
           name: "Jenish Mor",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
           sameAs: ["https://github.com/JenishMor"],
         },
         editor: {
           "@type": "Organization",
           name: "MDViewer Editorial Team",
-          url: "https://mdviewer.in/about",
+          url: "https://www.mdviewer.in/about",
         },
         publisher: {
           "@type": "Organization",
           name: "MDViewer",
-          url: "https://mdviewer.in",
+          url: "https://www.mdviewer.in",
           logo: {
             "@type": "ImageObject",
-            url: "https://mdviewer.in/md-logo.png",
+            url: "https://www.mdviewer.in/md-logo.png",
           },
         },
         datePublished: "2025-03-01",
         dateModified: "2026-03-22",
-        mainEntityOfPage: "https://mdviewer.in/guides/markdown-tables-guide",
-        image: "https://mdviewer.in/md-logo.png",
+        mainEntityOfPage: "https://www.mdviewer.in/guides/markdown-tables-guide",
+        image: "https://www.mdviewer.in/md-logo.png",
       },
       {
         "@type": "BreadcrumbList",
@@ -66,19 +53,19 @@ export default function MarkdownTablesGuide() {
             "@type": "ListItem",
             position: 1,
             name: "Home",
-            item: "https://mdviewer.in",
+            item: "https://www.mdviewer.in",
           },
           {
             "@type": "ListItem",
             position: 2,
             name: "Guides",
-            item: "https://mdviewer.in/guides",
+            item: "https://www.mdviewer.in/guides",
           },
           {
             "@type": "ListItem",
             position: 3,
             name: "Markdown Tables",
-            item: "https://mdviewer.in/guides/markdown-tables-guide",
+            item: "https://www.mdviewer.in/guides/markdown-tables-guide",
           },
         ],
       },
@@ -118,7 +105,7 @@ export default function MarkdownTablesGuide() {
               9 min read
             </span>
           </div>
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
             <span>
               By <strong className="text-foreground">Jenish Mor</strong>
             </span>
@@ -142,8 +129,6 @@ export default function MarkdownTablesGuide() {
             table layouts.
           </p>
         </header>
-
-        <EditorialNote reviewedDate="March 2026" />
 
         {/* Basic Syntax */}
         <section className="space-y-6">
@@ -355,9 +340,9 @@ export default function MarkdownTablesGuide() {
             <div className="flex gap-4 items-start p-5 bg-card rounded-xl border">
               <span className="text-green-500 font-bold text-lg">✓</span>
               <div>
-                <h4 className="font-semibold">
+                <h3 className="font-semibold">
                   Align your pipes for readability
-                </h4>
+                </h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   While not required, aligned pipes make raw Markdown much
                   easier to read and edit.
@@ -367,7 +352,7 @@ export default function MarkdownTablesGuide() {
             <div className="flex gap-4 items-start p-5 bg-card rounded-xl border">
               <span className="text-green-500 font-bold text-lg">✓</span>
               <div>
-                <h4 className="font-semibold">Keep tables narrow</h4>
+                <h3 className="font-semibold">Keep tables narrow</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Wide tables are hard to read on mobile. Consider breaking data
                   into multiple smaller tables.
@@ -377,7 +362,7 @@ export default function MarkdownTablesGuide() {
             <div className="flex gap-4 items-start p-5 bg-card rounded-xl border">
               <span className="text-green-500 font-bold text-lg">✓</span>
               <div>
-                <h4 className="font-semibold">Use descriptive headers</h4>
+                <h3 className="font-semibold">Use descriptive headers</h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   Headers should clearly describe what each column contains.
                 </p>
@@ -437,6 +422,8 @@ export default function MarkdownTablesGuide() {
             </Link>
           </div>
         </section>
+
+        <EditorialNote reviewedDate="March 2026" />
       </article>
     </Layout>
   );

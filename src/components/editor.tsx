@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { handleKeyboardShortcut } from "@/lib/formatting";
 import { cleanPastedHtml, isOfficeHtml } from "@/lib/paste";
-import { editorHtmlToMarkdown } from "@/lib/markdown/convert";
 import { FormattingToolbar } from "@/components/formatting-toolbar";
 import {
   Copy,
@@ -95,15 +94,17 @@ export function Editor({
 
   // Rich text from Word / Google Docs becomes Markdown. Everything else
   // (including Ctrl+Shift+V) pastes as plain text, as usual.
-  const handlePaste = (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
+  const handlePaste = async (e: React.ClipboardEvent<HTMLTextAreaElement>) => {
     const html = e.clipboardData.getData("text/html");
     if (!html || !isOfficeHtml(html)) return;
     e.preventDefault();
-    const { html: clean, warnings } = cleanPastedHtml(html);
-    const markdown = editorHtmlToMarkdown(clean).trim();
     const ta = e.currentTarget;
     const start = ta.selectionStart;
     const end = ta.selectionEnd;
+    // The converter is only needed for rich pastes, so it loads on demand.
+    const { editorHtmlToMarkdown } = await import("@/lib/markdown/convert");
+    const { html: clean, warnings } = cleanPastedHtml(html);
+    const markdown = editorHtmlToMarkdown(clean).trim();
     const next = value.slice(0, start) + markdown + value.slice(end);
     onChange({ target: { value: next } } as React.ChangeEvent<HTMLTextAreaElement>);
     requestAnimationFrame(() => {
